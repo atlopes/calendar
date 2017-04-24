@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<calendar>
+	<locales code="en">
+		<term name="month.1">Tishri</term>
+		<term name="month.2">Heshvan</term>
+		<term name="month.3">Kislev</term>
+		<term name="month.4">Teveth</term>
+		<term name="month.5">Shevat</term>
+		<term name="month.6">Adar</term>
+		<term name="month.6.leap">Adar I</term>
+		<term name="month.7">Adar II</term>
+		<term name="month.8">Nisan</term>
+		<term name="month.9">Iyyar</term>
+		<term name="month.10">Sivan</term>
+		<term name="month.11">Tammuz</term>
+		<term name="month.12">Av</term>
+		<term name="month.13">Elul</term>
+	</locales>
+</calendar>

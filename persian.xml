@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<calendar>
+	<locales code="en">
+		<term name="month.1">Farvardin</term>
+		<term name="month.2">Ordibehesht</term>
+		<term name="month.3">Khordad</term>
+		<term name="month.4">Tir</term>
+		<term name="month.5">Mordad</term>
+		<term name="month.6">Shahrivar</term>
+		<term name="month.7">Mehr</term>
+		<term name="month.8">Aban</term>
+		<term name="month.9">Azar</term>
+		<term name="month.10">Dey</term>
+		<term name="month.11">Bahman</term>
+		<term name="month.12">Esfand</term>
+	</locales>
+</calendar>
