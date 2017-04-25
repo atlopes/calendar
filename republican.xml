@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<calendar>
+  <locales code="fr">
+    <term name="month.1">Vendémiaire</term>
+    <term name="month.2">Brumaire</term>
+    <term name="month.3">Frimaire</term>
+    <term name="month.4">Nivôse</term>
+    <term name="month.5">Pluviôse</term>
+    <term name="month.6">Ventôse</term>
+    <term name="month.7">Germinal</term>
+    <term name="month.8">Floréal</term>
+    <term name="month.9">Prairial</term>
+    <term name="month.10">Messidor</term>
+    <term name="month.11">Thermidor</term>
+    <term name="month.12">Fructidor</term>
+    <term name="month.j.1">Jour de la Vertu</term>
+    <term name="month.j.2">Jour du Génie</term>
+    <term name="month.j.3">Jour du Travail</term>
+    <term name="month.j.4">Jour de l’Opinion</term>
+    <term name="month.j.5">Jour des Récompenses</term>
+    <term name="month.j.6">Jour de la Révolution</term>
+  </locales>
+</calendar>
