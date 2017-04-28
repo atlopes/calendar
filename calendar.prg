@@ -57,11 +57,13 @@ DEFINE CLASS Calendar AS Custom
 						'<memberdata name="historical" type="property" display="Historical" />' + ;
 						'<memberdata name="localeid" type="property" display="LocaleID" />' + ;
 						'<memberdata name="vocabulary" type="property" display="Vocabulary" />' + ;
+						'<memberdata name="setdate" type="method" display="SetDate" />' + ;
 						'<memberdata name="fromsystem" type="method" display="FromSystem" />' + ;
 						'<memberdata name="tosystem" type="method" display="ToSystem" />' + ;
 						'<memberdata name="fromjulian" type="method" display="FromJulian" />' + ;
 						'<memberdata name="tojulian" type="method" display="ToJulian" />' + ;
 						'<memberdata name="daysdifference" type="method" display="DaysDifference" />' + ;
+						'<memberdata name="daysadd" type="method" display="DaysAdd" />' + ;
 						'<memberdata name="isleapyear" type="method" display="IsLeapYear" />' + ;
 						'<memberdata name="lastdayofmonth" type="method" display="LastDayOfMonth" />' + ;
 						'<memberdata name="monthname" type="method" display="MonthName" />' + ;
@@ -78,6 +80,25 @@ DEFINE CLASS Calendar AS Custom
 		ENDIF
 			
 		RETURN .T.
+
+	ENDFUNC
+
+	* SetDate()
+	* sets the current date
+	FUNCTION SetDate (CalYearOrDate AS IntegerOrCalendar, CalMonth AS Integer, CalDay AS Integer)
+
+		SAFETHIS
+
+		ASSERT (PCOUNT() = 1 AND VARTYPE(m.CalYearOrDate) == "O") OR ;
+				(PCOUNT() = 3 AND VARTYPE(m.CalYearOrDate) + VARTYPE(m.CalMonth) + VARTYPE(m.CalDay) == "NNN") ;
+			MESSAGE "Numeric parameters expected, or a Calendar"
+
+		* pass through Julian calculations to validate, if supported
+		IF PCOUNT() = 3
+			This.FromJulian(This._toJulian(m.CalYearOrDate, m.CalMonth, m.CalDay))
+		ELSE
+			This.FromJulian(m.CalYearOrDate.ToJulian())
+		ENDIF
 
 	ENDFUNC
 
@@ -183,6 +204,14 @@ DEFINE CLASS Calendar AS Custom
 		RETURN This.ToJulian() - m.OtherJulianDate
 	ENDFUNC
 
+	* DaysAdd()
+	* adds a number of days (negative or positive) to the current date
+	PROCEDURE DaysAdd (Days AS Number)
+
+		SAFETHIS
+
+		This.FromJulian(This.ToJulian() + m.Days)
+	ENDPROC
 
 	* IsLeapYear()
 	* returns .T. if the calendar year is a leap year
