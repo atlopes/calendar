@@ -61,6 +61,7 @@ DEFINE CLASS Calendar AS Custom
 						'<memberdata name="tosystem" type="method" display="ToSystem" />' + ;
 						'<memberdata name="fromjulian" type="method" display="FromJulian" />' + ;
 						'<memberdata name="tojulian" type="method" display="ToJulian" />' + ;
+						'<memberdata name="daysdifference" type="method" display="DaysDifference" />' + ;
 						'<memberdata name="isleapyear" type="method" display="IsLeapYear" />' + ;
 						'<memberdata name="lastdayofmonth" type="method" display="LastDayOfMonth" />' + ;
 						'<memberdata name="monthname" type="method" display="MonthName" />' + ;
@@ -88,7 +89,7 @@ DEFINE CLASS Calendar AS Custom
 			MESSAGE "Date or Datetime parameter expected"
 
 		* this is actually done from the corresponding Julian Day Number
-		This.FromJulian(VAL(SYS(11, m.SystemDate)))
+		This.FromJulian(VAL(SYS(11, IIF(PCOUNT() = 0, DATE(), m.SystemDate))))
 
 	ENDPROC
 
@@ -149,6 +150,39 @@ DEFINE CLASS Calendar AS Custom
 		ENDIF
 
 	ENDFUNC
+
+	* DaysDifference()
+	* returns the difference, in days, between current calendar date and some other date
+	FUNCTION DaysDifference (CalYearOrDate AS IntegerDateOrCalendar, CalMonth AS Integer, CalDay AS Integer)
+
+		SAFETHIS
+
+		ASSERT PCOUNT() = 0 OR (PCOUNT() = 1 AND VARTYPE(m.CalYearOrDate) $ "DTO") OR ;
+				(PCOUNT() = 3 AND VARTYPE(m.CalYearOrDate) + VARTYPE(m.CalMonth) + VARTYPE(m.CalDay) == "NNN") ;
+			MESSAGE "Numeric parameters expected, or a Date, or a Calendar"
+
+		LOCAL ThisJulianDate AS Number
+		LOCAL OtherJulianDate AS Number
+
+		DO CASE
+		CASE PCOUNT() = 0								&& difference to current system date
+			m.OtherJulianDate = VAL(SYS(1))
+
+		CASE PCOUNT() = 3								&& difference to other date in the same calendar
+			m.OtherJulianDate = This._toJulian(m.CalYearOrDate, m.CalMonth, m.CalDay)
+
+		CASE VARTYPE(m.CalYearOrDate) $ "DT"	&& difference to a system date
+			m.OtherJulianDate = VAL(SYS(11, m.CalYearOrDate))
+
+		OTHERWISE										&& difference to other date in a calendar
+			m.OtherJulianDate = m.CalYearOrDate.ToJulian()
+
+		ENDCASE
+
+		* the other date Julian Day Number is calculated, now see how many days to the current date
+		RETURN This.ToJulian() - m.OtherJulianDate
+	ENDFUNC
+
 
 	* IsLeapYear()
 	* returns .T. if the calendar year is a leap year
