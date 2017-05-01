@@ -1,0 +1,116 @@
+
+*!*	IslamicCalendar
+
+*!*	A Calendar subclass for the Islamic Calendar.
+*!*	Locales are stored in islamic.xml file.
+
+*!*	Algorithms based on Calendar.c, a C++ transcript from the
+*!*	original LISP code used for
+*!*	Calendrical Calculations'' by Nachum Dershowitz and Edward M. Reingold,
+*!*	Software - Practice & Experience, vol. 20, no. 9 (September, 1990), pp. 899--928.
+
+* install dependencies
+DO LOCFILE("Calendar.prg")
+
+* install itself
+IF !SYS(16) $ SET("Procedure")
+	SET PROCEDURE TO (SYS(16)) ADDITIVE
+ENDIF
+
+* Julian day number of (1 Muharram 1) - 1
+* - this constant is not the same used in Calendar.C
+#DEFINE ISLAMIC_EPOCH	1948439
+
+#DEFINE SAFETHIS	ASSERT !USED("This") AND VARTYPE(This) == "O"
+
+DEFINE CLASS IslamicCalendar AS Calendar
+
+	* IsLeapYear()
+	* returns .T. if an Islamic leap year
+	FUNCTION IsLeapYear (Year AS Number)
+		RETURN (((11 * m.Year) + 14) % 30) < 11
+	ENDFUNC
+
+	* LastDayOfMonth()
+	* returns the day of a month, in a given year
+	FUNCTION LastDayOfMonth (Month AS Number, Year AS Number)
+	
+		SAFETHIS
+		
+		ASSERT PCOUNT() = 0 OR VARTYPE(m.Year) + VARTYPE(m.Month) == "NN" ;
+			MESSAGE "Numeric parameters expected."
+
+		IF PCOUNT() = 0
+			m.Year = This.Year
+			m.Month = This.Month
+		ENDIF
+
+		IF ((m.Month % 2) == 1) OR ((m.Month == 12) AND This.IsLeapYear(m.Year))
+			RETURN 30
+		ELSE
+			RETURN 29
+		ENDIF
+
+	ENDFUNC
+
+	* MonthName()
+	* gets the name of the month, for the current locale
+	FUNCTION MonthName (Month AS Number)
+	
+		SAFETHIS
+		
+		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) = "N" ;
+			MESSAGE "Numeric parameter expected."
+
+		IF PCOUNT() = 0
+			m.Month = This.Month
+		ENDIF
+
+		IF ISNULL(This.Vocabulary)
+			This.SetVocabulary(LOCFILE("islamic.xml"))
+		ENDIF
+
+		m.Name = This.GetLocale("month." + TRANSFORM(m.Month))
+
+		RETURN EVL(m.Name, .NULL.)
+
+	ENDFUNC
+
+	* calculation to transform a Julian Day Number into an Islamic calendar date
+	* (called from FromJulian method)
+	PROCEDURE _fromJulian (JulianDate AS Number)
+	
+		SAFETHIS
+
+		IF m.JulianDate <= ISLAMIC_EPOCH
+
+			STORE 0 TO This.Year, This.Month, This.Day
+
+		ELSE
+
+			This.Year = INT((m.JulianDate - ISLAMIC_EPOCH) / 355)
+			DO WHILE m.JulianDate >= This._toJulian(This.Year + 1, 1, 1)
+				This.Year = This.Year + 1
+			ENDDO
+
+			This.Month = 1
+			DO WHILE m.JulianDate > This._toJulian(This.Year, This.Month, This.LastDayOfMonth())
+				This.Month = This.Month + 1
+			ENDDO
+
+			This.Day = m.JulianDate - This._toJulian(This.Year, This.Month, 1) + 1
+
+		ENDIF
+
+	ENDPROC
+	
+	* calculation to transform an Islamic calendar date into a Julian Day Number
+	* (called from ToJulian method)
+	FUNCTION _toJulian (CalYear AS Integer, CalMonth AS Integer, CalDay AS Integer)
+
+		RETURN m.CalDay + 29 * (m.CalMonth - 1) + INT(m.CalMonth / 2) + 354 * (m.CalYear - 1) + ;
+				INT((3 + (11 * m.CalYear)) / 30) + ISLAMIC_EPOCH
+
+	ENDFUNC
+
+ENDDEFINE

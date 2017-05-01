@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<calendar>
+	<locales code="en">
+		<term name="month.1">Muharram</term>
+		<term name="month.2">Safar</term>
+		<term name="month.3">Rabi' al-awwal</term>
+		<term name="month.4">Rabi' al-thani</term>
+		<term name="month.5">Jumada al-awwal</term>
+		<term name="month.6">Jumada al-Thani</term>
+		<term name="month.7">Rajab</term>
+		<term name="month.8">Sha'ban</term>
+		<term name="month.9">Ramadan</term>
+		<term name="month.10">Shawwal</term>
+		<term name="month.11">Dhu al-Qidah</term>
+		<term name="month.12">Dhu al-Hijjah</term>
+	</locales>
+</calendar>
