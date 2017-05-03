@@ -67,6 +67,8 @@ DEFINE CLASS Calendar AS Custom
 						'<memberdata name="isleapyear" type="method" display="IsLeapYear" />' + ;
 						'<memberdata name="lastdayofmonth" type="method" display="LastDayOfMonth" />' + ;
 						'<memberdata name="monthname" type="method" display="MonthName" />' + ;
+						'<memberdata name="weekday" type="method" display="Weekday" />' + ;
+						'<memberdata name="weekdayname" type="method" display="WeekdayName" />' + ;
 						'<memberdata name="getlocale" type="method" display="GetLocale" />' + ;
 						'<memberdata name="setvocabulary" type="method" display="SetVocabulary" />' + ;
 						'</VFPData>'
@@ -221,13 +223,42 @@ DEFINE CLASS Calendar AS Custom
 
 	* LastDayOfMonth()
 	* returns the last day of a month in a specific year
-	FUNCTION LastDayOfMonth (Month AS Number, Year AS Number)
+	FUNCTION LastDayOfMonth (Year AS Number, Month AS Number)
 		RETURN .NULL.		&& not implemented at the base class
 	ENDFUNC
 
 	* MonthName
 	* returns the name of a month
 	FUNCTION MonthName (Month AS Number)
+		RETURN .NULL.		&& not implemented at the base class
+	ENDFUNC
+
+	* Weekday()
+	* returns the week day (assuming the last day of the week is for rest / religious obligations: 1 = Monday, 7 = Sunday)
+	FUNCTION Weekday (Year AS Integer, Month AS Integer, Day AS Integer)
+
+		LOCAL JulianDayNumber AS Number
+
+		SAFETHIS
+
+		ASSERT PCOUNT() = 0 OR VARTYPE(m.Year) + VARTYPE(m.Month) + VARTYPE(m.Day) == "NNN" ;
+			MESSAGE "Numeric parameters expected."
+
+		IF PCOUNT() = 0
+			m.Year = This.Year
+			m.Month = This.Month
+			m.Day = This.Day
+		ENDIF
+	
+		m.JulianDayNumber = This._toJulian(m.Year, m.Month, m.Day)
+
+		RETURN (m.JulianDayNumber % 7) + 1
+		
+	ENDFUNC
+
+	* WeekdayName()
+	* returns the name of the week day
+	FUNCTION WeekdayName (Year AS Integer, Month AS Integer, Day AS Integer)
 		RETURN .NULL.		&& not implemented at the base class
 	ENDFUNC
 

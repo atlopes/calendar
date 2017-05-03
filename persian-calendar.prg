@@ -30,17 +30,15 @@ DEFINE CLASS PersianCalendar AS Calendar
 		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) = "N" ;
 			MESSAGE "Numeric parameter expected."
 
-		LOCAL MonthVal AS Number
-		
 		IF PCOUNT() = 0
-			m.MonthVal = This.Month
+			m.Month = This.Month
 		ENDIF
 
 		IF ISNULL(This.Vocabulary)
 			This.SetVocabulary(LOCFILE("persian.xml"))
 		ENDIF
 
-		m.Name = This.GetLocale("month." + TRANSFORM(m.MonthVal))
+		m.Name = This.GetLocale("month." + TRANSFORM(m.Month))
 
 		RETURN EVL(m.Name, .NULL.)
 

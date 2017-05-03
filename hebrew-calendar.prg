@@ -38,7 +38,7 @@ DEFINE CLASS HebrewCalendar AS Calendar
 
 	* LastDayOfMonth()
 	* returns the day of a month, in a given year
-	FUNCTION LastDayOfMonth (Month AS Number, Year AS Number)
+	FUNCTION LastDayOfMonth (Year AS Number, Month AS Number)
 
 		SAFETHIS
 		
@@ -82,7 +82,7 @@ DEFINE CLASS HebrewCalendar AS Calendar
 
 	* MonthName()
 	* returns the name of the month, for a given locale
-	FUNCTION MonthName (Month AS Number, Year AS Number)
+	FUNCTION MonthName (Year AS Number, Month AS Number)
 	
 		SAFETHIS
 		
@@ -120,6 +120,33 @@ DEFINE CLASS HebrewCalendar AS Calendar
 		ENDIF
 
 		m.Name = This.GetLocale("month." + TRANSFORM(m.MonthVal) + m.MonthLeap)
+
+		RETURN EVL(m.Name, .NULL.)
+
+	ENDFUNC
+
+	* WeekdayName()
+	* returns the name of the weekday, for a given locale
+	FUNCTION WeekdayName (Year AS Number, Month AS Number, Day AS Number)
+	
+		SAFETHIS
+
+		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) + VARTYPE(m.Year) + VARTYPE(m.Day) == "NNN" ;
+			MESSAGE "Numeric parameters expected."
+
+		LOCAL Name AS String
+		
+		IF PCOUNT() = 0
+			m.Day = This.Day
+			m.Month = This.Month
+			m.Year = This.Year
+		ENDIF
+
+		IF ISNULL(This.Vocabulary)
+			This.SetVocabulary(LOCFILE("hebrew.xml"))
+		ENDIF
+
+		m.Name = This.GetLocale("weekday." + TRANSFORM(This.Weekday(m.Year, m.Month, m.Day)))
 
 		RETURN EVL(m.Name, .NULL.)
 
@@ -188,7 +215,7 @@ DEFINE CLASS HebrewCalendar AS Calendar
 		m.JulianDayNumber = This._elapsedCalendarDays(m.CalYear)
 		
 		FOR m.MonthIndex = 1 TO m.MonthVal - 1
-			m.JulianDayNumber = m.JulianDayNumber + This.LastDayOfMonth(m.MonthIndex, m.CalYear)
+			m.JulianDayNumber = m.JulianDayNumber + This.LastDayOfMonth(m.CalYear, m.MonthIndex)
 		ENDFOR
 		
 		m.JulianDayNumber = m.JulianDayNumber + (m.CalDay - 1 + HEBREW_BEGIN)
