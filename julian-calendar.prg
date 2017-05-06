@@ -1,8 +1,8 @@
 
-*!*	IslamicCalendar
+*!*	JulianCalendar
 
-*!*	A Calendar subclass for the Islamic Calendar.
-*!*	Locales are stored in islamic.xml file.
+*!*	A Calendar subclass for the Julian Calendar.
+*!*	Locales are stored in julian.xml file.
 
 *!*	Algorithms based on Calendar.c, a C++ transcript from the
 *!*	original LISP code used for
@@ -17,18 +17,17 @@ IF !SYS(16) $ SET("Procedure")
 	SET PROCEDURE TO (SYS(16)) ADDITIVE
 ENDIF
 
-* Julian day number of (1 Muharram 1) - 1
-* - this constant is not the same used in Calendar.C
-#DEFINE ISLAMIC_EPOCH	1948439
+* First Julian day number
+#DEFINE JULIAN_EPOCH	-2
 
 #DEFINE SAFETHIS	ASSERT !USED("This") AND VARTYPE(This) == "O"
 
-DEFINE CLASS IslamicCalendar AS Calendar
+DEFINE CLASS JulianCalendar AS Calendar
 
 	* IsLeapYear()
-	* returns .T. if an Islamic leap year
+	* returns .T. if a Julian leap year
 	FUNCTION IsLeapYear (Year AS Number)
-		RETURN (((11 * m.Year) + 14) % 30) < 11
+		RETURN (m.Year % 4) = 0
 	ENDFUNC
 
 	* LastDayOfMonth()
@@ -45,11 +44,14 @@ DEFINE CLASS IslamicCalendar AS Calendar
 			m.Month = This.Month
 		ENDIF
 
-		IF ((m.Month % 2) == 1) OR ((m.Month == 12) AND This.IsLeapYear(m.Year))
+		DO CASE
+		CASE INLIST(m.Month, 1, 3, 5, 7, 8, 10, 12)
+			RETURN 31
+		CASE m.Month = 2
+			RETURN 28 + IIF(This.IsLeapYear(m.Year), 1, 0)
+		OTHERWISE
 			RETURN 30
-		ELSE
-			RETURN 29
-		ENDIF
+		ENDCASE
 
 	ENDFUNC
 
@@ -67,7 +69,7 @@ DEFINE CLASS IslamicCalendar AS Calendar
 		ENDIF
 
 		IF ISNULL(This.Vocabulary)
-			This.SetVocabulary(LOCFILE("islamic.xml"))
+			This.SetVocabulary(LOCFILE("julian.xml"))
 		ENDIF
 
 		m.Name = This.GetLocale("month." + TRANSFORM(m.Month))
@@ -76,19 +78,19 @@ DEFINE CLASS IslamicCalendar AS Calendar
 
 	ENDFUNC
 
-	* calculation to transform a Julian Day Number into an Islamic calendar date
+	* calculation to transform a Julian Day Number into an Julian calendar date
 	* (called from FromJulian method)
 	PROCEDURE _fromJulian (JulianDate AS Number)
 	
 		SAFETHIS
 
-		IF m.JulianDate <= ISLAMIC_EPOCH
+		IF m.JulianDate < JULIAN_EPOCH
 
 			STORE 0 TO This.Year, This.Month, This.Day
 
 		ELSE
 
-			This.Year = INT((m.JulianDate - ISLAMIC_EPOCH) / 355)
+			This.Year = INT((m.JulianDate + JULIAN_EPOCH) / 366)
 			DO WHILE m.JulianDate >= This._toJulian(This.Year + 1, 1, 1)
 				This.Year = This.Year + 1
 			ENDDO
@@ -104,12 +106,19 @@ DEFINE CLASS IslamicCalendar AS Calendar
 
 	ENDPROC
 	
-	* calculation to transform an Islamic calendar date into a Julian Day Number
+	* calculation to transform a Julian calendar date into a Julian Day Number
 	* (called from ToJulian method)
 	FUNCTION _toJulian (CalYear AS Integer, CalMonth AS Integer, CalDay AS Integer)
 
-		RETURN m.CalDay + 29 * (m.CalMonth - 1) + INT(m.CalMonth / 2) + 354 * (m.CalYear - 1) + ;
-				INT((3 + (11 * m.CalYear)) / 30) + ISLAMIC_EPOCH
+		LOCAL DaysThisYear AS Number
+		LOCAL MonthIndex AS Number
+
+		m.DaysThisYear = m.CalDay
+		FOR m.MonthIndex = 1 TO m.CalMonth - 1
+			m.DaysThisYear = m.DaysThisYear + This.LastDayOfMonth(m.CalYear, m.MonthIndex)
+		ENDFOR
+
+		RETURN m.DaysThisYear + 365 * (m.CalYear - 1) + INT((m.CalYear - 1) / 4)
 
 	ENDFUNC
 
