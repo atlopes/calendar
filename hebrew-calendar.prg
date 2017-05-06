@@ -125,33 +125,6 @@ DEFINE CLASS HebrewCalendar AS Calendar
 
 	ENDFUNC
 
-	* WeekdayName()
-	* returns the name of the weekday, for a given locale
-	FUNCTION WeekdayName (Year AS Number, Month AS Number, Day AS Number)
-	
-		SAFETHIS
-
-		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) + VARTYPE(m.Year) + VARTYPE(m.Day) == "NNN" ;
-			MESSAGE "Numeric parameters expected."
-
-		LOCAL Name AS String
-		
-		IF PCOUNT() = 0
-			m.Day = This.Day
-			m.Month = This.Month
-			m.Year = This.Year
-		ENDIF
-
-		IF ISNULL(This.Vocabulary)
-			This.SetVocabulary(LOCFILE("hebrew.xml"))
-		ENDIF
-
-		m.Name = This.GetLocale("weekday." + TRANSFORM(This.Weekday(m.Year, m.Month, m.Day)))
-
-		RETURN EVL(m.Name, .NULL.)
-
-	ENDFUNC
-
 	* calculation to transform a Julian Day Number into a Hebrew calendar date
 	* (called from FromJulian method)
 	PROCEDURE _fromJulian (JulianDate AS Number, MoonCoding AS Boolean)

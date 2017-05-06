@@ -24,6 +24,8 @@ ENDIF
 
 DEFINE CLASS GregorianCalendar AS Calendar
 
+	VocabularySource = "julian.xml"
+
 	AdoptionYear = 1582
 	AdoptionMonth = 10
 	AdoptionDay = 15
@@ -105,29 +107,6 @@ DEFINE CLASS GregorianCalendar AS Calendar
 		ELSE
 			RETURN (m.Year % 4) = 0 AND ((m.Year % 100) != 0 OR (m.Year % 400) = 0)
 		ENDIF
-
-	ENDFUNC
-
-	* MonthName()
-	* gets the name of the month, for the current locale
-	FUNCTION MonthName (Month AS Number)
-	
-		SAFETHIS
-		
-		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) = "N" ;
-			MESSAGE "Numeric parameter expected."
-
-		IF PCOUNT() = 0
-			m.Month = This.Month
-		ENDIF
-
-		IF ISNULL(This.Vocabulary)
-			This.SetVocabulary(LOCFILE("julian.xml"))
-		ENDIF
-
-		m.Name = This.GetLocale("month." + TRANSFORM(m.Month))
-
-		RETURN EVL(m.Name, .NULL.)
 
 	ENDFUNC
 

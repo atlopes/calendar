@@ -13,5 +13,12 @@
 		<term name="month.10">Shawwal</term>
 		<term name="month.11">Dhu al-Qidah</term>
 		<term name="month.12">Dhu al-Hijjah</term>
+		<term name="weekday.1">Yawm al-Ithnayn</term>
+		<term name="weekday.2">Yawm ath-Thulatha'</term>
+		<term name="weekday.3">Yawm al-Arba'a'</term>
+		<term name="weekday.4">Yawm al-Khamis</term>
+		<term name="weekday.5">Yawm al-Jum'ah</term>
+		<term name="weekday.6">Yawm as-Sabt</term>
+		<term name="weekday.7">Yawm al-Ahad</term>
 	</locales>
 </calendar>

@@ -24,6 +24,8 @@ ENDIF
 
 DEFINE CLASS JulianCalendar AS Calendar
 
+	VocabularySource = "julian.xml"
+
 	* IsLeapYear()
 	* returns .T. if a Julian leap year
 	FUNCTION IsLeapYear (Year AS Number)
@@ -52,29 +54,6 @@ DEFINE CLASS JulianCalendar AS Calendar
 		OTHERWISE
 			RETURN 30
 		ENDCASE
-
-	ENDFUNC
-
-	* MonthName()
-	* gets the name of the month, for the current locale
-	FUNCTION MonthName (Month AS Number)
-	
-		SAFETHIS
-		
-		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) = "N" ;
-			MESSAGE "Numeric parameter expected."
-
-		IF PCOUNT() = 0
-			m.Month = This.Month
-		ENDIF
-
-		IF ISNULL(This.Vocabulary)
-			This.SetVocabulary(LOCFILE("julian.xml"))
-		ENDIF
-
-		m.Name = This.GetLocale("month." + TRANSFORM(m.Month))
-
-		RETURN EVL(m.Name, .NULL.)
 
 	ENDFUNC
 

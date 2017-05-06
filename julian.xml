@@ -13,5 +13,12 @@
 		<term name="month.10">October</term>
 		<term name="month.11">November</term>
 		<term name="month.12">December</term>
+		<term name="weekday.1">Monday</term>
+		<term name="weekday.2">Tuesday</term>
+		<term name="weekday.3">Wednesday</term>
+		<term name="weekday.4">Thursday</term>
+		<term name="weekday.5">Friday</term>
+		<term name="weekday.6">Saturday</term>
+		<term name="weekday.7">Sunday</term>
 	</locales>
 </calendar>

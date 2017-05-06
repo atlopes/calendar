@@ -21,28 +21,7 @@ ENDIF
 
 DEFINE CLASS PersianCalendar AS Calendar
 
-	* MonthName()
-	* gets the name of the month, for the current locale
-	FUNCTION MonthName (Month AS Number)
-	
-		SAFETHIS
-		
-		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) = "N" ;
-			MESSAGE "Numeric parameter expected."
-
-		IF PCOUNT() = 0
-			m.Month = This.Month
-		ENDIF
-
-		IF ISNULL(This.Vocabulary)
-			This.SetVocabulary(LOCFILE("persian.xml"))
-		ENDIF
-
-		m.Name = This.GetLocale("month." + TRANSFORM(m.Month))
-
-		RETURN EVL(m.Name, .NULL.)
-
-	ENDFUNC
+	VocabularySource = "persian.xml"
 
 	* calculation to transform a Julian Day Number into a Persian calendar date
 	* (called from FromJulian method)

@@ -25,6 +25,8 @@ ENDIF
 
 DEFINE CLASS IslamicCalendar AS Calendar
 
+	VocabularySource = "islamic.xml"
+
 	* IsLeapYear()
 	* returns .T. if an Islamic leap year
 	FUNCTION IsLeapYear (Year AS Number)
@@ -50,29 +52,6 @@ DEFINE CLASS IslamicCalendar AS Calendar
 		ELSE
 			RETURN 29
 		ENDIF
-
-	ENDFUNC
-
-	* MonthName()
-	* gets the name of the month, for the current locale
-	FUNCTION MonthName (Month AS Number)
-	
-		SAFETHIS
-		
-		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) = "N" ;
-			MESSAGE "Numeric parameter expected."
-
-		IF PCOUNT() = 0
-			m.Month = This.Month
-		ENDIF
-
-		IF ISNULL(This.Vocabulary)
-			This.SetVocabulary(LOCFILE("islamic.xml"))
-		ENDIF
-
-		m.Name = This.GetLocale("month." + TRANSFORM(m.Month))
-
-		RETURN EVL(m.Name, .NULL.)
 
 	ENDFUNC
 

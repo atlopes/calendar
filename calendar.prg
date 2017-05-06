@@ -43,6 +43,8 @@ DEFINE CLASS Calendar AS Custom
 	LocaleID = "en"
 	* the vocabulary object (an XML DOM object)
 	Vocabulary = .NULL.
+	* the vocabulary source (an XML document)
+	VocabularySource = .NULL.
 
 	_MemberData = '<VFPData>' + ;
 						'<memberdata name="year" type="property" display="Year" />' + ;
@@ -57,6 +59,7 @@ DEFINE CLASS Calendar AS Custom
 						'<memberdata name="historical" type="property" display="Historical" />' + ;
 						'<memberdata name="localeid" type="property" display="LocaleID" />' + ;
 						'<memberdata name="vocabulary" type="property" display="Vocabulary" />' + ;
+						'<memberdata name="vocabularysource" type="property" display="VocabularySource" />' + ;
 						'<memberdata name="setdate" type="method" display="SetDate" />' + ;
 						'<memberdata name="fromsystem" type="method" display="FromSystem" />' + ;
 						'<memberdata name="tosystem" type="method" display="ToSystem" />' + ;
@@ -227,10 +230,31 @@ DEFINE CLASS Calendar AS Custom
 		RETURN .NULL.		&& not implemented at the base class
 	ENDFUNC
 
-	* MonthName
-	* returns the name of a month
+	* MonthName()
+	* gets the name of the month, for the current locale
 	FUNCTION MonthName (Month AS Number)
-		RETURN .NULL.		&& not implemented at the base class
+	
+		SAFETHIS
+		
+		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) = "N" ;
+			MESSAGE "Numeric parameter expected."
+
+		LOCAL Name AS String
+
+		IF PCOUNT() = 0
+			m.Month = This.Month
+		ENDIF
+
+		IF ISNULL(This.Vocabulary) AND !ISNULL(This.VocabularySource)
+			This.SetVocabulary(LOCFILE(This.VocabularySource))
+		ENDIF
+
+		IF !ISNULL(This.Vocabulary)
+			m.Name = This.GetLocale("month." + TRANSFORM(m.Month))
+		ENDIF
+	
+		RETURN EVL(m.Name, .NULL.)
+
 	ENDFUNC
 
 	* Weekday()
@@ -257,11 +281,35 @@ DEFINE CLASS Calendar AS Custom
 	ENDFUNC
 
 	* WeekdayName()
-	* returns the name of the week day
-	FUNCTION WeekdayName (Year AS Integer, Month AS Integer, Day AS Integer)
-		RETURN .NULL.		&& not implemented at the base class
+	* returns the name of the weekday, for a given locale
+	FUNCTION WeekdayName (Year AS Number, Month AS Number, Day AS Number)
+	
+		SAFETHIS
+
+		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) + VARTYPE(m.Year) + VARTYPE(m.Day) == "NNN" ;
+			MESSAGE "Numeric parameters expected."
+
+		LOCAL Name AS String
+		
+		IF PCOUNT() = 0
+			m.Day = This.Day
+			m.Month = This.Month
+			m.Year = This.Year
+		ENDIF
+
+		IF ISNULL(This.Vocabulary) AND !ISNULL(This.VocabularySource)
+			This.SetVocabulary(LOCFILE(This.VocabularySource))
+		ENDIF
+
+		IF !ISNULL(This.Vocabulary)
+			m.Name = This.GetLocale("weekday." + TRANSFORM(This.Weekday(m.Year, m.Month, m.Day)))
+		ENDIF
+
+		RETURN EVL(m.Name, .NULL.)
+
 	ENDFUNC
 
+	* calculation to transform a Julian Day Number into a Hebrew calendar date
 	* placeholders for auxiliary methods
 	PROCEDURE _fromJulian (JulianDate AS Number)
 	ENDPROC

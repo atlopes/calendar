@@ -13,5 +13,12 @@
 		<term name="month.10">Dey</term>
 		<term name="month.11">Bahman</term>
 		<term name="month.12">Esfand</term>
+		<term name="weekday.1">dushanbah</term>
+		<term name="weekday.2">sahshanbah</term>
+		<term name="weekday.3">chihar shanbah</term>
+		<term name="weekday.4">panj shanbah</term>
+		<term name="weekday.5">jum'ah</term>
+		<term name="weekday.6">shanbah</term>
+		<term name="weekday.7">yakshanbah</term>
 	</locales>
 </calendar>
