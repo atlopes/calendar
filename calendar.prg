@@ -162,7 +162,7 @@ DEFINE CLASS Calendar AS Custom
 	
 	* ToJulian()
 	* return the Julian Day Number corresponding to the current calendar date, or to a specific calendar date
-	FUNCTION ToJulian (CalYear AS Integer, CalMonth AS Integer, CalDay AS Integer)
+	FUNCTION ToJulian (CalYear AS Integer, CalMonth AS Integer, CalDay AS Integer) AS Number
 
 		SAFETHIS
 
@@ -179,7 +179,7 @@ DEFINE CLASS Calendar AS Custom
 
 	* DaysDifference()
 	* returns the difference, in days, between current calendar date and some other date
-	FUNCTION DaysDifference (CalYearOrDate AS IntegerDateOrCalendar, CalMonth AS Integer, CalDay AS Integer)
+	FUNCTION DaysDifference (CalYearOrDate AS IntegerDateOrCalendar, CalMonth AS Integer, CalDay AS Integer) AS Number
 
 		SAFETHIS
 
@@ -220,19 +220,19 @@ DEFINE CLASS Calendar AS Custom
 
 	* IsLeapYear()
 	* returns .T. if the calendar year is a leap year
-	FUNCTION IsLeapYear (Year AS Number)
+	FUNCTION IsLeapYear (Year AS Number) AS Boolean
 		RETURN .NULL.		&& not implemented at the base class
 	ENDFUNC
 
 	* LastDayOfMonth()
 	* returns the last day of a month in a specific year
-	FUNCTION LastDayOfMonth (Year AS Number, Month AS Number)
+	FUNCTION LastDayOfMonth (Year AS Number, Month AS Number) AS Number
 		RETURN .NULL.		&& not implemented at the base class
 	ENDFUNC
 
 	* MonthName()
 	* gets the name of the month, for the current locale
-	FUNCTION MonthName (Month AS Number)
+	FUNCTION MonthName (Month AS Number) AS String
 	
 		SAFETHIS
 		
@@ -259,7 +259,7 @@ DEFINE CLASS Calendar AS Custom
 
 	* Weekday()
 	* returns the week day (assuming the last day of the week is for rest / religious obligations: 1 = Monday, 7 = Sunday)
-	FUNCTION Weekday (Year AS Integer, Month AS Integer, Day AS Integer)
+	FUNCTION Weekday (Year AS Integer, Month AS Integer, Day AS Integer) AS Number
 
 		LOCAL JulianDayNumber AS Number
 
@@ -282,7 +282,7 @@ DEFINE CLASS Calendar AS Custom
 
 	* WeekdayName()
 	* returns the name of the weekday, for a given locale
-	FUNCTION WeekdayName (Year AS Number, Month AS Number, Day AS Number)
+	FUNCTION WeekdayName (Year AS Number, Month AS Number, Day AS Number) AS Number
 	
 		SAFETHIS
 
@@ -309,12 +309,12 @@ DEFINE CLASS Calendar AS Custom
 
 	ENDFUNC
 
-	* calculation to transform a Julian Day Number into a Hebrew calendar date
 	* placeholders for auxiliary methods
+	* calculations to transform a Julian Day Number into a calendar date, and vice-versa
 	PROCEDURE _fromJulian (JulianDate AS Number)
 	ENDPROC
 
-	FUNCTION _toJulian (CalYear AS Integer, CalMonth AS Integer, CalDay AS Integer)
+	FUNCTION _toJulian (CalYear AS Integer, CalMonth AS Integer, CalDay AS Integer) AS Number
 		RETURN .NULL.		&& not implemented at the base class
 	ENDFUNC
 
@@ -337,7 +337,7 @@ DEFINE CLASS Calendar AS Custom
 
 	* GetLocale()
 	* return a string for a specific term in the locale vocabulary
-	FUNCTION GetLocale (Term AS String)
+	FUNCTION GetLocale (Term AS String) AS String
 
 		SAFETHIS
 		
