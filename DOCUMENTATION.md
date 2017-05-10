@@ -6,7 +6,7 @@ Calendar for VFP is a set of classes that handle calendrical information and cal
 
 To use a class, include its PRG file in a project and all the hierarchy of its dependencies and locales, up to the base Calendar class. For instance, if you want to the British Calendar, use BritishCalendar, include british-calendar.prg, gregorian-calendar.prg, julian-calendar.prg, julian.xml, and calendar.prg.
 
-If you want to keep it simple, just include all PRG and XML, and any class will be available after DOing its PRG.
+If you want to keep it simple, just include all PRG and XML files, and any class will be available after DOing its PRG.
 
 | Class | Filename | Dependency | Locale |
 | ----- | -------- | ---------- | ------ |
@@ -61,7 +61,7 @@ If you want to keep it simple, just include all PRG and XML, and any class will 
 -- Sets the current calendar date from the current system date (that is, `DATE()`)
 - **`FromSystem (SystemDate AS DateOrDatetime)`**
 -- Sets the current calendar date from a `m.SystemData`(a Date or Datetime value)
-- `**GetLocale (Term AS String) AS String`**
+- **`GetLocale (Term AS String) AS String`**
 -- Returns a string for a specific `m.Term` in the locale vocabulary
 - **`Init ()`**
 -- Instantiates a Calendar object (if not `.Historical`, sets the current calendar date to current system date, that is, `DATE()`)
@@ -101,3 +101,89 @@ If you want to keep it simple, just include all PRG and XML, and any class will 
 -- Specific calendar system calculation to transform a calendar date into a Julian Day Number
 
 ### Examples
+
+**Display current date**
+```foxpro
+* display current date in different calendars
+LOCAL GC AS GregorianCalendar
+LOCAL HC AS HebrewCalendar
+LOCAL IC AS IslamicCalendar
+LOCAL PC AS PersianCalendar
+
+DO LOCFILE("gregorian-calendar.prg")
+DO LOCFILE("hebrew-calendar.prg")
+DO LOCFILE("islamic-calendar.prg")
+DO LOCFILE("persian-calendar.prg")
+
+m.GC = CREATEOBJECT("GregorianCalendar")
+m.HC = CREATEOBJECT("HebrewCalendar")
+m.IC = CREATEOBJECT("IslamicCalendar")
+m.PC = CREATEOBJECT("PersianCalendar")
+
+? "Today"
+? " - in the Gregorian calendar:", CALENDARDATEFORMAT(m.GC)
+? " - in the Hebrew calendar:", CALENDARDATEFORMAT(m.HC)
+? " - in the Islamic calendar:", CALENDARDATEFORMAT(m.IC)
+? " - in the Persian calendar:", CALENDARDATEFORMAT(m.PC)
+
+FUNCTION CalendarDateFormat (Cal AS Calendar)
+
+	RETURN TRANSFORM(m.Cal.Day) + ", " + m.Cal.MonthName() + ", " + TRANSFORM(m.Cal.Year)
+
+ENDFUNC
+```
+
+**Same date in other calendar**
+```foxpro
+* first day of 21st century in the Islamic Calendar
+LOCAL GC AS GregorianCalendar
+LOCAL IC AS IslamicCalendar
+
+DO LOCFILE("gregorian-calendar.prg")
+DO LOCFILE("islamic-calendar.prg")
+
+m.GC = CREATEOBJECT("GregorianCalendar")
+m.IC = CREATEOBJECT("IslamicCalendar")
+
+m.GC.SetDate(2001, 1, 1)
+m.IC.SetDate(m.GC)
+
+? "The first day of the 21st century was on", CALENDARDATEFORMAT(m.IC)
+
+FUNCTION CalendarDateFormat (Cal AS Calendar)
+
+	RETURN TRANSFORM(m.Cal.Day) + ", " + m.Cal.MonthName() + ", " + TRANSFORM(m.Cal.Year)
+
+ENDFUNC
+```
+
+**The Gregorian Reform adoption**
+```foxpro
+* the Gregorian reform of the calendar, in different countries
+
+* no need to DO GregorianCalendar, it is implicitly DOne by the first of these
+DO LOCFILE("french-calendar.prg")
+DO LOCFILE("russian-calendar.prg")
+DO LOCFILE("german-calendar.prg")
+
+REFORMADOPTION("France", CREATEOBJECT("FrenchCalendar"))
+REFORMADOPTION("German catholic states", CREATEOBJECT("GermanCalendar"))
+REFORMADOPTION("Prussia", CREATEOBJECT("PrussianCalendar"))
+REFORMADOPTION("Russia", CREATEOBJECT("RussianCalendar"))
+
+FUNCTION ReformAdoption (Country AS String, Cal AS Calendar)
+
+	m.Cal.SetDate(m.Cal.AdoptionYear, m.Cal.AdoptionMonth, m.Cal.AdoptionDay)
+	? "The Gregorian reform was adopted in " + m.Country + " in",CALENDARDATEFORMAT(m.Cal)
+	
+	m.Cal.DaysAdd(-1)
+	?? " (the previous day was " + CALENDARDATEFORMAT(m.Cal) + ")"
+
+ENDFUNC
+	
+FUNCTION CalendarDateFormat (Cal AS Calendar)
+
+	RETURN TRANSFORM(m.Cal.Day) + ", " + m.Cal.MonthName() + ", " + TRANSFORM(m.Cal.Year)
+
+ENDFUNC
+```
