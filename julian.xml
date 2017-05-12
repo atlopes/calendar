@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="windows-1252"?>
 <calendar>
 	<locales code="en">
 		<term name="month.1">January</term>
@@ -20,5 +20,26 @@
 		<term name="weekday.5">Friday</term>
 		<term name="weekday.6">Saturday</term>
 		<term name="weekday.7">Sunday</term>
+	</locales>
+	<locales code="de">
+		<term name="month.1">Januar</term>
+		<term name="month.2">Februar</term>
+		<term name="month.3">März</term>
+		<term name="month.4">April</term>
+		<term name="month.5">Mai</term>
+		<term name="month.6">Juni</term>
+		<term name="month.7">Juli</term>
+		<term name="month.8">August</term>
+		<term name="month.9">September</term>
+		<term name="month.10">Oktober</term>
+		<term name="month.11">November</term>
+		<term name="month.12">Dezember</term>
+		<term name="weekday.1">Montag</term>
+		<term name="weekday.2">Dienstag</term>
+		<term name="weekday.3">Mittwoch</term>
+		<term name="weekday.4">Donnerstag</term>
+		<term name="weekday.5">Freitag</term>
+		<term name="weekday.6">Samstag</term>
+		<term name="weekday.7">Sonntag</term>
 	</locales>
 </calendar>

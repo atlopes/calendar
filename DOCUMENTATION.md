@@ -2,16 +2,21 @@
 
 ### Overview
 
-Calendar for VFP is a set of classes that handle calendrical information and calculations. There is a base class, named Calendar, from which the actual calendar classes derive (that is, the ones for a specific calendar system).
+Calendar for VFP is a set of classes that handle calendrical information and calculations. There is a base class, named Calendar, from which the actual calendar classes derive (that is, the ones for a specific calendar system, such as Hebrew, or Persian, or Gregorian).
 
-To use a class, include its PRG file in a project and all the hierarchy of its dependencies and locales, up to the base Calendar class. For instance, if you want to the British Calendar, use BritishCalendar, include british-calendar.prg, gregorian-calendar.prg, julian-calendar.prg, julian.xml, and calendar.prg.
+To use a class, include in a project its PRG file and all the hierarchy of dependencies and locale files, up to the base Calendar class. For instance, if you want to use the British Calendar, select BritishCalendar class, and include in your project british-calendar.prg, gregorian-calendar.prg, julian-calendar.prg, julian.xml, and calendar.prg.
+
+If you want to experiment from the Command Window, or from small code snippets, DO the top-level classes in a hierarchy chain (in the above example, `DO LOCFILE("british-calendar.prg")` would be enough).
 
 If you want to keep it simple, just include all PRG and XML files, and any class will be available after DOing its PRG.
+
+At the end of this document there are a few [examples](#examples) to get you started.
 
 | Class | Filename | Dependency | Locale |
 | ----- | -------- | ---------- | ------ |
 | Calendar | Calendar.prg | | |
 | JulianCalendar | julian-calendar.prg | calendar.prg | julian.xml |
+| ChristianJulianCalendar | christian-julian-calendar.prg | julian-calendar.prg | |
 | GregorianCalendar | gregorian-calendar.prg | julian-calendar.prg | |
 | AustrianCalendar | austrian-calendar.prg | gregorian-calendar.prg | |
 | BulgarianCalendar | bulgarian-calendar.prg | gregorian-calendar.prg | |
@@ -22,12 +27,13 @@ If you want to keep it simple, just include all PRG and XML files, and any class
 | GreekCalendar | greek-calendar.prg | gregorian-calendar.prg | |
 | HungarianCalendar | hungarian-calendar.prg | gregorian-calendar.prg | |
 | JapaneseCalendar | japanese-calendar.prg | gregorian-calendar.prg | |
+| RomanianCalendar | romanian-calendar.prg | gregorian-calendar.prg | |
 | RussianCalendar | russian-calendar.prg | gregorian-calendar.prg | |
 | TurkishCalendar | turkish-calendar.prg | gregorian-calendar.prg | |
 | HebrewCalendar | hebrew-calendar.prg | calendar.prg | hebrew.xml |
 | IslamicCalendar | islamic-calendar.prg | calendar.prg | islamic.xml |
 | PersianCalendar | persian-calendar.prg | calendar.prg | persian.xml |
-| RepublicanCalendar | republican-calendar.prg | calendar.prg | republican.prg |
+| RepublicanCalendar | republican-calendar.prg | calendar.prg | republican.xml |
 
 ### Properties
 
@@ -56,11 +62,11 @@ If you want to keep it simple, just include all PRG and XML files, and any class
 - **`DaysDifference (CalYearOrDate AS Integer, CalMonth AS Integer, CalDay AS Integer) AS Number`**
 -- Returns the difference, in days, between current calendar date and some other calendar date
 - **`FromJulian (JulianDate AS Number)`**
--- Sets the current calendar date corresponding to `m.JulianDate`(a Julian Day Number)
+-- Sets the current calendar date corresponding to `m.JulianDate` (a Julian Day Number)
 - **`FromSystem ()`**
 -- Sets the current calendar date from the current system date (that is, `DATE()`)
 - **`FromSystem (SystemDate AS DateOrDatetime)`**
--- Sets the current calendar date from a `m.SystemData`(a Date or Datetime value)
+-- Sets the current calendar date from a `m.SystemDate` (a Date or Datetime value)
 - **`GetLocale (Term AS String) AS String`**
 -- Returns a string for a specific `m.Term` in the locale vocabulary
 - **`Init ()`**
@@ -70,7 +76,7 @@ If you want to keep it simple, just include all PRG and XML files, and any class
 - **`IsLeapYear () AS Boolean`**
 -- Returns .T. if the current calendar year is a leap year
 - **`IsLeapYear (Year AS Number) AS Boolean`**
--- Returns .T. if the `m.Year` is a leap year
+-- Returns .T. if `m.Year` is a leap year
 - **`LastDayOfMonth () AS Number`**
 -- Returns the last day of the current calendar month
 - **`LastDayOfMonth (Year AS Number, Month AS Number) AS Number`**
@@ -121,10 +127,10 @@ m.IC = CREATEOBJECT("IslamicCalendar")
 m.PC = CREATEOBJECT("PersianCalendar")
 
 ? "Today"
-? " - in the Gregorian calendar:", CALENDARDATEFORMAT(m.GC)
-? " - in the Hebrew calendar:", CALENDARDATEFORMAT(m.HC)
-? " - in the Islamic calendar:", CALENDARDATEFORMAT(m.IC)
-? " - in the Persian calendar:", CALENDARDATEFORMAT(m.PC)
+? " - in the Gregorian calendar:", CalendarDateFormat(m.GC)
+? " - in the Hebrew calendar:", CalendarDateFormat(m.HC)
+? " - in the Islamic calendar:", CalendarDateFormat(m.IC)
+? " - in the Persian calendar:", CalendarDateFormat(m.PC)
 
 FUNCTION CalendarDateFormat (Cal AS Calendar)
 
@@ -148,7 +154,7 @@ m.IC = CREATEOBJECT("IslamicCalendar")
 m.GC.SetDate(2001, 1, 1)
 m.IC.SetDate(m.GC)
 
-? "The first day of the 21st century was on", CALENDARDATEFORMAT(m.IC)
+? "The first day of the 21st century was on", CalendarDateFormat(m.IC)
 
 FUNCTION CalendarDateFormat (Cal AS Calendar)
 
@@ -157,27 +163,55 @@ FUNCTION CalendarDateFormat (Cal AS Calendar)
 ENDFUNC
 ```
 
-**The Gregorian Reform adoption**
+**Days difference between two dates**
+```foxpro
+* difference between Shakespeare's and Cervantes' dates of death
+LOCAL Shakespeare AS BritishCalendar
+LOCAL Cervantes AS GregorianCalendar
+LOCAL DaysGap AS Number
+
+DO LOCFILE("british-calendar.prg")
+
+m.Shakespeare = CREATEOBJECT("BritishCalendar")
+m.Cervantes = CREATEOBJECT("GregorianCalendar")
+
+* both died on the same April 23rd, 1616, but refering to distinct calendar systems
+m.Shakespeare.SetDate(1616, 4, 23)
+m.Cervantes.SetDate(1616, 4, 23)
+
+m.DaysGap = m.Cervantes.DaysDifference(m.Shakespeare)
+
+DO CASE
+CASE m.DaysGap < 0
+	? "Cervantes died " + TRANSFORM(ABS(m.DaysGap)) + " days before Shakespeare did."
+CASE m.DaysGap > 0
+	? "Cervantes died " + TRANSFORM(m.DaysGap) + " days after Shakespeare did."
+OTHERWISE
+	? "Cervantes and Shakespeare died in the same day."
+ENDCASE
+```
+
+**Adoption of the Gregorian Reform**
 ```foxpro
 * the Gregorian reform of the calendar, in different countries
 
-* no need to DO GregorianCalendar, it is implicitly DOne by the first of these
+* no need to DO gregorian-calendar, it is implicitly DOne by the first of these
 DO LOCFILE("french-calendar.prg")
 DO LOCFILE("russian-calendar.prg")
 DO LOCFILE("german-calendar.prg")
 
-REFORMADOPTION("France", CREATEOBJECT("FrenchCalendar"))
-REFORMADOPTION("German catholic states", CREATEOBJECT("GermanCalendar"))
-REFORMADOPTION("Prussia", CREATEOBJECT("PrussianCalendar"))
-REFORMADOPTION("Russia", CREATEOBJECT("RussianCalendar"))
+ReformAdoption("France", CREATEOBJECT("FrenchCalendar"))
+ReformAdoption("German catholic states", CREATEOBJECT("GermanCalendar"))
+ReformAdoption("Prussia", CREATEOBJECT("PrussianCalendar"))
+ReformAdoption("Russia", CREATEOBJECT("RussianCalendar"))
 
 FUNCTION ReformAdoption (Country AS String, Cal AS Calendar)
 
 	m.Cal.SetDate(m.Cal.AdoptionYear, m.Cal.AdoptionMonth, m.Cal.AdoptionDay)
-	? "The Gregorian reform was adopted in " + m.Country + " in",CALENDARDATEFORMAT(m.Cal)
+	? "The Gregorian reform was adopted in " + m.Country + " in", CalendarDateFormat(m.Cal)
 	
 	m.Cal.DaysAdd(-1)
-	?? " (the previous day was " + CALENDARDATEFORMAT(m.Cal) + ")"
+	?? " (the previous day was " + CalendarDateFormat(m.Cal) + ")"
 
 ENDFUNC
 	
