@@ -1,7 +1,7 @@
 
 *!*	GregorianCalendar
 
-*!*	A Julian Calendar subclass for the Gregorian Calendar, to base other Gregorian Calendar subclasses.
+*!*	A Calendar subclass for the Gregorian Calendar, to base other Gregorian Calendar subclasses.
 *!*	Locales are stored in julian.xml file.
 
 *!*	Algorithms based on Calendar.c, a C++ transcript from the
@@ -10,7 +10,7 @@
 *!*	Software - Practice & Experience, vol. 20, no. 9 (September, 1990), pp. 899--928.
 
 * install dependencies
-DO LOCFILE("Julian-Calendar.prg")
+DO LOCFILE("christian-julian-Calendar.prg")
 
 * install itself
 IF !SYS(16) $ SET("Procedure")
@@ -24,7 +24,9 @@ ENDIF
 
 DEFINE CLASS GregorianCalendar AS Calendar
 
-	VocabularySource = "julian.xml"
+	ADD OBJECT PreReform AS ChristianJulianCalendar		&& deals with dates before the Gregorian calendar adoption
+
+	VocabularySource = This.PreReform.VocabularySource
 
 	AdoptionYear = 1582
 	AdoptionMonth = 10
@@ -33,7 +35,6 @@ DEFINE CLASS GregorianCalendar AS Calendar
 	LastJulianMonth = 10
 	LastJulianDay = 4
 	LastJulianDayNumber = .NULL.
-	PreReform = .NULL.
 
 	_MemberData = '<VFPData>' + ;
 						'<memberdata name="adoptionyear" type="property" display="AdoptionYear" />' + ;
@@ -46,10 +47,6 @@ DEFINE CLASS GregorianCalendar AS Calendar
 						'<memberdata name="prereform" type="property" display="PreReform" />' + ;
 						'<memberdata name="isreformed" type="method" display="IsReformed" />' + ;
 						'</VFPData>'
-
-	PROCEDURE Destroy
-		This.PreReform = .NULL.
-	ENDPROC
 
 	* IsReformed()
 	* returns .T. if date is after adoption of the Gregorian calendar reform
@@ -102,6 +99,9 @@ DEFINE CLASS GregorianCalendar AS Calendar
 
 		SAFETHIS
 
+		ASSERT VARTYPE(m.Year) == "N" ;
+			MESSAGE "Numeric parameter expected."
+
 		IF !This.IsReformed(m.Year, 3, 1)
 			RETURN (m.Year % 4) = 0
 		ELSE
@@ -119,24 +119,16 @@ DEFINE CLASS GregorianCalendar AS Calendar
 
 		SAFETHIS
 
-		* for the calendar before the reform, use a Julian Calendar
-		IF ISNULL(This.PreReform)
-			This.PreReform = CREATEOBJECT("JulianCalendar")
-		ENDIF
-
 		* calculate (once, in the course of an instantiation) the Julian Day Number of the last Julian date of the calendar
 		IF ISNULL(This.LastJulianDayNumber )
-			This.LastJulianDayNumber = This.PreReform._toJulian(This.LastJulianYear + 4713, This.LastJulianMonth, This.LastJulianDay)
+			This.LastJulianDayNumber = This.PreReform._toJulian(This.LastJulianYear, This.LastJulianMonth, This.LastJulianDay)
 		ENDIF
 
 		* use the Julian calculations, but considering the Christian Era
 		IF m.JulianDate <= This.LastJulianDayNumber
 
 			This.PreReform._fromJulian(m.JulianDate)
-			This.Year = This.PreReform.Year - 4713
-			IF This.Year <= 0
-				This.Year = This.Year - 1
-			ENDIF
+			This.Year = This.PreReform.Year
 			This.Month = This.PreReform.Month
 			This.Day = This.PreReform.Day
 
@@ -144,7 +136,7 @@ DEFINE CLASS GregorianCalendar AS Calendar
 
 			* calculate as Gregorian, in the Christian Era
 			This.Year = INT((m.JulianDate - GREGORIAN_EPOCH) / 366)
-			DO WHILE m.JulianDate >= This._toJulian(This.Year + 1, 1, 1)
+			DO WHILE m.JulianDate >= This._reformedToJulian(This.Year + 1, 1, 1)
 				This.Year = This.Year + 1
 			ENDDO
 
@@ -152,11 +144,11 @@ DEFINE CLASS GregorianCalendar AS Calendar
 			IF This.Year > This.AdoptionYear
 
 				This.Month = 1
-				DO WHILE m.JulianDate > This._toJulian(This.Year, This.Month, This.LastDayOfMonth())
+				DO WHILE m.JulianDate > This._reformedToJulian(This.Year, This.Month, This.LastDayOfMonth())
 					This.Month = This.Month + 1
 				ENDDO
 
-				This.Day = m.JulianDate - This._toJulian(This.Year, This.Month, 1) + 1
+				This.Day = m.JulianDate - This._reformedToJulian(This.Year, This.Month, 1) + 1
 
 			ELSE
 
@@ -186,32 +178,29 @@ DEFINE CLASS GregorianCalendar AS Calendar
 	* (called from ToJulian method)
 	FUNCTION _toJulian (CalYear AS Integer, CalMonth AS Integer, CalDay AS Integer)
 
-		LOCAL DaysThisYear AS Number
-		LOCAL MonthIndex AS Number
-		LOCAL JulianYear AS Number
-
 		IF This.IsReformed(m.CalYear, m.CalMonth, m.CalDay)
 
-			m.DaysThisYear = m.CalDay
-			FOR m.MonthIndex = 1 TO m.CalMonth - 1
-				m.DaysThisYear = m.DaysThisYear + This.LastDayOfMonth(m.CalYear, m.MonthIndex)
-			ENDFOR
-
-			RETURN m.DaysThisYear + 365 * (m.CalYear - 1) + ;
-					INT((m.CalYear - 1) / 4) - INT((m.CalYear - 1) / 100) + INT((m.CalYear - 1) / 400) + GREGORIAN_EPOCH - 1
+			RETURN This._reformedToJulian(m.CalYear, m.CalMonth, m.CalDay)
 
 		ELSE
 
-			IF ISNULL(This.PreReform)
-				This.PreReform = CREATEOBJECT("JulianCalendar")
-			ENDIF
-
-			m.JulianYear = m.CalYear + 4713
-
-			RETURN This.PreReform._toJulian(m.JulianYear, m.CalMonth, m.CalDay)
+			RETURN This.PreReform._toJulian(m.CalYear, m.CalMonth, m.CalDay)
 
 		ENDIF
 
+	* calculation to transform a Gregorian reformed calendar date into a Julian Day Number
+	HIDDEN FUNCTION _reformedToJulian (CalYear AS Integer, CalMonth AS Integer, CalDay AS Integer) AS Number
+
+		LOCAL DaysThisYear AS Number
+		LOCAL MonthIndex AS Number
+
+		m.DaysThisYear = m.CalDay
+		FOR m.MonthIndex = 1 TO m.CalMonth - 1
+			m.DaysThisYear = m.DaysThisYear + This.LastDayOfMonth(m.CalYear, m.MonthIndex)
+		ENDFOR
+
+		RETURN m.DaysThisYear + 365 * (m.CalYear - 1) + ;
+				INT((m.CalYear - 1) / 4) - INT((m.CalYear - 1) / 100) + INT((m.CalYear - 1) / 400) + GREGORIAN_EPOCH - 1
 
 	ENDFUNC
 
