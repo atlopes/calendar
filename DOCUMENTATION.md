@@ -14,11 +14,12 @@ At the end of this document there are a few [examples](#examples) to get you sta
 
 | Class | Filename | Dependency | Locale |
 | ----- | -------- | ---------- | ------ |
-| Calendar | Calendar.prg | | |
+| Calendar | calendar.prg | | |
 | JulianCalendar | julian-calendar.prg | calendar.prg | julian.xml |
 | ChristianJulianCalendar | christian-julian-calendar.prg | julian-calendar.prg | |
 | GregorianCalendar | gregorian-calendar.prg | julian-calendar.prg | |
 | AustrianCalendar | austrian-calendar.prg | gregorian-calendar.prg | |
+| BritishCalendar | british-calendar.prg | gregorian-calendar.prg | |
 | BulgarianCalendar | bulgarian-calendar.prg | gregorian-calendar.prg | |
 | DanishCalendar | danish-calendar.prg | gregorian-calendar.prg | |
 | FrenchCalendar | french-calendar.prg | gregorian-calendar.prg | |
