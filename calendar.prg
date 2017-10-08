@@ -80,6 +80,8 @@ DEFINE CLASS Calendar AS Custom
 	* or the current date set as default
 	FUNCTION Init (SystemDate AS DateOrDatetime)
 
+		SAFETHIS
+
 		IF !This.Historical OR PCOUNT() = 1
 			This.FromSystem(IIF(PCOUNT() = 0, DATE(), m.SystemDate))
 		ENDIF
@@ -348,9 +350,11 @@ DEFINE CLASS Calendar AS Custom
 
 		LOCAL LocaleNode AS MSXML2.IXMLDOMNodeList
 		LOCAL Locale AS String
+		LOCAL XPath AS String
 
 		* locate the term in the vocabulary
-		m.LocaleNode = This.Vocabulary.selectNodes("//calendar/locales[@code = '" + This.LocaleID + "' or position() = 1]/term[@name='" + m.Term + "']")
+		m.XPath = TEXTMERGE("(/calendar/locales[@code = '<<This.LocaleID>>'] | /calendar/locales[position()=1 and not(/calendar/locales[@code='<<This.LocaleID>>'])])/term[@name = '<<m.Term>>']")
+		m.LocaleNode = This.Vocabulary.selectNodes(m.XPath)
 		IF m.LocaleNode.length = 1
 			RETURN m.LocaleNode.item(0).text
 		ENDIF
