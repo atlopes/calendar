@@ -96,6 +96,8 @@ DEFINE CLASS HebrewCalendar AS Calendar
 		IF PCOUNT() = 0
 			m.MonthVal = This.Month
 			m.Year = This.Year
+		ELSE
+			m.MonthVal = m.Month
 		ENDIF
 
 		IF ISNULL(This.Vocabulary)
