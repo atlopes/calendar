@@ -32,6 +32,12 @@ DEFINE CLASS JulianCalendar AS Calendar
 		RETURN (m.Year % 4) = 0
 	ENDFUNC
 
+	* IsReformed()
+	* returns .F. (Julian calendar is pre-Gregorian)
+	FUNCTION IsReformed (Year AS Number, Month AS Number, Day AS Number)
+		RETURN .F.
+	ENDFUNC
+
 	* LastDayOfMonth()
 	* returns the day of a month, in a given year
 	FUNCTION LastDayOfMonth (Year AS Number, Month AS Number)

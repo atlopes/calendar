@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<events>
+	<event>
+		<identifier>int.newyear</identifier>
+		<commonname>Ano Novo</commonname>
+		<scope>National</scope>
+		<origin>Natural</origin>
+		<observed>true</observed>
+		<month>1</month>
+		<day>1</day>
+	</event>
+	<event>
+		<identifier>pt.freedom</identifier>
+		<commonname>Dia da Liberdade</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>4</month>
+		<day>25</day>
+		<yearbegin>1975</yearbegin>
+	</event>
+	<event>
+		<identifier>int.labor</identifier>
+		<commonname>Dia do Trabalhador</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>5</month>
+		<day>1</day>
+		<yearbegin>1974</yearbegin>
+	</event>
+	<event>
+		<identifier>pt.portugal</identifier>
+		<commonname>Dia de Portugal</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>6</month>
+		<day>10</day>
+	</event>
+	<event>
+		<identifier>int.assumption</identifier>
+		<commonname>Assunção de Nossa Senhora</commonname>
+		<scope>National</scope>
+		<origin>Religious</origin>
+		<observed>true</observed>
+		<month>8</month>
+		<day>15</day>
+	</event>
+	<event>
+		<identifier>pt.republic</identifier>
+		<commonname>Implantação da República</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>10</month>
+		<day>5</day>
+	</event>
+	<event>
+		<identifier>int.allsaints</identifier>
+		<commonname>Dia de Todos os Santos</commonname>
+		<scope>National</scope>
+		<origin>Religious</origin>
+		<observed>true</observed>
+		<month>11</month>
+		<day>1</day>
+	</event>
+	<event>
+		<identifier>pt.restauration</identifier>
+		<commonname>Dia da Restauração</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>12</month>
+		<day>1</day>
+	</event>
+	<event>
+		<identifier>int.conception</identifier>
+		<commonname>Dia da Imaculada Conceição</commonname>
+		<scope>National</scope>
+		<origin>Religious</origin>
+		<observed>true</observed>
+		<month>12</month>
+		<day>8</day>
+	</event>
+	<event>
+		<identifier>int.christmas</identifier>
+		<commonname>Natal</commonname>
+		<scope>National</scope>
+		<origin>Religious</origin>
+		<observed>true</observed>
+		<month>12</month>
+		<day>25</day>
+	</event>
+</events>

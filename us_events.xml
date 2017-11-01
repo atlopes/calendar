@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<events>
+	<event>
+		<identifier>int.newyear</identifier>
+		<commonname>New Year</commonname>
+		<scope>National</scope>
+		<origin>Natural</origin>
+		<observed>true</observed>
+		<month>1</month>
+		<day>1</day>
+	</event>
+	<event>
+		<identifier>us.mlk</identifier>
+		<commonname>Birthday of Martin Luther King, Jr.</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>1</month>
+		<day>16</day>
+	</event>
+	<event>
+		<identifier>us.washington</identifier>
+		<commonname>Washington's Birthday</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>2</month>
+		<day>20</day>
+	</event>
+	<event>
+		<identifier>us.memorial</identifier>
+		<commonname>Memorial Day</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>5</month>
+		<day>29</day>
+	</event>
+	<event>
+		<identifier>us.independence</identifier>
+		<commonname>Independence Day</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>7</month>
+		<day>4</day>
+	</event>
+	<event>
+		<identifier>us.labor</identifier>
+		<commonname>Labor Day</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>9</month>
+		<day>4</day>
+	</event>
+	<event>
+		<identifier>us.columbus</identifier>
+		<commonname>Columbus Day</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>10</month>
+		<day>9</day>
+	</event>
+	<event>
+		<identifier>us.veterans</identifier>
+		<commonname>Veterans Day</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>11</month>
+		<day>10</day>
+	</event>
+	<event>
+		<identifier>int.christmas</identifier>
+		<commonname>Christmas</commonname>
+		<scope>National</scope>
+		<origin>Religious</origin>
+		<observed>true</observed>
+		<month>12</month>
+		<day>25</day>
+	</event>
+</events>
