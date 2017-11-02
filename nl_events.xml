@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<events>
+	<event>
+		<identifier>int.newyear</identifier>
+		<commonname>Nieuwjaarsdag</commonname>
+		<scope>National</scope>
+		<origin>Natural</origin>
+		<observed>true</observed>
+		<month>1</month>
+		<day>1</day>
+	</event>
+	<event>
+		<identifier>nl.kingsday</identifier>
+		<commonname>Koningsdag</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>4</month>
+		<day>27</day>
+		<move onweekday="7">-1</move>
+	</event>
+	<event>
+		<identifier>nl.liberation</identifier>
+		<commonname>Bevrijdingsdag</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>5</month>
+		<day>5</day>
+		<yearbegin>1950</yearbegin>
+		<interval>5</interval>
+	</event>
+	<event>
+		<identifier>int.christmas</identifier>
+		<commonname>Kerstmis</commonname>
+		<scope>National</scope>
+		<origin>Religious</origin>
+		<observed>true</observed>
+		<month>12</month>
+		<day>25</day>
+		<duration>2</duration>
+	</event>
+</events>

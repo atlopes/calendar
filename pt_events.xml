@@ -55,6 +55,7 @@
 		<observed>true</observed>
 		<month>10</month>
 		<day>5</day>
+		<yearbegin>1911</yearbegin>
 	</event>
 	<event>
 		<identifier>int.allsaints</identifier>

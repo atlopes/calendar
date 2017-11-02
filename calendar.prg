@@ -737,7 +737,7 @@ DEFINE CLASS CalendarEventProcessor AS Custom
 
 		LOCAL Success AS Boolean
 
-		This.Host = IIF(PCOUNT() = 0, This.Parent, m.Host)
+		This.Host = m.Host
 		This.SetDefaultOptions()
 
 		This.ReferenceCalendar = CREATEOBJECT(This.ReferenceCalendarClass)
@@ -829,7 +829,15 @@ DEFINE CLASS CalendarEventProcessor AS Custom
 		LOCAL EventDefinition AS CalendarEvent
 		LOCAL Identifier AS String
 		LOCAL CommonName AS String
+		LOCAL Interval AS Integer
+		LOCAL Inverted AS Boolean
 		LOCAL Year AS Integer
+		LOCAL DefDay AS Integer
+		LOCAL DefMonth AS Integer
+		LOCAL DefMove AS Integer
+		LOCAL MoveIndex AS Integer
+		LOCAL MoveRef AS String
+		LOCAL MoveCondition AS Integer
 		LOCAL BrokerYear AS Integer
 
 		m.Definition = CREATEOBJECT("MSXML2.DOMDocument.6.0")
@@ -857,29 +865,71 @@ DEFINE CLASS CalendarEventProcessor AS Custom
 					ENDIF
 				ENDIF
 
+				m.Interval = EVL(VAL(This._definitionValue(m.EventElement, "interval")), 1)
+				m.Inverted = This._definitionValue(m.EventElement, "interval/@inverted") == "true"
+
 				* is not filtered out and covered by the chronology?
 				IF !EMPTY(m.Identifier) AND ;
 							m.Year >= EVL(VAL(This._definitionValue(m.EventElement, "yearbegin")), m.Year) AND ;
-							m.Year <= EVL(VAL(This._definitionValue(m.EventElement, "yearend")), m.Year)
+							m.Year <= EVL(VAL(This._definitionValue(m.EventElement, "yearend")), m.Year) AND ;
+							((!m.Inverted AND (m.Year - VAL(This._definitionValue(m.EventElement, "yearbegin"))) % m.Interval = 0) OR ;
+							(m.Inverted AND (m.Year - VAL(This._definitionValue(m.EventElement, "yearbegin"))) % m.Interval != 0))
 
 					* create an event to be inserted into the calendar
 					m.EventDefinition = CREATEOBJECT("CalendarEvent")
 					m.EventDefinition.Identifier = m.Identifier
 					m.EventDefinition.Fixed = .T.
 
+					* extract data from the XML document
 					m.EventDefinition.CommonName = EVL(m.CommonName, This._definitionValue(m.EventElement, "commonname"))
 					m.EventDefinition.Scope = EVL(This.Scope, This._definitionValue(m.EventElement, "scope"))
 					m.EventDefinition.Origin = This._definitionValue(m.EventElement, "origin")
 					m.EventDefinition.Observed = This._definitionValue(m.EventElement, "observed") == "true" AND This.Observed
 
-					* the date, as defined in the reference calendar
-					This.ReferenceCalendar.SetDate(m.Year, ;
-																VAL(This._definitionValue(m.EventElement, "month")), ;
-																VAL(This._definitionValue(m.EventElement, "day")))
+					* fetch the day and month
+					m.DefDay = VAL(This._definitionValue(m.EventElement, "day"))
+					m.DefMonth = VAL(This._definitionValue(m.EventElement, "month"))
+
+					* the date, as a literal
+					IF !EMPTY(m.DefDay)
+						This.ReferenceCalendar.SetDate(m.Year, m.DefMonth, m.DefDay)
+					ELSE
+						* or as a weekday
+						m.DefDay = VAL(This._definitionValue(m.EventElement, "weekday"))
+						This.ReferenceCalendar.SetWeekday(m.Year, m.DefMonth, m.DefDay, EVL(VAL(This._definitionValue(m.EventElement, "weekday/@ordinal")), 1))
+					ENDIF
+
+					* check if needed to move, on verifiable conditions
+					* there may be more than one condition set in place, but only the first one that applies will be accepted
+					m.MoveIndex = 1
+					DO WHILE m.MoveIndex != 0
+						m.MoveRef = "move[" + TRANSFORM(m.MoveIndex) + "]"
+						m.DefMove = VAL(This._definitionValue(m.EventElement, m.MoveRef))
+						IF !EMPTY(m.DefMove)
+							* move when the event is on a specific day?
+							m.MoveCondition = VAL(This._definitionValue(m.EventElement, m.MoveRef + "/@onday"))
+							IF m.MoveCondition != 0 AND This.ReferenceCalendar.Day = m.MoveCondition
+								 This.ReferenceCalendar.DaysAdd(m.DefMove)
+								 m.MoveIndex = 0
+							ELSE
+								* move when the event is on a specific weekday?
+								m.MoveCondition = VAL(This._definitionValue(m.EventElement, m.MoveRef + "/@onweekday"))
+								IF m.MoveCondition != 0 AND This.ReferenceCalendar.Weekday() = m.MoveCondition
+									This.ReferenceCalendar.DaysAdd(m.DefMove)
+									m.MoveIndex = 0
+								ELSE
+									m.MoveIndex = m.MoveIndex + 1
+								ENDIF
+							ENDIF
+						ELSE
+							m.MoveIndex = 0
+						ENDIF
+					ENDDO
+
 					* and now translated into the target calendar
 					This.Broker.SetDate(This.ReferenceCalendar)
 
-					* if not fitting in the expected year, try to insert the date in tbe previous or next year
+					* if not fitting in the expected year, try to insert the date in the previous or next year
 					IF This.Broker.Year < m.BrokerYear
 						This.ReferenceCalendar.Year = This.ReferenceCalendar.Year + 1
 						This.Broker.SetDate(This.ReferenceCalendar)

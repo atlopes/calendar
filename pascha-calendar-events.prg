@@ -16,6 +16,12 @@ DEFINE CLASS PaschaCalendarEvents AS CalendarEventProcessor
 	ReferenceCalendarClass = "GregorianCalendar"
 	EventsDefinition = ""
 
+	FUNCTION SetDefaultOptions
+
+		This.SetOption("AdditionalOffsets", "")
+
+	ENDFUNC
+
 	FUNCTION SetEvents (Year AS Integer) AS Collection
 
 		LOCAL ResultSet AS Collection
@@ -70,9 +76,10 @@ DEFINE CLASS PaschaCalendarEvents AS CalendarEventProcessor
 		m.GDay = m.PaschaL + 28 - 31 * INT(m.GMonth / 4)
 
 		* set a list of related events, and the offset, in days, from the Easter sunday
-		m.EasterRelated = "easter:0 septuagesima:-63 quinquagesima:-49 carnival:-47 " + ;
+		m.EasterRelated = TRIM("easter:0 septuagesima:-63 quinquagesima:-49 carnival:-47 " + ;
 								"ashwednesday:-46 palmsunday:-7 goodfriday:-2 rogationsunday:35 " + ;
-								"ascension:39 pentacost:49 trinitysunday:56 corpuschristi:60"
+								"ascension:39 pentecost:49 trinitysunday:56 corpuschristi:60 " + ;
+								" " + This.GetOption("AdditionalOffsets"))
 
 		FOR m.RelatedIndex = 1 TO GETWORDCOUNT(m.EasterRelated, " ")
 

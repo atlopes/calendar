@@ -73,6 +73,15 @@
 		<day>10</day>
 	</event>
 	<event>
+		<identifier>us.thanksgiving</identifier>
+		<commonname>Thanksgiving</commonname>
+		<scope>National</scope>
+		<origin>Civil</origin>
+		<observed>true</observed>
+		<month>11</month>
+		<weekday ordinal="4">4</weekday>
+	</event>
+	<event>
 		<identifier>int.christmas</identifier>
 		<commonname>Christmas</commonname>
 		<scope>National</scope>
