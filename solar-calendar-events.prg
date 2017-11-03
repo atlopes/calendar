@@ -45,8 +45,9 @@ DEFINE CLASS SolarCalendarEvents AS CalendarEventProcessor
 
 		LOCAL GYear AS Integer
 		LOCAL ARRAY Solar(4)
-		LOCAL ARRAY SolarId(4)
+		LOCAL ARRAY SolarIds(4)
 		LOCAL ARRAY SolarName(4)
+		LOCAL SolarId AS String
 		LOCAL Unfit AS Integer
 		LOCAL EventIndex AS Integer
 		LOCAL CalEvent AS CalendarEvent
@@ -66,22 +67,22 @@ DEFINE CLASS SolarCalendarEvents AS CalendarEventProcessor
 		m.CommonNames = This.GetOption("CommonNames")
 		
 		IF m.Hemisphere == "S"
-			m.SolarId(1) = "aequinox"
+			m.SolarIds(1) = "aequinox"
 			m.SolarName(1) = GETWORDNUM(m.CommonNames, 3, ",")
-			m.SolarId(2) = "wsolstice"
+			m.SolarIds(2) = "wsolstice"
 			m.SolarName(2) = GETWORDNUM(m.CommonNames, 4, ",")
-			m.SolarId(3) = "vequinox"
+			m.SolarIds(3) = "vequinox"
 			m.SolarName(3) = GETWORDNUM(m.CommonNames, 1, ",")
-			m.SolarId(4) = "ssolstice"
+			m.SolarIds(4) = "ssolstice"
 			m.SolarName(4) = GETWORDNUM(m.CommonNames, 2, ",")
 		ELSE
-			m.SolarId(1) = "vequinox"
+			m.SolarIds(1) = "vequinox"
 			m.SolarName(1) = GETWORDNUM(m.CommonNames, 1, ",")
-			m.SolarId(2) = "ssolstice"
+			m.SolarIds(2) = "ssolstice"
 			m.SolarName(2) = GETWORDNUM(m.CommonNames, 2, ",")
-			m.SolarId(3) = "aequinox"
+			m.SolarIds(3) = "aequinox"
 			m.SolarName(3) = GETWORDNUM(m.CommonNames, 3, ",")
-			m.SolarId(4) = "wsolstice"
+			m.SolarIds(4) = "wsolstice"
 			m.SolarName(4) = GETWORDNUM(m.CommonNames, 4, ",")
 		ENDIF
 
@@ -90,37 +91,42 @@ DEFINE CLASS SolarCalendarEvents AS CalendarEventProcessor
 		* go through all events
 		FOR m.EventIndex = 1 TO 4
 
-			* set from a Gregorian day
-			This.Broker.SetDate(This.CalculateSeasonEvent(m.Solar(m.EventIndex), m.Timezone))
+			m.SolarId = "solar." + m.SolarIds(m.EventIndex)
 
-			* if it fits in the intended year, add to the events collection
-			IF This.Broker.Year = m.Year
+			* calculate only if this is the first try and the event is not already set in the collection
+			IF !m.Retrying OR m.SolarEvents.GetKey(m.SolarId) = 0
 
-				m.CalEvent = CREATEOBJECT("CalendarEvent")
-				WITH m.CalEvent
-					.Identifier = "solar." + m.SolarId(m.EventIndex)
-					.Commonname = m.SolarName(m.EventIndex)
-					.Scope = "Natural"
-					.Origin = "Natural"
-					.Day = This.Broker.Day
-					.Month = This.Broker.Month
-					.Year = This.Broker.Year
-				ENDWITH
+				* set from a Gregorian day
+				This.Broker.SetDate(This.CalculateSeasonEvent(m.Solar(m.EventIndex), m.Timezone))
 
-				m.SolarEvents.Add(m.CalEvent, m.CalEvent.Identifier)
+				* if it fits in the intended year, add to the events collection
+				IF This.Broker.Year = m.Year
 
-			ELSE
+					m.CalEvent = CREATEOBJECT("CalendarEvent")
+					WITH m.CalEvent
+						.Identifier = m.SolarId
+						.Commonname = m.SolarName(m.EventIndex)
+						.Scope = "Natural"
+						.Origin = "Natural"
+						.Day = This.Broker.Day
+						.Month = This.Broker.Month
+						.Year = This.Broker.Year
+					ENDWITH
 
-				* if the first event does not fit, fetch the events from the next Gregorian year
-				IF m.EventIndex = 1
-					m.Unfit = 1
+					m.SolarEvents.Add(m.CalEvent, m.CalEvent.Identifier)
+
 				ELSE
-				* otherwise, if all previous events fit, try the previous Gregorian year
-					m.Unfit = EVL(m.Unfit, -1)
+
+					* if the first event does not fit, fetch the events from the next Gregorian year
+					IF m.EventIndex = 1
+						m.Unfit = 1
+					ELSE
+					* otherwise, if all previous events fit, try the previous Gregorian year
+						m.Unfit = EVL(m.Unfit, -1)
+					ENDIF
+
 				ENDIF
-
 			ENDIF
-
 		ENDFOR
 
 		IF !m.Retrying AND m.Unfit != 0
@@ -135,10 +141,10 @@ DEFINE CLASS SolarCalendarEvents AS CalendarEventProcessor
 
 		LOCAL JDN AS Number
 		LOCAL UT AS Number
+		LOCAL AdjustTZ AS Number
 		LOCAL x, z
 		LOCAL Year, Month, Day, Hour, Minute
 		LOCAL daysPer400Years, fudgedDaysPer4000Years
-		LOCAL SeasonEvent AS GregorianCalendar
 
 		m.EvRef = m.EvRef + 0.5
 		m.JDN = INT(m.EvRef)
@@ -165,21 +171,25 @@ DEFINE CLASS SolarCalendarEvents AS CalendarEventProcessor
 		m.Month = m.Month + 2 - 12 * m.x
 		m.Year = 100 * (m.z - 49) + m.Year + m.x
 
-		m.Hour = INT(m.UT * 24)
-		m.Minute = INT((m.UT * 24 - m.Hour) * 60)
+		m.AdjustTZ = m.UT * 24
+		m.Hour = INT(m.AdjustTZ)
+		m.Minute = INT((m.AdjustTZ - m.Hour) * 60)
 
-		m.SeasonEvent = CREATEOBJECT("GregorianCalendar")
-		m.SeasonEvent.SetDate(m.Year, m.Month, m.Day)
-		m.Hour = m.Hour + m.Timezone
-		IF m.Hour < 0
-			m.SeasonEvent.DaysAdd(-1)
+		* set the date, in the Gregorian Calendar
+		This.ReferenceCalendar.SetDate(m.Year, m.Month, m.Day)
+
+		* depending on the timezone, we may have to move back one day, or go forward
+		m.AdjustTZ = m.AdjustTZ + m.Timezone
+		IF m.AdjustTZ < 0
+			This.ReferenceCalendar.DaysAdd(-1)
 		ELSE
-			IF m.Hour >= 24
-				m.SeasonEvent.DaysAdd(1)
+			IF m.AdjustTZ >= 24
+				This.ReferenceCalendar.DaysAdd(1)
 			ENDIF
 		ENDIF
-		
-		RETURN m.SeasonEvent
+
+		* return a single event, go for the next
+		RETURN This.ReferenceCalendar
 
 	ENDFUNC
 
@@ -191,7 +201,7 @@ DEFINE CLASS SolarCalendarEvents AS CalendarEventProcessor
 		LOCAL Instances AS Object
 		LOCAL Instance AS Object
 
-		m.Timezone = This.GetOption("TimeZone")
+		m.Timezone = This.GetOption("Timezone")
 		IF ISNULL(m.Timezone)
 
 			m.WMI = GETOBJECT("WINMGMTS:\\.\ROOT\cimv2")
