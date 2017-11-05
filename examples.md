@@ -5,6 +5,8 @@ Go to [Overview](DOCUMENTATION.md "Overview")
 ### Examples
 
 **Display current date**
+
+[Source](examples/displayCurrentDate.prg "Source")
 ```foxpro
 * display current date in different calendars
 LOCAL GC AS GregorianCalendar
@@ -36,6 +38,8 @@ ENDFUNC
 ```
 
 **Same date in other calendar**
+
+[Source](examples/sameDate.prg "Source")
 ```foxpro
 * first day of 21st century in the Islamic Calendar
 LOCAL GC AS GregorianCalendar
@@ -60,6 +64,8 @@ ENDFUNC
 ```
 
 **Days difference between two dates**
+
+[Source](examples/daysDifference.prg "Source")
 ```foxpro
 * difference between Shakespeare's and Cervantes' dates of death
 LOCAL Shakespeare AS BritishCalendar
@@ -88,6 +94,8 @@ ENDCASE
 ```
 
 **Adoption of the Gregorian Reform**
+
+[Source](examples/gregorianReform.prg "Source")
 ```foxpro
 * the Gregorian reform of the calendar, in different countries
 
@@ -119,6 +127,8 @@ ENDFUNC
 ```
 
 **All the events of a year**
+
+[Source](examples/yearEvents.prg "Source")
 ```foxpro
 * Get all events of the current year of the USA calendar
 
@@ -196,6 +206,8 @@ BROWSE
 ```
 
 **Start of seasons**
+
+[Source](examples/seasons.prg "Source")
 ```foxpro
 * start of seasons in different calendars, for the current year in each calendar
 
