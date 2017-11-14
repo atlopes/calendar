@@ -30,6 +30,16 @@ DEFINE CLASS IslamicCalendar AS Calendar
 	* IsLeapYear()
 	* returns .T. if an Islamic leap year
 	FUNCTION IsLeapYear (Year AS Number)
+
+		SAFETHIS
+		
+		ASSERT PCOUNT() = 0 OR VARTYPE(m.Year) == "N" ;
+			MESSAGE "Numeric parameter expected."
+
+		IF PCOUNT() = 0
+			m.Year = This.Year
+		ENDIF
+
 		RETURN (((11 * m.Year) + 14) % 30) < 11
 	ENDFUNC
 
@@ -47,11 +57,14 @@ DEFINE CLASS IslamicCalendar AS Calendar
 			m.Month = This.Month
 		ENDIF
 
-		IF ((m.Month % 2) == 1) OR ((m.Month == 12) AND This.IsLeapYear(m.Year))
+		DO CASE
+		CASE BETWEEN(m.Month, 1, 12) AND (((m.Month % 2) = 1) OR ((m.Month = 12) AND This.IsLeapYear(m.Year)))
 			RETURN 30
-		ELSE
+		CASE BETWEEN(m.Month, 1, 12) AND (m.Month %2 = 0)
 			RETURN 29
-		ENDIF
+		OTHERWISE
+			RETURN 0
+		ENDCASE
 
 	ENDFUNC
 

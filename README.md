@@ -21,8 +21,8 @@ A VFP set of classes to hold calendrical information, and perform simple calcula
 
 ### To-Do ###
 
-* Validate a date.
 * More calendars...
+* iCalendar interface...
 
 ### Talk, talk, talk... ###
 

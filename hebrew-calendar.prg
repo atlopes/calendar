@@ -31,7 +31,7 @@ DEFINE CLASS HebrewCalendar AS Calendar
 		IF PCOUNT() = 0
 			m.Year = This.Year
 		ENDIF
-		
+
 		RETURN (((7 * m.Year) + 1) % 19) < 7
 
 	ENDFUNC
@@ -71,9 +71,12 @@ DEFINE CLASS HebrewCalendar AS Calendar
 
 		CASE INLIST(m.MonthVal, 4, 7, 9, 11, 13)
 			m.LastDay = 29
+
+		CASE INLIST(m.MonthVal, 1, 5, 8, 10, 12)
+			m.LastDay = 30
 		
 		OTHERWISE
-			m.LastDay = 30
+			m.LastDay = 0
 		ENDCASE
 		
 		RETURN m.LastDay

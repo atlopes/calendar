@@ -14,10 +14,11 @@ See also [Classes](classes.md "Classes").
 | CalendarEvents | O | Events set (normally, for the current year). Each event has a unique identifier for access. Collection object. |
 | EventsProcessors | O | Attached events processors. Each processor has a unique identifier for access. Collection object. |
 | Historical | L | True if the calendar is not in current use, anymore (defaults to .F.) |
+| Invalid | N | Numeric code explaining why a date is invalid (0 = valid) |
 | LastJulianYear, LastJulianMonth and LastJuliannDay | N | The eve of the date on which the Gregorian reform of the calendar was adopted (only for Gregorian calendars) (defaults to 1582-10-04) |
 | LocaleID | C | An idiom identifier to get names for months, days, and events (defaults to "en") |
 | MaxYear, MaxMonth and MaxDay | N | The maximum date in the calendar system (defaults to .NULL.) |
-| MinYear, MinMonth and MinDay | N | The minimum date in the calendar system (defualts to 1)|
+| MinYear, MinMonth and MinDay | N | The minimum date in the calendar system (defaults to 1)|
 | Vocabulary | O | Stores the localized calendrical names. A MSXML2.DOMDocument.60 object. |
 | VocabularySource | C | The XML source for localized information | 
 | Year, Month and Day | N | The current calendar date |
@@ -142,6 +143,9 @@ See also [Classes](classes.md "Classes").
  - Returns the current calendar date as a Date value
 - **`ToSystem (CalYear AS Integer, CalMonth AS Integer, CalDay AS Integer) AS Date`**
  - Returns a specific calendar date as a Date value.
+---
+- **`Validate (CalYear AS Integer, CalMonth AS Integer, CalDay AS Integer) AS Date`**
+ - Validates a date (returns true if valid). A code explaining the reason for an invalid date is stored in the `Invalid` property.
 ---
 - **`Weekday () AS Number`**
  - Returns the week day of the current calendar date (assuming the last day(s) of the week is for rest / religious obligations: 1 = Monday, 7 = Sunday)

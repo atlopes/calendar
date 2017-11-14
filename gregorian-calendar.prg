@@ -44,9 +44,27 @@ DEFINE CLASS GregorianCalendar AS Calendar
 						'<memberdata name="lastjulianmonth" type="property" display="LastJulianMonth" />' + ;
 						'<memberdata name="lastjulianday" type="property" display="LastJulianDay" />' + ;
 						'<memberdata name="lastjuliandaynumber" type="property" display="LastJulianDayNumber" />' + ;
-						'<memberdata name="prereform" type="property" display="PreReform" />' + ;
+						'<memberdata name="prereform" type="property" distrsplay="PreReform" />' + ;
 						'<memberdata name="isreformed" type="method" display="IsReformed" />' + ;
 						'</VFPData>'
+
+	* Validate()
+	* validate a date
+	FUNCTION Validate (CalYear AS Integer, CalMonth AS Integer, CalDay AS Integer) AS Boolean
+
+		LOCAL Stringfied AS String
+ 
+		IF DODEFAULT(m.CalYear, m.CalMonth, m.CalDay)
+
+			m.Stringfied = STR(m.CalYear, 4, 0) + STR(m.CalMonth, 2, 0) + STR(m.CalDay, 2, 0) 
+			IF m.Stringfied > STR(This.LastJulianYear, 4, 0) + STR(This.LastJulianMonth, 2, 0) + STR(This.LastJulianDay, 2, 0) ;
+					AND m.Stringfied < STR(This.AdoptionYear, 4, 0) + STR(This.AdoptionMonth, 2, 0) + STR(This.AdoptionDay, 2, 0)
+				This.Invalid = 13
+			ENDIF
+		ENDIF
+
+		RETURN EMPTY(This.Invalid)
+	ENDFUNC
 
 	* IsReformed()
 	* returns .T. if date is after adoption of the Gregorian calendar reform
@@ -85,10 +103,12 @@ DEFINE CLASS GregorianCalendar AS Calendar
 		DO CASE
 		CASE INLIST(m.Month, 1, 3, 5, 7, 8, 10, 12)
 			RETURN 31
+		CASE INLIST(m.Month, 4, 6, 9, 11)
+			RETURN 30
 		CASE m.Month = 2
 			RETURN 28 + IIF(This.IsLeapYear(m.Year), 1, 0)
 		OTHERWISE
-			RETURN 30
+			RETURN 0
 		ENDCASE
 
 	ENDFUNC

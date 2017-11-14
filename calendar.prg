@@ -44,6 +44,8 @@ DEFINE CLASS Calendar AS Custom
 	Day = This.MinDay
 	* historical?
 	Historical = .F.
+	* invalid code
+	Invalid = 0
 	* an idiom identifier to get names for months, days, and events
 	LocaleID = "en"
 	* the vocabulary object (an XML DOM object)
@@ -64,11 +66,13 @@ DEFINE CLASS Calendar AS Custom
 						'<memberdata name="maxmonth" type="property" display="MaxMonth" />' + ;
 						'<memberdata name="maxday" type="property" display="MaxDay" />' + ;
 						'<memberdata name="historical" type="property" display="Historical" />' + ;
+						'<memberdata name="invalid" type="property" display="Invalid" />' + ;
 						'<memberdata name="localeid" type="property" display="LocaleID" />' + ;
 						'<memberdata name="vocabulary" type="property" display="Vocabulary" />' + ;
 						'<memberdata name="vocabularysource" type="property" display="VocabularySource" />' + ;
 						'<memberdata name="clone" type="method" display="Clone" />' + ;
 						'<memberdata name="setdate" type="method" display="SetDate" />' + ;
+						'<memberdata name="validate" type="method" display="Validate" />' + ;
 						'<memberdata name="fromsystem" type="method" display="FromSystem" />' + ;
 						'<memberdata name="tosystem" type="method" display="ToSystem" />' + ;
 						'<memberdata name="fromjulian" type="method" display="FromJulian" />' + ;
@@ -150,6 +154,47 @@ DEFINE CLASS Calendar AS Custom
 			This.FromJulian(m.CalYearOrDateOrEvent.ToJulian())
 
 		ENDCASE
+
+	ENDFUNC
+
+	* Validate()
+	* validate a date
+	FUNCTION Validate (CalYear AS Integer, CalMonth AS Integer, CalDay AS Integer) AS Boolean
+
+		SAFETHIS
+
+		ASSERT VARTYPE(m.CalYear) + VARTYPE(m.CalMonth) + VARTYPE(m.CalDay) == "NNN" ;
+			MESSAGE "Numeric parameters expected."
+
+		DO CASE
+		CASE m.CalYear != INT(m.CalYear) OR m.CalMonth != INT(m.CalMonth) OR m.CalDay != INT(m.CalDay)
+			This.Invalid = 1
+
+		CASE m.CalDay < 1 OR m.CalMonth < 1
+			This.Invalid = 2
+
+		CASE (!ISNULL(m.CalYear) AND m.CalYear > This.MaxYear) OR m.CalYear < This.MinYear
+			This.Invalid = 11
+
+		CASE (!ISNULL(m.CalYear) AND m.CalYear = This.MaxYear AND m.CalMonth > This.MaxMonth) OR ;
+					(m.CalYear = This.MinYear AND m.CalMonth < This.MinMonth)
+			This.Invalid = 12
+
+		CASE (!ISNULL(m.CalYear) AND m.CalYear = This.MaxYear AND m.CalMonth = This.MaxMonth AND m.CalDay > This.MaxDay) OR ;
+					(m.CalYear = This.MinYear AND m.CalMonth = This.MinMonth AND m.CalDay < This.MinDay)
+			This.Invalid = 13
+
+		CASE m.CalDay > NVL(This.LastDayOfMonth(m.CalYear, m.CalMonth), m.CalDay)
+			This.Invalid = 21
+
+		CASE NVL(This.LastDayOfMonth(m.CalYear, m.CalMonth), 1) = 0
+			This.Invalid = 22
+
+		OTHERWISE
+			This.Invalid = 0
+		ENDCASE
+
+		RETURN EMPTY(This.Invalid)
 
 	ENDFUNC
 

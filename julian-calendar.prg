@@ -55,10 +55,12 @@ DEFINE CLASS JulianCalendar AS Calendar
 		DO CASE
 		CASE INLIST(m.Month, 1, 3, 5, 7, 8, 10, 12)
 			RETURN 31
+		CASE INLIST(m.Month, 4, 6, 9, 11)
+			RETURN 30
 		CASE m.Month = 2
 			RETURN 28 + IIF(This.IsLeapYear(m.Year), 1, 0)
 		OTHERWISE
-			RETURN 30
+			RETURN 0
 		ENDCASE
 
 	ENDFUNC

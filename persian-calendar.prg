@@ -5,7 +5,7 @@
 *!*	Locales are stored in persian.xml file.
 
 * install dependencies
-DO LOCFILE("Calendar.prg")
+DO LOCFILE("calendar.prg")
 
 * install itself
 IF !SYS(16) $ SET("Procedure")
@@ -22,6 +22,87 @@ ENDIF
 DEFINE CLASS PersianCalendar AS Calendar
 
 	VocabularySource = "persian.xml"
+
+	* IsLeapYear()
+	* returns .T. if an Persian leap year
+	FUNCTION IsLeapYear (Year AS Number)
+
+		SAFETHIS
+		
+		ASSERT PCOUNT() = 0 OR VARTYPE(m.Year) == "N" ;
+			MESSAGE "Numeric parameter expected."
+
+		LOCAL OuterCycle AS Integer
+		LOCAL MidCycle AS Integer
+		LOCAL InnerCycle AS Integer
+		LOCAL IsLeap AS Boolean
+
+		IF PCOUNT() = 0
+			m.Year = This.Year
+		ENDIF
+
+		* leap pattern repeats every 2820 years
+		m.OuterCycle = ((m.Year - 1) % 2820) + 1
+		* a mid patterned cycle occupies 128 years
+		m.MidCycle = ((m.OuterCycle - 1) % 128) + 1
+		* the first 29 years follow one pattern
+		IF m.MidCycle <= 29
+			m.MidCycle = m.MidCycle + 4
+			* the remainer, another one of 33 years
+		ELSE
+			m.MidCycle = m.MidCycle - 29
+		ENDIF
+		* normalize the first cycle to a regular 33 cycle
+		m.InnerCycle = ((m.MidCycle - 1) % 33) + 1
+
+		DO CASE
+		* in a 33 cycle, the last leap year is pushed back one year
+		CASE m.InnerCycle = 33
+			m.IsLeap = .T.
+
+		* so, the last regular 4-year leap cycle does not occur at the expected year
+		CASE m.InnerCycle = 32
+			m.IsLeap = .F.
+
+		* but all other leaps do
+		OTHERWISE
+			m.IsLeap = (m.InnerCycle % 4) = 0
+
+		ENDCASE
+
+		RETURN m.IsLeap
+
+	ENDFUNC
+
+	* LastDayOfMonth()
+	* returns the day of a month, in a given year
+	FUNCTION LastDayOfMonth (Year AS Number, Month AS Number)
+	
+		SAFETHIS
+		
+		ASSERT PCOUNT() = 0 OR VARTYPE(m.Year) + VARTYPE(m.Month) == "NN" ;
+			MESSAGE "Numeric parameters expected."
+
+		IF PCOUNT() = 0
+			m.Year = This.Year
+			m.Month = This.Month
+		ENDIF
+
+		DO CASE
+		CASE INLIST(m.Month, 1, 2, 3, 4, 5, 6)
+			RETURN 31
+
+		CASE INLIST(m.Month, 7, 8, 9, 10, 11)
+			RETURN 29
+
+		CASE m.Month = 12
+			RETURN 29 + IIF(This.IsLeapYear(m.Year), 1, 0)
+
+		OTHERWISE
+			RETURN 0
+		ENDCASE
+
+	ENDFUNC
 
 	* calculation to transform a Julian Day Number into a Persian calendar date
 	* (called from FromJulian method)
