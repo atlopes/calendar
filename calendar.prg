@@ -95,6 +95,7 @@ DEFINE CLASS Calendar AS Custom
 						'<memberdata name="setevents" type="method" display="SetEvents" />' + ;
 						'<memberdata name="locateevents" type="method" display="LocateEvents" />' + ;
 						'<memberdata name="dayevents" type="method" display="DayEvents" />' + ;
+						'<memberdata name="eventstocursor" type="method" display="EventsToCursor" />' + ;
 						'</VFPData>'
 
 	* a Date or Datetime object can be passed to the object initialization,
@@ -612,6 +613,8 @@ DEFINE CLASS Calendar AS Custom
 	* set events from the event processors 
 	FUNCTION SetEvents (Year AS Integer)
 
+		SAFETHIS
+
 		ASSERT PCOUNT() = 0 OR VARTYPE(m.Year) == "N" ;
 			MESSAGE "Numeric parameter expected."
 
@@ -705,6 +708,46 @@ DEFINE CLASS Calendar AS Custom
 
 		RETURN m.DayEvents
 						
+	ENDFUNC
+
+	* EventsToCursor
+	* Stores the events collection in a cursor
+	FUNCTION EventsToCursor (CursorName AS String)
+
+		SAFETHIS
+
+		ASSERT VARTYPE(m.CursorName) == "C" ;
+			MESSAGE "String parameter expected."
+
+		LOCAL CalEvent AS CalendarEvent
+		LOCAL SystemDate AS Date
+		LOCAL Offset AS Integer
+
+		IF USED(m.CursorName)
+			USE IN (m.CursorName)
+		ENDIF
+
+		CREATE CURSOR (m.CursorName) ;
+			(Identifier Varchar(80), CommonName Varchar(200), Scope Varchar(20), Origin Varchar(20), Observed Logical, Fixed Logical, ;
+				Year Integer, Month Integer, Day Integer, Duration Integer, Offset Integer, SystemDate Date)
+		INDEX ON Identifier TAG Identifier
+		INDEX ON SystemDate TAG SystemDate
+
+		* go through the set events
+		FOR EACH m.CalEvent IN This.CalendarEvents
+
+			FOR m.Offset = 0 TO m.CalEvent.Duration - 1
+
+				* for each event, insert its information + Date in the cursor
+				INSERT INTO (m.CursorName) ;
+					VALUES (m.CalEvent.Identifier, m.CalEvent.CommonName, m.CalEvent.Scope, m.CalEvent.Origin, m.CalEvent.Observed, m.CalEvent.Fixed, ;
+								m.CalEvent.Year, m.CalEvent.Month, m.CalEvent.Day, m.CalEvent.Duration, ;
+								m.Offset, This.ToSystem(m.CalEvent.Year, m.CalEvent.Month, m.CalEvent.Day) + m.Offset)
+
+			ENDFOR
+
+		ENDFOR
+
 	ENDFUNC
 
 ENDDEFINE

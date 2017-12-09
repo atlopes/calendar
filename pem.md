@@ -80,6 +80,9 @@ See also [Classes](classes.md "Classes").
 - **`DTOS () AS String`**
  - Returns a string representation of the current date that can be used in index expressions.
 ---
+- **`EventsToCursor (CursorName AS String)`**
+ - Creates a cursor image of the collection of events (`m.CursorName` is closed and created in each call to the method).
+---
 - **`FromJulian (JulianDate AS Number)`**
  - Sets the current calendar date corresponding to `m.JulianDate` (a Julian Day Number)
 ---

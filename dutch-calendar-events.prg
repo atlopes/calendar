@@ -11,12 +11,16 @@ IF !SYS(16) $ SET("Procedure")
 	SET PROCEDURE TO (SYS(16)) ADDITIVE
 ENDIF
 
+#DEFINE SAFETHIS	ASSERT !USED("This") AND VARTYPE(This) == "O"
+
 DEFINE CLASS DutchCalendarEvents AS CalendarEventProcessor
 
 	ReferenceCalendarClass = "GregorianCalendar"
 	EventsDefinition = LOCFILE("nl_events.xml")
 
 	FUNCTION SetEvents (Year AS Integer) AS Collection
+
+		SAFETHIS
 
 		LOCAL ResultSet AS Collection
 		LOCAL CalEvent AS CalendarEvent
