@@ -78,6 +78,28 @@ m.USA.Setevents()
 
 [Source](examples/yearEvents.prg "Source")
 
+**Business days ahead**
+
+Calculating business days ahead depends on the definition of a business week (when does it start? how long does it last?), and on the holidays that may occur in a given period. The BusinessCalendar is based on GregorianCalendar, and comes with a business days calculator.
+
+```foxpro
+FOR m.BusinessDays = 1 TO 30
+
+	* reset the calendar to the current system date
+	m.BC.FromSystem()
+	? m.BC.DTOS(), "+", TRANSFORM(m.BusinessDays, "999")
+	?? " >> "
+	* calculate the actual advance in calendar days
+	m.CalendarDays = m.BC.AdvanceBusinessDays(m.BusinessDays)
+	?? m.BC.DTOS()
+	* how much days we actually have to move forward
+	?? " = +",TRANSFORM(m.CalendarDays, "999")
+
+ENDFOR
+```
+
+[Source](examples/businessDays.prg "Source")
+
 **Start of seasons**
 
 Events processors can be simple, and based on a set of predefined events, or relatively complex, for which some calculations must be made. Such is the case of the Easter-based set of events (that may be included by other events processors), or the astronomical start of seasons.
