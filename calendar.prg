@@ -500,8 +500,8 @@ DEFINE CLASS CalendarCalc AS Custom
 	ENDFUNC
 
 	PROTECTED FUNCTION CalcCeil (ANumber AS Number)
-		IF m.ANumber >=0
-			RETURN ROUND(m.ANumber + 0.5,0)
+		IF m.ANumber >= 0
+			RETURN ROUND(m.ANumber + IIF(INT(m.ANumber) != m.ANumber, 0.5, 0), 0)
 		ELSE
 			RETURN This.CalcInt(m.ANumber)
 		ENDIF

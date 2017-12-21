@@ -93,7 +93,7 @@ DEFINE CLASS PersianCalendar AS CalendarCalc
 			RETURN 31
 
 		CASE INLIST(m.Month, 7, 8, 9, 10, 11)
-			RETURN 29
+			RETURN 30
 
 		CASE m.Month = 12
 			RETURN 29 + IIF(This.IsLeapYear(m.Year), 1, 0)
