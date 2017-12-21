@@ -1,4 +1,4 @@
-# CALENDAR #
+# CalendarCalc #
 
 A VFP set of classes to hold calendrical information, and perform simple calculations.
 

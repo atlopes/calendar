@@ -1,7 +1,7 @@
 
 *!*	PersianCalendar
 
-*!*	A Calendar subclass for the Persian Calendar.
+*!*	A CalendarCalc subclass for the Persian Calendar.
 *!*	Locales are stored in persian.xml file.
 
 * install dependencies
@@ -19,7 +19,7 @@ ENDIF
 
 #DEFINE SAFETHIS	ASSERT !USED("This") AND VARTYPE(This) == "O"
 
-DEFINE CLASS PersianCalendar AS Calendar
+DEFINE CLASS PersianCalendar AS CalendarCalc
 
 	VocabularySource = "persian.xml"
 

@@ -10,7 +10,7 @@
 *!*	Software - Practice & Experience, vol. 20, no. 9 (September, 1990), pp. 899--928.
 
 * install dependencies
-DO LOCFILE("Calendar.prg")
+DO LOCFILE("calendar.prg")
 
 * install itself
 IF !SYS(16) $ SET("Procedure")
@@ -22,7 +22,7 @@ ENDIF
 
 #DEFINE SAFETHIS	ASSERT !USED("This") AND VARTYPE(This) == "O"
 
-DEFINE CLASS JulianCalendar AS Calendar
+DEFINE CLASS JulianCalendar AS CalendarCalc
 
 	VocabularySource = "julian.xml"
 

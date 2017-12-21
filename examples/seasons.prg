@@ -41,7 +41,7 @@ FOR m.SeasonIndex = 1 TO ALINES(m.SeasonIds, "solar.vequinox,solar.ssolstice,sol
 
 ENDFOR
 
-FUNCTION CalendarDateFormat (Cal AS Calendar)
+FUNCTION CalendarDateFormat (Cal AS CalendarCalc)
 
     RETURN TRANSFORM(m.Cal.Day) + ", " + m.Cal.MonthName() + ", " + TRANSFORM(m.Cal.Year)
 

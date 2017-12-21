@@ -1,10 +1,10 @@
-﻿# Calendar Documentation
+﻿# CalendarCalc Documentation
 
 Go to [Overview](DOCUMENTATION.md "Overview")
 
 ### Classes
 
-To use a class, include in a project its PRG file and all the hierarchy of dependencies and locale files, up to the base Calendar class. For instance, if you want to use the British Calendar, select BritishCalendar class, and include in your project british-calendar.prg, gregorian-calendar.prg, christian-julian-calendar.prg, julian-calendar.prg, julian.xml, and calendar.prg.
+To use a class, include in a project its PRG file and all the hierarchy of dependencies and locale files, up to the base CalendarCalc class. For instance, if you want to use the British Calendar, select BritishCalendar class, and include in your project british-calendar.prg, gregorian-calendar.prg, christian-julian-calendar.prg, julian-calendar.prg, julian.xml, and calendar.prg.
 
 If you want to experiment from the Command Window, or from small code snippets, DO the top-level classes in a hierarchy chain (in the above example, `DO LOCFILE("british-calendar.prg")` would be enough).
 
@@ -18,7 +18,7 @@ See also [Properties and Methods](pem.md "Properties and Methods").
 
 | Class | Filename | Dependency | Locale |
 | ----- | -------- | ---------- | ------ |
-| Calendar | [calendar.prg](calendar.prg "calendar.prg") | | |
+| CalendarCalc | [calendar.prg](calendar.prg "calendar.prg") | | |
 | JulianCalendar | [julian-calendar.prg](julian-calendar.prg "julian-calendar.prg") | calendar.prg | [julian.xml](julian.xml "julian.xml") |
 | ChristianJulianCalendar | [christian-julian-calendar.prg](christian-julian-calendar.prg "christian-julian-calendar.prg") | julian-calendar.prg | |
 | GregorianCalendar | [gregorian-calendar.prg](gregorian-calendar.prg "gregorian-calendar.prg") | christian-julian-calendar.prg | |

@@ -20,7 +20,7 @@ FUNCTION ReformAdoption (Country AS String, Cal AS Calendar)
 
 ENDFUNC
 
-FUNCTION CalendarDateFormat (Cal AS Calendar)
+FUNCTION CalendarDateFormat (Cal AS CalendarCalc)
 
     RETURN TRANSFORM(m.Cal.Day) + ", " + m.Cal.MonthName() + ", " + TRANSFORM(m.Cal.Year)
 

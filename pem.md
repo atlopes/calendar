@@ -1,4 +1,4 @@
-# Calendar Documentation
+# CalendarCalc Documentation
 
 Go to [Overview](DOCUMENTATION.md "Overview")
 
@@ -6,7 +6,7 @@ See also [Classes](classes.md "Classes").
 
 ### Properties
 
-#### Calendar
+#### CalendarCalc
 
 | Name | Type | Information |
 | ---- | ---- | ----------- |
@@ -41,13 +41,13 @@ See also [Classes](classes.md "Classes").
 
 | Name | Type | Information |
 | ---- | ---- | ----------- |
-| Broker | O | A broker Calendar object to allow date transformations between differente calendars |
+| Broker | O | A broker CalendarCalc object to allow date transformations between differente calendars |
 | EventsDefinition | C | An XML document that defines fixed events. | 
 | EventsFilter | O | A Collection of selected events that will be included, identified by their global identifier (the value of each member of the collection is the common name of the event). If unset, all events will be returned. |
 | Host | O | The calendar object to which the processor is attached. |
 | Observed | L | The default status of observance of the events (defaults to .T.) | 
-| ReferenceCalendar | O | A Calendar based object, used to perform calendrical calculations performed by the processor. |
-| ReferenceCalendarClass | C | The name of the Calendar class (defaults to "Calendar") |
+| ReferenceCalendar | O | A CalendarCalc based object, used to perform calendrical calculations performed by the processor. |
+| ReferenceCalendarClass | C | The name of the CalendarCalc class (defaults to "CalendarCalc") |
 | Scope | C | The default status of observance scope (defaults to "" = unset).
 
 ### Methods
@@ -72,7 +72,7 @@ See also [Classes](classes.md "Classes").
  - Returns the difference, in days, between current calendar date and current system date (that is, `DATE()`)
 - **`DaysDifference (CalYearOrDate AS Date) AS Number`**
  - Returns the difference, in days, between current calendar date and a Date
-- **`DaysDifference (CalYearOrDate AS Calendar) AS Number`**
+- **`DaysDifference (CalYearOrDate AS CalendarCalc) AS Number`**
  - Returns the difference, in days, between current calendar date and the current calendar date of other Calendar object (it may be from a different calendar system)
 - **`DaysDifference (CalYearOrDate AS Integer, CalMonth AS Integer, CalDay AS Integer) AS Number`**
  - Returns the difference, in days, between current calendar date and some other calendar date
@@ -99,7 +99,7 @@ See also [Classes](classes.md "Classes").
 - **`Init (SystemDate AS DateOrDatetime)`**
  - Instantiates a Calendar object, and sets the current calendar to `m.SystemDate`
 ---
-- **`IsAfter|Before|SameDay (CalYearOrDate AS Calendar) AS Boolean`**
+- **`IsAfter|Before|SameDay (CalYearOrDate AS CalendarCalc) AS Boolean`**
  - Returns .T. if the current date is after/before/in the same day of other calendar date.
 - **`IsAfter|Before|SameDay (CalYearOrDate AS Date) AS Boolean`**
  - Returns .T. if the current date is after/before/in the same day of a system Date or DateTime.
@@ -119,7 +119,7 @@ See also [Classes](classes.md "Classes").
 - **`LocateEvent (Identifier AS String) AS CalendarEvent`**
  - Locates a calendar event from the collection of set events. Returns `.NULL.` if not found.
 ---
-- **`SetDate (CalYearDateOrEvent AS Calendar)`**
+- **`SetDate (CalYearDateOrEvent AS CalendarCalc)`**
  - Sets the current date to the current date of `m.CalYearDateOrEvent` (this Calendar may be from a different calendar system).
 - **`SetDate (CalYearDateOrEvent AS String)`**
  - Sets the current date to the current date of the event identified by `m.CalYearDateOrEvent`. If the event is not set, the current date is not changed.
@@ -170,7 +170,7 @@ See also [Classes](classes.md "Classes").
 - **`GetOption (Option AS String) AS AnyType`**
  - Gets the current setting of an option.
 ---
-- **`Init (Host AS Calendar)`**
+- **`Init (Host AS CalendarCalc)`**
  - Sets thehost, default properties, and instantiate the calendar that will serve as reference for calculations/settings.
 ---
 - **`LoadDefinition (XMLorURL AS String, EventsList AS Collection)`**
