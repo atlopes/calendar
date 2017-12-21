@@ -1,4 +1,4 @@
-# Calendar Documentation
+# CalendarCalc Documentation
 
 Go to [Overview](DOCUMENTATION.md "Overview")
 
@@ -6,7 +6,7 @@ Go to [Overview](DOCUMENTATION.md "Overview")
 
 **Display current date**
 
-When a Calendar object is created, the initial value is the current system date. By accessing `Year`, `Month`, and `Day`properties, the date can be displayed (`MonthName()` method will produce a name for the month in the class locale). 
+When a CalendarCalc object is created, the initial value is the current system date. By accessing `Year`, `Month`, and `Day`properties, the date can be displayed (`MonthName()` method will produce a name for the month in the class locale). 
 
 ```foxpro
 FUNCTION CalendarDateFormat (Cal AS CalendarCalc)
@@ -21,7 +21,7 @@ ENDFUNC
 
 **Same date in other calendar**
 
-By receiving a Calendar object as an argument for the `SetDate()` method, it's possible to establish correspondences between dates of two distinct calendar systems. 
+By receiving a CalendarCalc object as an argument for the `SetDate()` method, it's possible to establish correspondences between dates of two distinct calendar systems. 
 
 ```foxpro
 m.GC.SetDate(2001, 1, 1)
