@@ -1,11 +1,11 @@
 
 *!*	HebrewCalendar
 
-*!*	A Calendar subclass for the Hebrew Calendar.
+*!*	A CalendarCalc subclass for the Hebrew Calendar.
 *!*	Locales are stored in hebrew.xml file.
 
 * install dependencies
-DO LOCFILE("Calendar.prg")
+DO LOCFILE("calendar.prg")
 
 * install itself
 IF !SYS(16) $ SET("Procedure")
@@ -17,7 +17,7 @@ ENDIF
 
 #DEFINE SAFETHIS	ASSERT !USED("This") AND VARTYPE(This) == "O"
 
-DEFINE CLASS HebrewCalendar AS Calendar
+DEFINE CLASS HebrewCalendar AS CalendarCalc
 
 	* IsLeapYear()
 	* returns .T. if given year ia a leap year

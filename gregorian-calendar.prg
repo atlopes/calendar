@@ -1,7 +1,7 @@
 
 *!*	GregorianCalendar
 
-*!*	A Calendar subclass for the Gregorian Calendar, to base other Gregorian Calendar subclasses.
+*!*	A CalendarClass subclass for the Gregorian Calendar, to base other Gregorian Calendar subclasses.
 *!*	Locales are stored in julian.xml file.
 
 *!*	Algorithms based on Calendar.c, a C++ transcript from the
@@ -10,7 +10,7 @@
 *!*	Software - Practice & Experience, vol. 20, no. 9 (September, 1990), pp. 899--928.
 
 * install dependencies
-DO LOCFILE("christian-julian-Calendar.prg")
+DO LOCFILE("christian-julian-calendar.prg")
 
 * install itself
 IF !SYS(16) $ SET("Procedure")
@@ -22,7 +22,7 @@ ENDIF
 
 #DEFINE SAFETHIS	ASSERT !USED("This") AND VARTYPE(This) == "O"
 
-DEFINE CLASS GregorianCalendar AS Calendar
+DEFINE CLASS GregorianCalendar AS CalendarCalc
 
 	ADD OBJECT PreReform AS ChristianJulianCalendar		&& deals with dates before the Gregorian calendar adoption
 

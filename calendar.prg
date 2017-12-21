@@ -1,5 +1,5 @@
 
-*!*	Calendar
+*!*	CalendarCalc
 
 *!*	A VFP class to hold calendrical information and calculation.
 
@@ -11,7 +11,7 @@
 *!*	Calendar Math website, at http://members.casema.nl/couprie/calmath/.
 *!*	Unless stated otherwise, refer to CalMath for all date algorithms.
 
-*!*	Includes CalendarEvent* classes to extend a Calendar object with event information.
+*!*	Includes CalendarEvent* classes to extend a CalendarCalc object with event information.
 
 * install itself
 IF !SYS(16) $ SET("Procedure")
@@ -25,7 +25,7 @@ ENDIF
 #DEFINE SAFETHIS	ASSERT !USED("This") AND VARTYPE(This) == "O"
 
 * The general base class (actual calendar classes will derive from this)
-DEFINE CLASS Calendar AS Custom
+DEFINE CLASS CalendarCalc AS Custom
 
 	ADD OBJECT CalendarEvents AS Collection
 	ADD OBJECT EventsProcessors AS Collection
@@ -670,7 +670,7 @@ DEFINE CLASS Calendar AS Custom
 			MESSAGE "Numeric parameters expected."
 
 		LOCAL DayEvents AS Collection
-		LOCAL RefDate AS Calendar
+		LOCAL RefDate AS CalendarCalc
 		LOCAL CalEvent AS CalendarEvents
 
 		* the result will be a collection  of identifiers
@@ -793,7 +793,7 @@ DEFINE CLASS CalendarEventProcessor AS Custom
 	* a broker object to allow date transformations between calendars
 	Broker = .NULL.
 	* a processor uses a calendar class of some kind for reference 
-	ReferenceCalendarClass = "Calendar"
+	ReferenceCalendarClass = "CalendarCalc"
 	ReferenceCalendar = .NULL.
 	* events definition, in XML
 	EventsDefinition = ""
@@ -821,7 +821,7 @@ DEFINE CLASS CalendarEventProcessor AS Custom
 
 	* Init
 	* sets the host, default properties, and instantiate the calendar that will serve as reference for calculations/settings
-	FUNCTION Init (Host AS Calendar)
+	FUNCTION Init (Host AS CalendarCalc)
 
 		LOCAL Success AS Boolean
 

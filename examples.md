@@ -9,7 +9,7 @@ Go to [Overview](DOCUMENTATION.md "Overview")
 When a Calendar object is created, the initial value is the current system date. By accessing `Year`, `Month`, and `Day`properties, the date can be displayed (`MonthName()` method will produce a name for the month in the class locale). 
 
 ```foxpro
-FUNCTION CalendarDateFormat (Cal AS Calendar)
+FUNCTION CalendarDateFormat (Cal AS CalendarCalc)
 
 	RETURN TRANSFORM(m.Cal.Day) + ", " + m.Cal.MonthName() + ", " + TRANSFORM(m.Cal.Year)
 

@@ -20,7 +20,7 @@ m.PC = CREATEOBJECT("PersianCalendar")
 ? " - in the Islamic calendar:", CalendarDateFormat(m.IC)
 ? " - in the Persian calendar:", CalendarDateFormat(m.PC)
 
-FUNCTION CalendarDateFormat (Cal AS Calendar)
+FUNCTION CalendarDateFormat (Cal AS CalendarCalc)
 
     RETURN TRANSFORM(m.Cal.Day) + ", " + m.Cal.MonthName() + ", " + TRANSFORM(m.Cal.Year)
 

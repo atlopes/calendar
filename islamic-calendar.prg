@@ -1,7 +1,7 @@
 
 *!*	IslamicCalendar
 
-*!*	A Calendar subclass for the Islamic Calendar.
+*!*	A CalendarCalc subclass for the Islamic Calendar.
 *!*	Locales are stored in islamic.xml file.
 
 *!*	Algorithms based on Calendar.c, a C++ transcript from the
@@ -10,7 +10,7 @@
 *!*	Software - Practice & Experience, vol. 20, no. 9 (September, 1990), pp. 899--928.
 
 * install dependencies
-DO LOCFILE("Calendar.prg")
+DO LOCFILE("calendar.prg")
 
 * install itself
 IF !SYS(16) $ SET("Procedure")
@@ -23,7 +23,7 @@ ENDIF
 
 #DEFINE SAFETHIS	ASSERT !USED("This") AND VARTYPE(This) == "O"
 
-DEFINE CLASS IslamicCalendar AS Calendar
+DEFINE CLASS IslamicCalendar AS CalendarCalc
 
 	VocabularySource = "islamic.xml"
 

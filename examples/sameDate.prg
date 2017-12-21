@@ -13,7 +13,7 @@ m.IC.SetDate(m.GC)
 
 ? "The first day of the 21st century was on", CalendarDateFormat(m.IC)
 
-FUNCTION CalendarDateFormat (Cal AS Calendar)
+FUNCTION CalendarDateFormat (Cal AS CalendarCalc)
 
     RETURN TRANSFORM(m.Cal.Day) + ", " + m.Cal.MonthName() + ", " + TRANSFORM(m.Cal.Year)
 

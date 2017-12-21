@@ -1,14 +1,14 @@
 
 *!*	RepublicanCalendar
 
-*!*	A Calendar subclass for the historical French Republican Calendar.
+*!*	A CalendarCalc subclass for the historical French Republican Calendar.
 *!*	Locales are stored in republican.xml file.
 
 *!*	The extra 5 or 6 days at the end of a year are coded as belonging to the
 *!*	13th month, although the Republican calendar only has 12 month
 
 * install dependencies
-DO LOCFILE("Calendar.prg")
+DO LOCFILE("calendar.prg")
 
 * install itself
 IF !SYS(16) $ SET("Procedure")
@@ -22,7 +22,7 @@ ENDIF
 
 #DEFINE SAFETHIS	ASSERT !USED("This") AND VARTYPE(This) == "O"
 
-DEFINE CLASS RepublicanCalendar AS Calendar
+DEFINE CLASS RepublicanCalendar AS CalendarCalc
 
 	MinYear = 1
 	MinMonth = 1
