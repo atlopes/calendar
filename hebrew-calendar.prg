@@ -19,6 +19,8 @@ ENDIF
 
 DEFINE CLASS HebrewCalendar AS CalendarCalc
 
+	VocabularySource = "hebrew.xml"
+
 	* IsLeapYear()
 	* returns .T. if given year ia a leap year
 	FUNCTION IsLeapYear (Year AS Number)
@@ -85,17 +87,17 @@ DEFINE CLASS HebrewCalendar AS CalendarCalc
 
 	* MonthName()
 	* returns the name of the month, for a given locale
-	FUNCTION MonthName (Year AS Number, Month AS Number)
+	FUNCTION MonthName (Month AS Number, Year AS Number, ShortName AS Logical)
 	
 		SAFETHIS
 		
-		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) + VARTYPE(m.Year) == "NN" ;
-			MESSAGE "Numeric parameters expected."
+		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) + VARTYPE(m.Year) + VARTYPE(m.ShortName) == "NNL" ;
+			MESSAGE "Numeric and logical parameters expected."
 
 		LOCAL MonthVal AS Number
 		LOCAL MonthLeap AS String
 		LOCAL Name AS String
-		
+
 		IF PCOUNT() = 0
 			m.MonthVal = This.Month
 			m.Year = This.Year
@@ -124,7 +126,7 @@ DEFINE CLASS HebrewCalendar AS CalendarCalc
 			m.MonthLeap = ""
 		ENDIF
 
-		m.Name = This.GetLocale("month." + TRANSFORM(m.MonthVal) + m.MonthLeap)
+		m.Name = This.GetLocale("month." + IIF(m.ShortName, "short.", "") + TRANSFORM(m.MonthVal) + m.MonthLeap)
 
 		RETURN EVL(m.Name, .NULL.)
 
