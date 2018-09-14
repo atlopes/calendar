@@ -15,6 +15,20 @@
 		<term name="month.11">Tammuz</term>
 		<term name="month.12">Av</term>
 		<term name="month.13">Elul</term>
+		<term name="month.short.1">Tis</term>
+		<term name="month.short.2">Hes</term>
+		<term name="month.short.3">Kis</term>
+		<term name="month.short.4">Tev</term>
+		<term name="month.short.5">She</term>
+		<term name="month.short.6">Ada</term>
+		<term name="month.short.6.leap">Ada 1</term>
+		<term name="month.short.7">Ada 2</term>
+		<term name="month.short.8">Nis</term>
+		<term name="month.short.9">Iyy</term>
+		<term name="month.short.10">Siv</term>
+		<term name="month.short.11">Tam</term>
+		<term name="month.short.12">Av</term>
+		<term name="month.short.13">Elu</term>
 		<term name="weekday.1">Yom Sheni</term>
 		<term name="weekday.2">Yom Shlishi</term>
 		<term name="weekday.3">Yom Revi'i</term>
@@ -22,5 +36,12 @@
 		<term name="weekday.5">Yom Shishi</term>
 		<term name="weekday.6">Yom Shabbat</term>
 		<term name="weekday.7">Yom Rishon</term>
+		<term name="weekday.short.1">She</term>
+		<term name="weekday.short.2">Shl</term>
+		<term name="weekday.short.3">Rev</term>
+		<term name="weekday.short.4">Cha</term>
+		<term name="weekday.short.5">Shi</term>
+		<term name="weekday.short.6">Sha</term>
+		<term name="weekday.short.7">Ris</term>
 	</locales>
 </calendar>

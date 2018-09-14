@@ -20,6 +20,25 @@
 		<term name="weekday.5">Friday</term>
 		<term name="weekday.6">Saturday</term>
 		<term name="weekday.7">Sunday</term>
+		<term name="month.short.1">Jan</term>
+		<term name="month.short.2">Feb</term>
+		<term name="month.short.3">Mar</term>
+		<term name="month.short.4">Apr</term>
+		<term name="month.short.5">May</term>
+		<term name="month.short.6">Jun</term>
+		<term name="month.short.7">Jul</term>
+		<term name="month.short.8">Aug</term>
+		<term name="month.short.9">Sep</term>
+		<term name="month.short.10">Oct</term>
+		<term name="month.short.11">Nov</term>
+		<term name="month.short.12">Dec</term>
+		<term name="weekday.short.1">Mon</term>
+		<term name="weekday.short.2">Tue</term>
+		<term name="weekday.short.3">Wed</term>
+		<term name="weekday.short.4">Thu</term>
+		<term name="weekday.short.5">Fri</term>
+		<term name="weekday.short.6">Sat</term>
+		<term name="weekday.short.7">Sun</term>
 	</locales>
 	<locales code="de">
 		<term name="month.1">Januar</term>

@@ -119,6 +119,18 @@ See also [Classes](classes.md "Classes").
 - **`LocateEvent (Identifier AS String) AS CalendarEvent`**
  - Locates a calendar event from the collection of set events. Returns `.NULL.` if not found.
 ---
+- **`MonthName ()`**
+ - Returns the name of the month of the current calendar date
+- **`MonthName (Month AS Number)`**
+ - Returns the name of the month 
+- **`MonthName (Month AS Number, Year AS Number)`**
+ - Returns the name of the month of a specific year
+- **`MonthName (Month AS Number, Year AS Number, ShortName AS Logical)`**
+ - Returns the name of the month of a specific year, short version
+---
+- **`MonthsAdd (Months AS Number)`**
+ - Adds a number of months (negative or positive) to the current calendar date (the result sets the new current calendar date)
+---
 - **`SetDate (CalYearDateOrEvent AS CalendarCalc)`**
  - Sets the current date to the current date of `m.CalYearDateOrEvent` (this Calendar may be from a different calendar system).
 - **`SetDate (CalYearDateOrEvent AS String)`**
@@ -156,9 +168,14 @@ See also [Classes](classes.md "Classes").
  - Returns the week day of the calendar date `m.Year`, `m.Month`, `m.Day` (assuming the last day(s) of the week is for rest / religious obligations: 1 = Monday, 7 = Sunday)
 ---
 - **`WeekdayName () AS String`**
- - Returns the week day of the current calendar date
+ - Returns the name of the week day of the current calendar date
 - **`WeekdayName (Year AS Integer, Month AS Integer, Day AS Integer) AS String`**
- - Returns the week day of the calendar date `m.Year`, `m.Month`, `m.Day`
+ - Returns the name of the week day of the calendar date `m.Year`, `m.Month`, `m.Day`
+- **`WeekdayName (Year AS Integer, Month AS Integer, Day AS Integer, ShortName AS Logical) AS String`**
+ - Returns the short name of the week day of the calendar date `m.Year`, `m.Month`, `m.Day`
+---
+- **`YearsAdd (Years AS Number)`**
+ - Adds a number of years (negative or positive) to the current calendar date (the result sets the new current calendar date)
 ---
 - **`_fromJulian (JulianDate AS Number)`**
  - Specific calendar system calculation to transform a Julian Day Number into a calendar date

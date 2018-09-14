@@ -25,7 +25,7 @@
 		<origin>Civil</origin>
 		<observed>true</observed>
 		<month>2</month>
-		<day>20</day>
+		<weekday ordinal="3">1</weekday>
 	</event>
 	<event>
 		<identifier>us.memorial</identifier>

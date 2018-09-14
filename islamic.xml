@@ -20,5 +20,24 @@
 		<term name="weekday.5">Yawm al-Jum'ah</term>
 		<term name="weekday.6">Yawm as-Sabt</term>
 		<term name="weekday.7">Yawm al-Ahad</term>
+		<term name="month.short.1">Muh</term>
+		<term name="month.short.2">Saf</term>
+		<term name="month.short.3">Rab 1</term>
+		<term name="month.short.4">Rab 2</term>
+		<term name="month.short.5">Jum 1</term>
+		<term name="month.short.6">Jum 2</term>
+		<term name="month.short.7">Raj</term>
+		<term name="month.short.8">Sha</term>
+		<term name="month.short.9">Ram</term>
+		<term name="month.short.10">Shaw</term>
+		<term name="month.short.11">Dhu 1</term>
+		<term name="month.short.12">Dhu 2</term>
+		<term name="weekday.short.1">Ith</term>
+		<term name="weekday.short.2">Thu</term>
+		<term name="weekday.short.3">Arb</term>
+		<term name="weekday.short.4">Kha</term>
+		<term name="weekday.short.5">Jum</term>
+		<term name="weekday.short.6">Sab</term>
+		<term name="weekday.short.7">Aha</term>
 	</locales>
 </calendar>

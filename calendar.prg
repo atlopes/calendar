@@ -82,6 +82,8 @@ DEFINE CLASS CalendarCalc AS Custom
 						'<memberdata name="issameday" type="method" display="IsSameDay" />' + ;
 						'<memberdata name="isafter" type="method" display="IsAfter" />' + ;
 						'<memberdata name="daysadd" type="method" display="DaysAdd" />' + ;
+						'<memberdata name="monthsadd" type="method" display="MonthsAdd" />' + ;
+						'<memberdata name="yearsadd" type="method" display="YearsAdd" />' + ;
 						'<memberdata name="isleapyear" type="method" display="IsLeapYear" />' + ;
 						'<memberdata name="lastdayofmonth" type="method" display="LastDayOfMonth" />' + ;
 						'<memberdata name="monthname" type="method" display="MonthName" />' + ;
@@ -349,7 +351,77 @@ DEFINE CLASS CalendarCalc AS Custom
 
 		SAFETHIS
 
+		ASSERT VARTYPE(m.Days) = "N" ;
+			MESSAGE "Numeric parameter expected."
+
 		This.FromJulian(This.ToJulian() + m.Days)
+	ENDPROC
+
+	* MonthsAdd()
+	* adds a number of months (negative or positive) to the current date
+	PROCEDURE MonthsAdd (Months AS Number)
+
+		SAFETHIS
+
+		ASSERT VARTYPE(m.Months) = "N" ;
+			MESSAGE "Numeric parameter expected."
+
+		LOCAL AbsMonths AS Integer
+		LOCAL ToYear AS Integer
+		LOCAL ToMonth AS Integer
+	
+		m.AbsMonths = (This.Year * 12) + (This.Month - 1) + m.Months
+		m.ToYear = INT(m.AbsMonths / 12)
+		m.ToMonth = (m.AbsMonths % 12) + 1
+
+		DO CASE
+		CASE This.Validate(m.ToYear, m.ToMonth, This.Day)
+			This.SetDate(m.ToYear, m.ToMonth, This.Day)
+
+		CASE This.Validate(m.ToYear, m.ToMonth, NVL(This.LastDayOfMonth(m.ToYear, m.ToMonth), 1))
+			This.SetDate(m.ToYear, m.ToMonth, NVL(This.LastDayOfMonth(m.ToYear, m.ToMonth), 1))
+
+		CASE m.Months < 0
+			This.SetDate(This.MinYear, This.MinMonth, This.MinYear)
+
+		OTHERWISE
+			This.SetDate(This.MaxYear, This.MaxMonth, This.MaxDay)
+
+		ENDCASE
+		
+	ENDPROC
+
+	* YearsAdd()
+	* adds a number of years (negative or positive) to the current date
+	PROCEDURE YearsAdd (Years AS Number)
+
+		SAFETHIS
+
+		ASSERT VARTYPE(m.Years) = "N" ;
+			MESSAGE "Numeric parameter expected."
+
+		LOCAL ToYear AS Integer
+	
+		m.ToYear = .Year + m.Years
+
+		DO CASE
+		CASE This.Validate(m.ToYear, This.Month, This.Day)
+			This.SetDate(m.ToYear, This.Month, This.Day)
+
+		CASE This.Validate(m.ToYear, This.Month, NVL(This.LastDayOfMonth(m.ToYear, This.Month), 1))
+			This.SetDate(m.ToYear, This.Month, NVL(This.LastDayOfMonth(m.ToYear, This.Month), 1))
+
+		CASE This.Validate(m.ToYear, 1, 1)
+			This.SetDate(m.ToYear, 1, 1)
+
+		CASE m.Months < 0
+			This.SetDate(This.MinYear, This.MinMonth, This.MinYear)
+
+		OTHERWISE
+			This.SetDate(This.MaxYear, This.MaxMonth, This.MaxDay)
+
+		ENDCASE
+		
 	ENDPROC
 
 	* IsLeapYear()
@@ -366,14 +438,17 @@ DEFINE CLASS CalendarCalc AS Custom
 
 	* MonthName()
 	* gets the name of the month, for the current locale
-	FUNCTION MonthName (Month AS Number) AS String
+	FUNCTION MonthName (Month AS Number, Year AS Number, ShortName AS Logical) AS String
 	
 		SAFETHIS
 		
-		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) = "N" ;
-			MESSAGE "Numeric parameter expected."
+		ASSERT PCOUNT() = 0 OR ;
+				(PCOUNT() = 1 AND VARTYPE(m.Month) == "N") OR ;
+				(VARTYPE(m.Month) + VARTYPE(m.Year) + VARTYPE(m.ShortName)) == "NNL" ;
+			MESSAGE "Numeric and logical parameters expected."
 
 		LOCAL Name AS String
+		LOCAL Entry AS String
 
 		IF PCOUNT() = 0
 			m.Month = This.Month
@@ -384,7 +459,8 @@ DEFINE CLASS CalendarCalc AS Custom
 		ENDIF
 
 		IF !ISNULL(This.Vocabulary)
-			m.Name = This.GetLocale("month." + TRANSFORM(m.Month))
+			m.Entry = "month." + IIF(m.ShortName, "short.", "")
+			m.Name = This.GetLocale(m.Entry + TRANSFORM(m.Month))
 		ENDIF
 	
 		RETURN EVL(m.Name, .NULL.)
@@ -416,14 +492,15 @@ DEFINE CLASS CalendarCalc AS Custom
 
 	* WeekdayName()
 	* returns the name of the weekday, for a given locale
-	FUNCTION WeekdayName (Year AS Number, Month AS Number, Day AS Number) AS Number
+	FUNCTION WeekdayName (Year AS Number, Month AS Number, Day AS Number, ShortName AS Logical) AS Number
 	
 		SAFETHIS
 
-		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) + VARTYPE(m.Year) + VARTYPE(m.Day) == "NNN" ;
-			MESSAGE "Numeric parameters expected."
+		ASSERT PCOUNT() = 0 OR VARTYPE(m.Month) + VARTYPE(m.Year) + VARTYPE(m.Day) + VARTYPE(m.ShortName) == "NNNL" ;
+			MESSAGE "Numeric and logical parameters expected."
 
 		LOCAL Name AS String
+		LOCAL Entry AS String
 		
 		IF PCOUNT() = 0
 			m.Day = This.Day
@@ -436,7 +513,8 @@ DEFINE CLASS CalendarCalc AS Custom
 		ENDIF
 
 		IF !ISNULL(This.Vocabulary)
-			m.Name = This.GetLocale("weekday." + TRANSFORM(This.Weekday(m.Year, m.Month, m.Day)))
+			m.Entry = "weekday." + IIF(m.ShortName, "short.", "")
+			m.Name = This.GetLocale(m.Entry + TRANSFORM(This.Weekday(m.Year, m.Month, m.Day)))
 		ENDIF
 
 		RETURN EVL(m.Name, .NULL.)

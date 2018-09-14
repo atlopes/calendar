@@ -13,6 +13,18 @@
 		<term name="month.10">Dey</term>
 		<term name="month.11">Bahman</term>
 		<term name="month.12">Esfand</term>
+		<term name="month.short.1">Far</term>
+		<term name="month.short.2">Ord</term>
+		<term name="month.short.3">Kho</term>
+		<term name="month.short.4">Tir</term>
+		<term name="month.short.5">Mor</term>
+		<term name="month.short.6">Sha</term>
+		<term name="month.short.7">Meh</term>
+		<term name="month.short.8">Aba</term>
+		<term name="month.short.9">Aza</term>
+		<term name="month.short.10">Dey</term>
+		<term name="month.short.11">Bah</term>
+		<term name="month.short.12">Esf</term>
 		<term name="weekday.1">dushanbah</term>
 		<term name="weekday.2">sahshanbah</term>
 		<term name="weekday.3">chihar shanbah</term>
@@ -20,5 +32,12 @@
 		<term name="weekday.5">jum'ah</term>
 		<term name="weekday.6">shanbah</term>
 		<term name="weekday.7">yakshanbah</term>
+		<term name="weekday.short.1">dus</term>
+		<term name="weekday.short.2">sah</term>
+		<term name="weekday.short.3">chi</term>
+		<term name="weekday.short.4">pan</term>
+		<term name="weekday.short.5">jum</term>
+		<term name="weekday.short.6">sha</term>
+		<term name="weekday.short.7">yak</term>
 	</locales>
 </calendar>
