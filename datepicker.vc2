@@ -502,7 +502,7 @@ DEFINE CLASS formdatepicker AS form
 		* if the datetime is not set, set it by reading the type of the target control value or control source
 		IF ISNULL(This.IsDatetime)
 			IF !ISNULL(m.TargetControl)
-				This.IsDatetime = TYPE("m.TargetControl.Value") == "T" OR TYPE(m.TargetControl.ControlSource) == "T"
+				This.IsDatetime = m.TargetControl.IsDatetime OR TYPE("m.TargetControl.Value") == "T" OR TYPE(m.TargetControl.ControlSource) == "T"
 			ELSE
 				* otherwise, pick only the date
 				This.IsDatetime = .F.
@@ -510,36 +510,33 @@ DEFINE CLASS formdatepicker AS form
 		ENDIF
 		
 		* if we don't have a target control, or won't pick the time portion of the date
-		IF ISNULL(m.TargetControl) OR !m.TargetControl.IsDatetime
-			* remove the time visual controls
-			IF !This.IsDatetime
-				This.Height = This.Height - (This.lblSelectedTime.Top - This.lblSelected.Top)
-				STORE .F. TO This.lblSelectedTime.Visible, This.btnNow.Visible
+		IF ISNULL(m.TargetControl) OR !This.IsDatetime
+			This.Height = This.Height - (This.lblSelectedTime.Top - This.lblSelected.Top)
+			STORE .F. TO This.lblSelectedTime.Visible, This.btnNow.Visible
+		ELSE
+			IF !ISNULL(m.TargetControl)
+				* in this case, we have a target control and time to be picked
+				* do we need the seconds?
+				IF m.TargetControl.Seconds = 0 OR (m.TargetControl.Seconds = 2 AND SET("Seconds") == "OFF")
+					This.pgfViews.pagHours.lstSecond.Enabled = .F.
+				ENDIF
+				* are we using 24 or 12 hours display?
+				IF m.TargetControl.Hours = 24 OR (m.TargetControl.Hours = 0 AND SET("Hours") == 24)
+					This.pgfViews.pagHours.opgMeridian.Visible = .F.
+				ELSE
+					* if 12 hours-display, 00 will become 12, and values above 12 will be stripped from the dropdown list
+					WITH This.pgfViews.pagHours.lstHour
+						.List(1) = "12"
+						FOR m.LoopIndex = .ListCount TO 13 STEP -1
+							.RemoveItem(m.LoopIndex)
+						ENDFOR
+					ENDWITH
+				ENDIF
+				* set the time, and signal we'll pick the time portion
+				This.SelectedTime = m.TargetControl.Value
 			ELSE
-			* otherwise, set the time from the start date
 				This.SelectedTime = DTOT(This.ReferenceDate)
 			ENDIF
-		ELSE
-			* in this case, we have a target control and time to be picked
-			* do we need the seconds?
-			IF m.TargetControl.Seconds = 0 OR (m.TargetControl.Seconds = 2 AND SET("Seconds") == "OFF")
-				This.pgfViews.pagHours.lstSecond.Enabled = .F.
-			ENDIF
-			* are we using 24 or 12 hours display?
-			IF m.TargetControl.Hours = 24 OR (m.TargetControl.Hours = 0 AND SET("Hours") == 24)
-				This.pgfViews.pagHours.opgMeridian.Visible = .F.
-			ELSE
-				* if 12 hours-display, 00 will become 12, and values above 12 will be stripped from the dropdown list
-				WITH This.pgfViews.pagHours.lstHour
-					.List(1) = "12"
-					FOR m.LoopIndex = .ListCount TO 13 STEP -1
-						.RemoveItem(m.LoopIndex)
-					ENDFOR
-				ENDWITH
-			ENDIF
-			* set the time, and signal we'll pick the time portion
-			This.SelectedTime = m.TargetControl.Value
-			This.IsDatetime = .T.
 		ENDIF
 		
 		* create the date picker menu (it will be available inside the form)
