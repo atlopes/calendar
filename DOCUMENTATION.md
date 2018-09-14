@@ -8,4 +8,5 @@ Calendar events (natural/astronomical, civilian, religious, of any kind, includi
 
 * [Classes](classes.md "Classes")
 * [Properties and Methods](pem.md "Properties and Methods")
+* [DatePicker Visual Library](datepicker.md "DatePicker")
 * [Examples](examples.md "Examples")

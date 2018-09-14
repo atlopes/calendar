@@ -118,3 +118,9 @@ ENDFOR
 ```
 
 [Source](examples/seasons.prg "Source")
+
+**Date picker**
+
+The DatePicker visual library includes visual controls to pick date and datetime values. Although it can be used with the system calendar, it supports CalendarCalc classes, and their event processors.
+
+[Source](examples/datepicker.sc2 "Source"), [SCX](examples/datepicker.scx) and [SCT](examples/datepicker.sct).

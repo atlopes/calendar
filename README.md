@@ -5,6 +5,7 @@ A VFP set of classes to hold calendrical information, and perform simple calcula
 ### Overview ###
 
 * Use these classes to represent a day in different calendar systems, or to switch between different calendars, or to extend the time coverage or precision of VFP's Date data type, or to perform basic calendrical calculations, or to check for calendar events...
+* Use the DatePicker visual library to easily pick dates and datetimes, and insert the picked value into a target textbox.
 * The calculations are, for the most part, based on Kees Couprie's [Calendar Math](http://members.casema.nl/couprie/calmath/) website, and on Calendar.c, a C++ transcript from the original LISP code used for "Calendrical Calculations" by Nachum Dershowitz and Edward M. Reingold.
 
 ### Using ###
@@ -22,7 +23,9 @@ A VFP set of classes to hold calendrical information, and perform simple calcula
 ### To-Do ###
 
 * More calendars...
-* iCalendar interface...
+* A DatePicker visual library that supports the CalendarCalc classes is being tested...
+* iCalendar interface (see 
+[iCal4VFP](https://bitbucket.org/atlopes/iCal4VFP) project)...
 
 ### Talk, talk, talk... ###
 

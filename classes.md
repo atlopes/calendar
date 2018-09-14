@@ -12,7 +12,8 @@ If you want to keep it simple, just include all PRG and XML files, and any class
 
 Presentation order: base classes, then julian and gregorian classes, then alphabetical.
 
-See also [Properties and Methods](pem.md "Properties and Methods").
+See also [Properties and Methods](pem.md "Properties and Methods"), and the 
+[DatePicker Visual Libary](datepicker.md "DatePicker") documentation.
 
 #### Calendar related
 
