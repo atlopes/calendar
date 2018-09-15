@@ -20,7 +20,7 @@ Further documentation about to follow. Please, refer also to the example form in
 
 ### Installation ###
 
-The Visual Library is presented as a [.sc2](datepicker.sc2 ".sc2") FoxBin2Prg document, as the regular combination of [.scx](datepicker.scx ".scx") and [.sct](datepicker.sct ".sct") files, or compressed in a [.zip](datepicker.zip ".zip") file.
+The Visual Library is presented as a [.vc2](datepicker.vc2 ".sc2") FoxBin2Prg document, as the regular combination of [.vcx](datepicker.vcx ".vcx") and [.vct](datepicker.vct ".sct") files, or compressed in a [.zip](datepicker.zip ".zip") file.
 
 In your development system, use whichever form is more convenient for installation.
 
@@ -66,3 +66,9 @@ You may inhibit the use of the system calendar by setting `.NoSystemCalendar` to
 Events attached to any calendar will be shown in the month view of the date picker form, by greying its tile (actually, the color is set by the form's `.EventBackColor` property) and by tooltiping the event description.
 
 No matter what calendar was used to pick the date, it will always be returned as a date or datetime value, by setting the target control's `.Value` property. Use CalendarCalc conversion methods to have this value transposed to any other calendar.
+
+### User interface
+
+The main components of the user interface are identified in the following image:
+
+![Main UI components](ui-1.png "Main UI components")
