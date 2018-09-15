@@ -2,7 +2,7 @@
 
 Go to [Overview](DOCUMENTATION.md "Overview")
 
-### Classes
+## Classes ##
 
 To use a class, include in a project its PRG file and all the hierarchy of dependencies and locale files, up to the base CalendarCalc class. For instance, if you want to use the British Calendar, select BritishCalendar class, and include in your project british-calendar.prg, gregorian-calendar.prg, christian-julian-calendar.prg, julian-calendar.prg, julian.xml, and calendar.prg.
 
@@ -15,7 +15,7 @@ Presentation order: base classes, then julian and gregorian classes, then alphab
 See also [Properties and Methods](pem.md "Properties and Methods"), and the 
 [DatePicker Visual Libary](datepicker.md "DatePicker") documentation.
 
-#### Calendar related
+### Calendar related
 
 | Class | Filename | Dependency | Locale |
 | ----- | -------- | ---------- | ------ |
@@ -42,7 +42,7 @@ See also [Properties and Methods](pem.md "Properties and Methods"), and the
 | PersianCalendar | [persian-calendar.prg](persian-calendar.prg "persian-calendar.prg") | calendar.prg | [persian.xml](persian.xml "persian.xml") |
 | RepublicanCalendar | [republican-calendar.prg](republican-calendar.prg "republican-calendar.prg") | calendar.prg | [republican.xml](republican.xml "republican.xml") |
 
-#### Calendar events related
+### Calendar events related
 
 | Class | Filename | Dependency | Definitions |
 | ----- | -------- | ---------- | ------ |

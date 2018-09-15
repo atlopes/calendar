@@ -1,6 +1,6 @@
 # CalendarCalc Documentation
 
-### Overview
+## Overview
 
 CalendarCalc for VFP is a set of classes that handle calendrical information and calculations. There is a base class, named CalendarCalc, from which the actual calendar classes derive (that is, the ones for a specific calendar system, such as Hebrew, or Persian, or Gregorian).
 

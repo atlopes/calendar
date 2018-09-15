@@ -4,9 +4,9 @@ Go to [Overview](DOCUMENTATION.md "Overview")
 
 See also [Classes](classes.md "Classes").
 
-### Properties
+## Properties ##
 
-#### CalendarCalc
+### CalendarCalc ###
 
 | Name | Type | Information |
 | ---- | ---- | ----------- |
@@ -23,7 +23,7 @@ See also [Classes](classes.md "Classes").
 | VocabularySource | C | The XML source for localized information | 
 | Year, Month and Day | N | The current calendar date |
 
-#### CalendarEvent
+### CalendarEvent ###
 
 | Name | Type | Information |
 | ---- | ---- | ----------- |
@@ -37,7 +37,7 @@ See also [Classes](classes.md "Classes").
 | Year, Month, and Day | N | Event date. |
 | YearBegin and YearEnd | N | The years in which the event was applied (defaults to 0, meaning that there are no specified limits). | 
 
-#### CalendarEventProcessor
+### CalendarEventProcessor ###
 
 | Name | Type | Information |
 | ---- | ---- | ----------- |
@@ -50,9 +50,9 @@ See also [Classes](classes.md "Classes").
 | ReferenceCalendarClass | C | The name of the CalendarCalc class (defaults to "CalendarCalc") |
 | Scope | C | The default status of observance scope (defaults to "" = unset).
 
-### Methods
+## Methods ##
 
-#### Calendar
+### Calendar ###
 
 - **`AttachEventProcessor (Identifier AS String, ProcessorClass AS String, ProcessorLibrary AS String) AS Boolean`**
  - Attaches an event processor to calculate events for the calendar object. If the class is not in scope, pass the `m.ProcessorLibrary`, also.
@@ -182,7 +182,7 @@ See also [Classes](classes.md "Classes").
 - **`_toJulian (CalYear AS Integer, CalMonth AS Integer, CalDay AS Integer) AS Number`**
  - Specific calendar system calculation to transform a calendar date into a Julian Day Number
 
-#### CalendarEventProcessor
+### CalendarEventProcessor ###
 
 - **`GetOption (Option AS String) AS AnyType`**
  - Gets the current setting of an option.

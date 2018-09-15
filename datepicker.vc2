@@ -511,6 +511,7 @@ DEFINE CLASS formdatepicker AS form
 		
 		* if we don't have a target control, or won't pick the time portion of the date
 		IF ISNULL(m.TargetControl) OR !This.IsDatetime
+			* remove the time visual controls
 			This.Height = This.Height - (This.lblSelectedTime.Top - This.lblSelected.Top)
 			STORE .F. TO This.lblSelectedTime.Visible, This.btnNow.Visible
 		ELSE
@@ -533,7 +534,7 @@ DEFINE CLASS formdatepicker AS form
 					ENDWITH
 				ENDIF
 				* set the time, and signal we'll pick the time portion
-				This.SelectedTime = m.TargetControl.Value
+				This.SelectedTime = IIF(TYPE("m.TargetControl.Value") == "T", m.TargetControl.Value, DTOT(NVL(m.TargetControl.Value, DATETIME())))
 			ELSE
 				This.SelectedTime = DTOT(This.ReferenceDate)
 			ENDIF
@@ -1229,11 +1230,15 @@ DEFINE CLASS formdatepicker AS form
 		LOCAL LoopIndex AS Integer
 		LOCAL OverControl AS Logical
 		
+		* calculate the initial position of the form
+		
 		m.TargetForm = .NULL.
 		m.InGrid = .F.
 		
 		STORE 0 TO m.TopX, m.LeftX
 		
+		* if there is a target control, traverse the hierarchy of its containers (page/page frames, columns/grids...)
+		* in each step, top and left relative coordinates must be added to determine the final absolute coordinates
 		IF !ISNULL(This.TargetControl)
 			m.TargetHierarchy = This.TargetControl.Parent
 			DO WHILE ISNULL(m.TargetForm) AND !ISNULL(m.TargetHierarchy)
@@ -1274,10 +1279,13 @@ DEFINE CLASS formdatepicker AS form
 			ENDDO
 		ENDIF
 		
+		* if we found a form
 		IF !ISNULL(m.TargetForm)
 		
+			* the form is not being placed over the target control
 			m.OverControl = .F.
 		
+			* get the form positional coordinates, and add to get an absolute screen position
 			IF m.TargetForm.ShowWindow = 0 AND !m.TargetForm.Desktop
 				m.TopX = m.TopX + m.TargetForm.Top + _Screen.Top
 				m.LeftX = m.LeftX + m.TargetForm.Left + _Screen.Left
@@ -1285,8 +1293,7 @@ DEFINE CLASS formdatepicker AS form
 				m.TopX = m.TopX + m.TargetForm.Top
 				m.LeftX = m.LeftX + m.TargetForm.Left
 			ENDIF
-			m.TopX = m.TopX + This.TargetControl.Top
-			m.LeftX = m.LeftX + This.TargetControl.Left
+			* including frame elements
 			IF !m.InGrid
 				IF m.TargetForm.BorderStyle = 3
 					m.TopX = m.TopX + SYSMETRIC(4)
@@ -1296,30 +1303,44 @@ DEFINE CLASS formdatepicker AS form
 				m.TopX = m.TopX + SYSMETRIC(9)
 			ENDIF
 		
-			m.LeftX = m.LeftX + This.TargetControl.Width
+			* use the target control positional coordinates to determine the date picker form position
+			m.TopX = m.TopX + This.TargetControl.Top
+			m.LeftX = m.LeftX + This.TargetControl.Left + This.TargetControl.Width
 		
+			* if the form does not fit to the right of the target control
 			IF m.LeftX + This.Width > SYSMETRIC(21)
+				* place it over the control
 				m.LeftX = m.LeftX - This.TargetControl.Width
+				* if even now it does not fit
 				IF m.LeftX + This.Width > SYSMETRIC(21)
+					* align its right edge to the the right edge of the target control
 					m.LeftX = m.LeftX - This.Width + This.TargetControl.Width
 				ENDIF
+				* in any case, now it's being placed over the cursor
 				m.OverControl = .T.
 			ENDIF
 		
+			* if the form does not fit vertically
 			IF m.TopX + This.Height > SYSMETRIC(22)
+				* move it upwards
 				m.TopX = m.TopX - This.Height
+				* if it was over the control, move it a bit more
 				IF m.OverControl
 					m.TopX = m.TopX - This.TargetControl.Height
 				ENDIF
 			ELSE
+				* but if it was already over the target control
 				IF m.OverControl
+					* move it downwards
 					m.TopX = m.TopX + This.TargetControl.Height
+					* unless it coudn't fit, so move it upwards
 					IF m.TopX + This.Height > SYSMETRIC(22)
 						m.TopX = m.TopX - (This.Height + This.TargetControl.Height)
 					ENDIF
 				ENDIF
 			ENDIF
 		
+			* the form is finally placed
 			This.Top = m.TopX
 			This.Left = m.LeftX
 		

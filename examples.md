@@ -2,7 +2,7 @@
 
 Go to [Overview](DOCUMENTATION.md "Overview")
 
-### Examples
+## Examples ##
 
 **Display current date**
 
