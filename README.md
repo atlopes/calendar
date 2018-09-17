@@ -10,7 +10,7 @@ A VFP set of classes to hold calendrical information, and perform simple calcula
 
 ## Using ##
 
-* See [UNLICENSE](UNLICENSE.md).
+* See [UNLICENSE](UNLICENSE.md). Icons in the DatePicker Visual Library, by [Icons8](https://icons8.com "Icons8"), are licensed under an [Attribution-NoDerivs 3.0 Unported](https://creativecommons.org/licenses/by-nd/3.0/)  (CC BY-ND 3.0) license by their authors.
 * In a project, include Calendar.prg (the base class) and any other specific classes that an application may require (for instance, ``gregorian-calendar.prg``, ``hebrew-calendar.prg``).
 * To make available a class definition, DO its program (for instance, `DO persian-calendar.prg`)
 * Create an object, and use it (see [DOCUMENTATION](DOCUMENTATION.md) for more info).

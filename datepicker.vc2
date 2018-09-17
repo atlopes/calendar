@@ -405,11 +405,13 @@ DEFINE CLASS formdatepicker AS form
 
 	ADD OBJECT 'pgfViews.pagHours.opgMeridian' AS optiongroup WITH ;
 		AutoSize = .T., ;
+		BackStyle = 0, ;
 		ButtonCount = 2, ;
 		Left = 56, ;
 		Name = "opgMeridian", ;
 		Top = 164, ;
 		Option1.AutoSize = .T., ;
+		Option1.BackStyle = 0, ;
 		Option1.Caption = "AM", ;
 		Option1.FontName = "Segoe UI", ;
 		Option1.Height = 17, ;
@@ -418,6 +420,7 @@ DEFINE CLASS formdatepicker AS form
 		Option1.Top = 5, ;
 		Option1.Width = 37, ;
 		Option2.AutoSize = .T., ;
+		Option2.BackStyle = 0, ;
 		Option2.Caption = "PM", ;
 		Option2.FontName = "Segoe UI", ;
 		Option2.Height = 17, ;
@@ -2073,13 +2076,14 @@ DEFINE CLASS textdatepicker AS textbox
 
 	*<DefinedPropArrayMethod>
 		*m: dpopen		&& Opens a date picker window.
+		*m: setcalendars		&& Set calendars collection.
 		*p: calendarindex		&& The calendar from the calendars collection that will be used to pick a date.
 		*p: calendars		&& Collection of alternative calendars.
 		*p: dpform
 		*p: dpswitch		&& Control to switch to the date picker form.
 		*p: isdatetime		&& Signals if time should be input, also.
 		*p: nosystemcalendar		&& If set, do not use the system calendar.
-		*p: _memberdata
+		*p: _memberdata		&& XML Metadata for customizable properties
 	*</DefinedPropArrayMethod>
 
 	Alignment = 3
@@ -2099,7 +2103,8 @@ DEFINE CLASS textdatepicker AS textbox
 		<memberdata name="calendars" type="property" display="Calendars"/>
 		<memberdata name="calendarindex" type="property" display="CalendarIndex"/>
 		<memberdata name="nosystemcalendar" type="property" display="NoSystemCalendar"/>
-		</VFPData>
+		<memberdata name="setcalendars" type="method" display="SetCalendars"/>
+		</VFPData>		&& XML Metadata for customizable properties
 	
 	PROCEDURE DblClick
 		This.DPOpen()
@@ -2177,6 +2182,11 @@ DEFINE CLASS textdatepicker AS textbox
 		
 		BINDEVENT(This.DPSwitch, "Click", This, "DPOpen")
 		
+		This.SetCalendars()
+		
+	ENDPROC
+
+	PROCEDURE setcalendars		&& Set calendars collection.
 	ENDPROC
 
 ENDDEFINE

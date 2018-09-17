@@ -44,7 +44,7 @@ CalendarCalc classes may be used for calendar visualization, instead of or in ad
 
 The CalendarCalc classes are set in the `.Calendars` property of the target control, which must point to a Collection of CalendarCalc classes, keyed by some name that will allow their identification in a menu.
 
-For instance, to prepare a date picker with Jewish calendar, in addition to VFP's system calendar, place on the `Init()` of the target control,
+For instance, to prepare a date picker with Jewish calendar, in addition to VFP's system calendar, place on the `SetCalendars()` method of the target control,
 
 ```foxpro
 DO LOCFILE("hebrew-calendar.prg")
@@ -52,9 +52,6 @@ DO LOCFILE("hebrew-calendar.prg")
 This.Calendars = CREATEOBJECT("Collection")
 
 This.Calendars.Add(CREATEOBJECT("HebrewCalendar"), "Hebrew")
-
-* DO NOT FORGET!
-DODEFAULT()
 ```
 
 Other required calendars will just have to be added to the collection. Note that the calendars Collection and its members do not have to be created in every instance of the target control: it may be a form property or some object that is in scope, for instance.

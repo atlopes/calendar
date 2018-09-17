@@ -228,7 +228,7 @@ DEFINE CLASS form1 AS form
 		
 	ENDPROC
 
-	PROCEDURE Textdatepicker3.Init
+	PROCEDURE Textdatepicker3.setcalendars
 		DO LOCFILE("hebrew-calendar.prg")
 		DO LOCFILE("islamic-calendar.prg")
 		DO LOCFILE("persian-calendar.prg")
@@ -239,11 +239,9 @@ DEFINE CLASS form1 AS form
 		This.Calendars.Add(CREATEOBJECT("IslamicCalendar"), "Islamic")
 		This.Calendars.Add(CREATEOBJECT("PersianCalendar"), "Persian")
 		
-		* DO NOT FORGET!
-		DODEFAULT()
 	ENDPROC
 
-	PROCEDURE Textdatepicker4.Init
+	PROCEDURE Textdatepicker4.setcalendars
 		DO LOCFILE("us-calendar-events.prg")
 		
 		This.Calendars = CREATEOBJECT("Collection")
@@ -258,8 +256,6 @@ DEFINE CLASS form1 AS form
 		This.CalendarIndex = 1
 		This.NoSystemCalendar = .T.
 		
-		* DO NOT FORGET!
-		DODEFAULT()
 	ENDPROC
 
 ENDDEFINE
