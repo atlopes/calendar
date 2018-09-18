@@ -58,6 +58,7 @@ DEFINE CLASS formdatepicker AS form
 
 	*<DefinedPropArrayMethod>
 		*m: entershape
+		*m: indexedstring		&& Returns an indexed string.
 		*m: leaveshape
 		*m: menuselection
 		*m: movedate		&& Moves a date by a number of months.
@@ -155,6 +156,7 @@ DEFINE CLASS formdatepicker AS form
 		<memberdata name="eventbackcolor" type="property" display="EventBackColor"/>
 		<memberdata name="nosystemcalendar" type="property" display="NoSystemCalendar"/>
 		<memberdata name="string" type="method" display="String"/>
+		<memberdata name="indexedstring" type="method" display="IndexedString"/>
 		</VFPData>		&& XML Metadata for customizable properties
 
 	ADD OBJECT 'btnMenu' AS image WITH ;
@@ -298,7 +300,7 @@ DEFINE CLASS formdatepicker AS form
 	ADD OBJECT 'pgfViews.pagDays.lblFri' AS label WITH ;
 		AutoSize = .T., ;
 		BackStyle = 0, ;
-		Caption = "S", ;
+		Caption = "F", ;
 		FontName = "Segoe UI", ;
 		Left = 211, ;
 		Name = "lblFri", ;
@@ -308,7 +310,7 @@ DEFINE CLASS formdatepicker AS form
 	ADD OBJECT 'pgfViews.pagDays.lblMon' AS label WITH ;
 		AutoSize = .T., ;
 		BackStyle = 0, ;
-		Caption = "S", ;
+		Caption = "M", ;
 		FontName = "Segoe UI", ;
 		Left = 21, ;
 		Name = "lblMon", ;
@@ -328,19 +330,19 @@ DEFINE CLASS formdatepicker AS form
 	ADD OBJECT 'pgfViews.pagDays.lblSun' AS label WITH ;
 		AutoSize = .T., ;
 		BackStyle = 0, ;
-		Caption = "D", ;
+		Caption = "S", ;
 		FontName = "Segoe UI", ;
 		Height = 17, ;
 		Left = 307, ;
 		Name = "lblSun", ;
 		Top = 8, ;
-		Width = 10
+		Width = 8
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgfViews.pagDays.lblThu' AS label WITH ;
 		AutoSize = .T., ;
 		BackStyle = 0, ;
-		Caption = "Q", ;
+		Caption = "T", ;
 		FontName = "Segoe UI", ;
 		Left = 162, ;
 		Name = "lblThu", ;
@@ -360,7 +362,7 @@ DEFINE CLASS formdatepicker AS form
 	ADD OBJECT 'pgfViews.pagDays.lblWed' AS label WITH ;
 		AutoSize = .T., ;
 		BackStyle = 0, ;
-		Caption = "Q", ;
+		Caption = "W", ;
 		FontName = "Segoe UI", ;
 		Left = 114, ;
 		Name = "lblWed", ;
@@ -462,6 +464,26 @@ DEFINE CLASS formdatepicker AS form
 		
 		* when the user enters a shape, this will be signaled with a border
 		m.SourceObject.BorderStyle = 1
+	ENDPROC
+
+	PROCEDURE indexedstring		&& Returns an indexed string.
+		LPARAMETERS StringCode AS String, StringIndex AS Integer
+		LOCAL Source AS String
+		
+		m.Source = ""
+		IF This.CalendarIndex != 0
+			DO CASE
+			CASE m.StringCode == "MONTHS"
+				m.Source = This.Calendars(This.CalendarIndex).GetLocale(TEXTMERGE("month.<<m.StringIndex>>"))
+			CASE m.StringCode == "SHORT_MONTHS"
+				m.Source = This.Calendars(This.CalendarIndex).GetLocale(TEXTMERGE("month.short.<<m.StringIndex>>"))
+			CASE m.StringCode == "INIT_WDAYS"
+				m.Source = This.Calendars(This.CalendarIndex).GetLocale(TEXTMERGE("weekday.short.<<m.StringIndex>>"))
+			ENDCASE
+		ENDIF
+		
+		RETURN EVL(m.Source, STREXTRACT(This.String(m.StringCode), TEXTMERGE(":<<m.StringIndex>>:"), ":"))
+		
 	ENDPROC
 
 	PROCEDURE Init
@@ -779,6 +801,7 @@ DEFINE CLASS formdatepicker AS form
 		LOCAL DayEvents AS Collection
 		LOCAL DayEventID AS String
 		LOCAL EventsDescription AS String
+		LOCAL WDayReference AS Label
 		
 		* orientation will be > 1 moving forward, or < 0 moving backward
 		IF PCOUNT() = 0
@@ -835,6 +858,30 @@ DEFINE CLASS formdatepicker AS form
 					m.LblReference = EVALUATE(TEXTMERGE(".lblR<<m.RowIndex>>C<<m.ColIndex>>"))
 					m.ShpReference = EVALUATE(TEXTMERGE(".shpR<<m.RowIndex>>C<<m.ColIndex>>"))
 					m.BaseReference = EVALUATE(TEXTMERGE(".shpR<<m.RowIndex>>C<<m.ColIndex>>_base"))
+		
+					IF m.RowIndex = 1
+						DO CASE
+						CASE m.ColIndex = 1
+							m.WDayReference = .lblMon
+						CASE m.ColIndex = 2
+							m.WDayReference = .lblTue
+						CASE m.ColIndex = 3
+							m.WDayReference = .lblWed
+						CASE m.ColIndex = 4
+							m.WDayReference = .lblThu
+						CASE m.ColIndex = 5
+							m.WDayReference = .lblFri
+						CASE m.ColIndex = 6
+							m.WDayReference = .lblSat
+						OTHERWISE
+							m.WDayReference = .lblSun
+						ENDCASE
+						m.WDayReference.Caption = ""
+						m.WDayReference.Visible = .T.
+						m.WDayReference.Caption = Thisform.IndexedString("INIT_WDAYS", m.ColIndex)
+						m.WDayReference.Top = (m.ShpReference.Height - m.WDayReference.Height) / 2
+						m.WDayReference.Left = m.ShpReference.Left + (m.ShpReference.Width - m.WDayReference.Width) / 2
+					ENDIF
 		
 					m.ShpReference.ToolTipText = ""
 					* this is what will be picked, if the user chooses the tile
@@ -906,7 +953,7 @@ DEFINE CLASS formdatepicker AS form
 		
 		* display the month, on top
 		IF This.CalendarIndex = 0
-			This.lblContext.Caption = STREXTRACT(This.String("MONTHS"), TEXTMERGE(":<<MONTH(Thisform.ReferenceDate)>>:"), ":") + ;
+			This.lblContext.Caption = This.IndexedString("MONTHS", MONTH(Thisform.ReferenceDate)) + ;
 											" " + TRANSFORM(YEAR(Thisform.ReferenceDate))
 		ELSE
 			WITH This.Calendars(This.CalendarIndex) AS CalendarCalc
@@ -985,7 +1032,7 @@ DEFINE CLASS formdatepicker AS form
 					m.LblReference.Visible = .T.
 					* make that verification using the built-in functions
 					IF This.CalendarIndex = 0
-						m.LblReference.Caption = STREXTRACT(This.String("SHORT_MONTHS"), TEXTMERGE(":<<MONTH(m.MonthIndex)>>:"), ":")
+						m.LblReference.Caption = This.IndexedString("SHORT_MONTHS", MONTH(m.MonthIndex))
 						m.LblReference.Enabled = YEAR(m.MonthIndex) = m.ReferenceYear
 						m.CurrentMonth = (MONTH(m.MonthIndex) = MONTH(DATE()) AND YEAR(m.MonthIndex) = YEAR(DATE()))
 						m.MonthIndex = This.MoveDate(m.MonthIndex, 1)
@@ -1452,6 +1499,10 @@ DEFINE CLASS formdatepicker AS form
 		
 	ENDPROC
 
+	PROCEDURE btnNext.DblClick
+		This.Click()
+	ENDPROC
+
 	PROCEDURE btnNext.Init
 		LOCAL Source AS String
 		
@@ -1547,6 +1598,11 @@ DEFINE CLASS formdatepicker AS form
 			Thisform.PopulateYears(-1)
 		
 		ENDCASE
+		
+	ENDPROC
+
+	PROCEDURE btnPrevious.DblClick
+		This.Click()
 		
 	ENDPROC
 
@@ -1826,30 +1882,6 @@ DEFINE CLASS formdatepicker AS form
 					BINDEVENT(m.ObjReference, "DblClick", Thisform, "PickDay")
 					BINDEVENT(m.ObjReference, "MouseEnter", Thisform, "EnterShape")
 					BINDEVENT(m.ObjReference, "MouseLeave", Thisform, "LeaveShape")
-		
-					IF m.RowIndex = 1
-						DO CASE
-						CASE m.ColIndex = 1
-							m.WDayReference = .lblMon
-						CASE m.ColIndex = 2
-							m.WDayReference = .lblTue
-						CASE m.ColIndex = 3
-							m.WDayReference = .lblWed
-						CASE m.ColIndex = 4
-							m.WDayReference = .lblThu
-						CASE m.ColIndex = 5
-							m.WDayReference = .lblFri
-						CASE m.ColIndex = 6
-							m.WDayReference = .lblSat
-						OTHERWISE
-							m.WDayReference = .lblSun
-						ENDCASE
-						m.WDayReference.Caption = ""
-						m.WDayReference.Visible = .T.
-						m.WDayReference.Caption = STREXTRACT(Thisform.String("INIT_WDAYS"), TEXTMERGE(":<<m.ColIndex>>:"), ":")
-						m.WDayReference.Top = (m.ObjReference.Height - m.WDayReference.Height) / 2
-						m.WDayReference.Left = m.ObjReference.Left + (m.ObjReference.Width - m.WDayReference.Width) / 2
-					ENDIF
 		
 				ENDFOR
 			ENDFOR
