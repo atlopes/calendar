@@ -80,4 +80,44 @@
 		<term name="weekday.short.6">Sam</term>
 		<term name="weekday.short.7">Son</term>
 	</locales>
+  <locales code="pt">
+    <term name="month.1">Janeiro</term>
+    <term name="month.2">Fevereiro</term>
+    <term name="month.3">Março</term>
+    <term name="month.4">Abril</term>
+    <term name="month.5">Maio</term>
+    <term name="month.6">Junho</term>
+    <term name="month.7">Julho</term>
+    <term name="month.8">Agosto</term>
+    <term name="month.9">Setembro</term>
+    <term name="month.10">Outubro</term>
+    <term name="month.11">Novembro</term>
+    <term name="month.12">Dezembro</term>
+    <term name="weekday.1">Segunda-feira</term>
+    <term name="weekday.2">Terça-feira</term>
+    <term name="weekday.3">Quarta-feira</term>
+    <term name="weekday.4">Quinta-feira</term>
+    <term name="weekday.5">Sexta-feira</term>
+    <term name="weekday.6">Sábado</term>
+    <term name="weekday.7">Domingo</term>
+    <term name="month.short.1">Jan</term>
+    <term name="month.short.2">Fev</term>
+    <term name="month.short.3">Mar</term>
+    <term name="month.short.4">Abr</term>
+    <term name="month.short.5">Mai</term>
+    <term name="month.short.6">Jun</term>
+    <term name="month.short.7">Jul</term>
+    <term name="month.short.8">Ago</term>
+    <term name="month.short.9">Set</term>
+    <term name="month.short.10">Out</term>
+    <term name="month.short.11">Nov</term>
+    <term name="month.short.12">Dez</term>
+    <term name="weekday.short.1">Seg</term>
+    <term name="weekday.short.2">Ter</term>
+    <term name="weekday.short.3">Qua</term>
+    <term name="weekday.short.4">Qui</term>
+    <term name="weekday.short.5">Sex</term>
+    <term name="weekday.short.6">Sáb</term>
+    <term name="weekday.short.7">Dom</term>
+  </locales>
 </calendar>

@@ -455,7 +455,7 @@ DEFINE CLASS CalendarCalc AS Custom
 		ENDIF
 
 		IF ISNULL(This.Vocabulary) AND !ISNULL(This.VocabularySource)
-			This.SetVocabulary(LOCFILE(This.VocabularySource))
+			This.SetVocabulary(This.VocabularySource)
 		ENDIF
 
 		IF !ISNULL(This.Vocabulary)
@@ -509,7 +509,7 @@ DEFINE CLASS CalendarCalc AS Custom
 		ENDIF
 
 		IF ISNULL(This.Vocabulary) AND !ISNULL(This.VocabularySource)
-			This.SetVocabulary(LOCFILE(This.VocabularySource))
+			This.SetVocabulary(This.VocabularySource)
 		ENDIF
 
 		IF !ISNULL(This.Vocabulary)
@@ -639,14 +639,23 @@ DEFINE CLASS CalendarCalc AS Custom
 		ASSERT VARTYPE(m.XMLorURL) == "C" ;
 			MESSAGE "String parameter expected."
 
+		LOCAL Source AS String
+
 		IF !ISNULL(This.Vocabulary)
 			This.Vocabulary = .NULL.
 		ENDIF
 
 		This.Vocabulary = CREATEOBJECT("MSXML2.DOMDocument.6.0")
 		This.Vocabulary.Async = .F.
+
+		TRY
+			m.Source = FILETOSTR(m.XMLorURL)
+		CATCH
+			m.Source = m.XMLorURL
+		ENDTRY
+
 		* try to load from a URL or from a string
-		IF This.Vocabulary.Load(m.XMLorURL) OR This.Vocabulary.LoadXML(m.XMLorURL)
+		IF This.Vocabulary.Load(m.Source) OR This.Vocabulary.LoadXML(m.Source)
 			RETURN .T.
 		ENDIF
 
@@ -672,7 +681,7 @@ DEFINE CLASS CalendarCalc AS Custom
 		TRY
 			IF PCOUNT() = 3
 				* if a library was given, create an object from it and store the object at the processors collection
-				This.EventsProcessors.Add(NEWOBJECT(m.ProcessorClass, LOCFILE(m.ProcessorLibrary), .NULL., This), m.Identifier)
+				This.EventsProcessors.Add(NEWOBJECT(m.ProcessorClass, m.ProcessorLibrary, .NULL., This), m.Identifier)
 			ELSE
 				* otherwise, the class must be in scope
 				This.EventsProcessors.Add(CREATEOBJECT(m.ProcessorClass, This), m.Identifier)
@@ -992,6 +1001,7 @@ DEFINE CLASS CalendarEventProcessor AS Custom
 		LOCAL Definition AS MSXML2.DOMDocument60
 		LOCAL EventElements AS MSXML2.IXMLDOMNodeList
 		LOCAL EventElement AS MSXML2.IXMLDOMNode
+		LOCAL Source AS String
 		LOCAL EventDefinition AS CalendarEvent
 		LOCAL Identifier AS String
 		LOCAL CommonName AS String
@@ -1009,8 +1019,14 @@ DEFINE CLASS CalendarEventProcessor AS Custom
 		m.Definition = CREATEOBJECT("MSXML2.DOMDocument.6.0")
 		m.Definition.Async = .F.
 
+		TRY
+			m.Source = FILETOSTR(m.XMLorURL)
+		CATCH
+			m.Source = m.XMLorURL
+		ENDTRY
+
 		* the definition may come from a file or a string
-		IF m.Definition.Load(m.XMLorURL) OR m.Definition.LoadXML(m.XMLorURL)
+		IF m.Definition.Load(m.Source) OR m.Definition.LoadXML(m.Source)
 
 			m.Year = This.ReferenceCalendar.Year
 			m.BrokerYear = This.Broker.Year

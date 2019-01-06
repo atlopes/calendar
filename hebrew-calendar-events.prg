@@ -4,7 +4,7 @@
 *!*	A CalendarEventProcessor sub-class for Hebrew events
 
 * dependencies
-DO LOCFILE("hebrew-calendar.prg")
+DO hebrew-calendar.prg
 
 * install itself
 IF !SYS(16) $ SET("Procedure")

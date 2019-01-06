@@ -4,7 +4,7 @@
 *!*	A Gregorian Calendar subclass for the Japanese Calendar.
 
 * install dependencies
-DO LOCFILE("Gregorian-Calendar.prg")
+DO gregorian-calendar.prg
 
 * install itself
 IF !SYS(16) $ SET("Procedure")

@@ -4,7 +4,7 @@
 *!*	A CalendarEventProcessor sub-class for US events
 
 * dependencies
-DO LOCFILE("british-calendar.prg")
+DO british-calendar.prg
 
 * install itself
 IF !SYS(16) $ SET("Procedure")
@@ -14,6 +14,6 @@ ENDIF
 DEFINE CLASS USCalendarEvents AS CalendarEventProcessor
 
 	ReferenceCalendarClass = "BritishCalendar"
-	EventsDefinition = LOCFILE("us_events.xml")
+	EventsDefinition = "us_events.xml"
 
 ENDDEFINE

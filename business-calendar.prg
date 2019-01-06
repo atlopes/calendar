@@ -5,7 +5,7 @@
 
 *!*	 Introduces a method to calculate business days to calendar days equivalence
 
-DO LOCFILE("gregorian-calendar.prg")
+DO gregorian-calendar.prg
 
 * install itself
 IF !SYS(16) $ SET("Procedure")

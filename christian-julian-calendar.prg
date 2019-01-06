@@ -4,7 +4,7 @@
 *!*	A JulianCalendar subclass for the Christian Julian Calendar.
 
 * install dependencies
-DO LOCFILE("julian-calendar.prg")
+DO julian-calendar.prg
 
 * install itself
 IF !SYS(16) $ SET("Procedure")

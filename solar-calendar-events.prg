@@ -8,7 +8,7 @@
 *!*	Declared accuracy: ~15 minutes
 
 * dependencies
-DO LOCFILE("gregorian-calendar.prg")
+DO gregorian-calendar.prg
 
 * install itself
 IF !SYS(16) $ SET("Procedure")

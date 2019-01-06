@@ -4,7 +4,7 @@
 *!*	A CalendarEventProcessor sub-class for Portuguese events
 
 * dependencies
-DO LOCFILE("pascha-calendar-events.prg")
+DO pascha-calendar-events.prg
 
 * install itself
 IF !SYS(16) $ SET("Procedure")
@@ -16,7 +16,7 @@ ENDIF
 DEFINE CLASS PortugueseCalendarEvents AS CalendarEventProcessor
 
 	ReferenceCalendarClass = "GregorianCalendar"
-	EventsDefinition = LOCFILE("pt_events.xml")
+	EventsDefinition = "pt_events.xml"
 
 	FUNCTION SetEvents (Year AS Integer) AS Collection
 

@@ -5,7 +5,7 @@
 *!*	Locales are stored in persian.xml file.
 
 * install dependencies
-DO LOCFILE("calendar.prg")
+DO calendar.prg
 
 * install itself
 IF !SYS(16) $ SET("Procedure")
