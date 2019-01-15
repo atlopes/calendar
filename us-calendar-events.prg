@@ -4,7 +4,11 @@
 *!*	A CalendarEventProcessor sub-class for US events
 
 * dependencies
-DO british-calendar.prg
+IF _VFP.StartMode = 0
+	DO LOCFILE("british-calendar.prg")
+ELSE
+	DO british-calendar.prg
+ENDIF
 
 * install itself
 IF !SYS(16) $ SET("Procedure")

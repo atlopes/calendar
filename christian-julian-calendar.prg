@@ -4,7 +4,11 @@
 *!*	A JulianCalendar subclass for the Christian Julian Calendar.
 
 * install dependencies
-DO julian-calendar.prg
+IF _VFP.StartMode = 0
+	DO LOCFILE("julian-calendar.prg")
+ELSE
+	DO julian-calendar.prg
+ENDIF
 
 * install itself
 IF !SYS(16) $ SET("Procedure")

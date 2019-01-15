@@ -4,7 +4,11 @@
 *!*	A CalendarEventProcessor sub-class for Portuguese events
 
 * dependencies
-DO pascha-calendar-events.prg
+IF _VFP.StartMode = 0
+	DO LOCFILE("pascha-calendar-events.prg")
+ELSE
+	DO pascha-calendar-events.prg
+ENDIF
 
 * install itself
 IF !SYS(16) $ SET("Procedure")

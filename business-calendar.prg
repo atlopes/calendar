@@ -5,7 +5,11 @@
 
 *!*	 Introduces a method to calculate business days to calendar days equivalence
 
-DO gregorian-calendar.prg
+IF _VFP.StartMode = 0
+	DO LOCFILE("gregorian-calendar.prg")
+ELSE
+	DO gregorian-calendar.prg
+ENDIF
 
 * install itself
 IF !SYS(16) $ SET("Procedure")

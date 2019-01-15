@@ -8,7 +8,11 @@
 *!*	13th month, although the Republican calendar only has 12 month
 
 * install dependencies
-DO calendar.prg
+IF _VFP.StartMode = 0
+	DO LOCFILE("calendar.prg")
+ELSE
+	DO calendar.prg
+ENDIF
 
 * install itself
 IF !SYS(16) $ SET("Procedure")

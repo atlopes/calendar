@@ -10,7 +10,11 @@
 *!*	Software - Practice & Experience, vol. 20, no. 9 (September, 1990), pp. 899--928.
 
 * install dependencies
-DO christian-julian-calendar.prg
+IF _VFP.StartMode = 0
+	DO LOCFILE("christian-julian-calendar.prg")
+ELSE
+	DO christian-julian-calendar.prg
+ENDIF
 
 * install itself
 IF !SYS(16) $ SET("Procedure")

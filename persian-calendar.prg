@@ -5,7 +5,11 @@
 *!*	Locales are stored in persian.xml file.
 
 * install dependencies
-DO calendar.prg
+IF _VFP.StartMode = 0
+	DO LOCFILE("calendar.prg")
+ELSE
+	DO calendar.prg
+ENDIF
 
 * install itself
 IF !SYS(16) $ SET("Procedure")
