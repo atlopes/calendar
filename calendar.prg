@@ -532,16 +532,25 @@ DEFINE CLASS CalendarCalc AS Custom
 			MESSAGE "Numeric parameters expected."
 
 		LOCAL FirstWeekDay AS Integer
+		LOCAL LastWeekDay AS Integer
+		LOCAL LastDay AS Integer
 		LOCAL Day AS Integer
 
 		IF PCOUNT() = 3
 			m.Ordinal = 1
 		ENDIF
 
-		m.FirstWeekDay = This.Weekday(m.Year, m.Month, 1)
-		m.Day = ((m.Ordinal - IIF(m.FirstWeekDay <= m.WeekDay, 1, 0)) * 7) + (m.WeekDay - m.FirstWeekDay) + 1
+		m.LastDay = This.LastDayOfMonth(m.Year, m.Month)
 
-		IF m.Day <= This.LastDayOfMonth(m.Year, m.Month)
+		IF m.Ordinal >= 1
+			m.FirstWeekDay = This.Weekday(m.Year, m.Month, 1)
+			m.Day = ((m.Ordinal - IIF(m.FirstWeekDay <= m.WeekDay, 1, 0)) * 7) + (m.WeekDay - m.FirstWeekDay) + 1
+		ELSE
+			m.LastWeekDay = This.Weekday(m.Year, m.Month, m.LastDay)
+			m.Day = m.LastDay - ((m.LastWeekDay - m.WeekDay) - ((m.Ordinal + IIF(m.LastWeekDay >= m.WeekDay, 1, 0)) * 7))
+		ENDIF
+
+		IF BETWEEN(m.Day, 1, m.LastDay)
 			This.SetDate(m.Year, m.Month, m.Day)
 			RETURN .T.
 		ELSE
