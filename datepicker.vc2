@@ -62,6 +62,7 @@ DEFINE CLASS formdatepicker AS form
 		*m: leaveshape
 		*m: menuselection
 		*m: movedate		&& Moves a date by a number of months.
+		*m: movereference
 		*m: pickday
 		*m: pickmonth
 		*m: pickyear
@@ -91,6 +92,7 @@ DEFINE CLASS formdatepicker AS form
 		*p: selectedtime		&& The time portion of the selected time (in seconds).
 		*p: targetcontrol
 		*p: todaybackcolor		&& Back color for today's tile.
+		*p: uselastselecteddate		&& Use last selected date instead of DATE() for initially empty dates.
 		*p: _memberdata		&& XML Metadata for customizable properties
 	*</DefinedPropArrayMethod>
 
@@ -105,11 +107,12 @@ DEFINE CLASS formdatepicker AS form
 	eventbackcolor = ( RGB(221, 221, 221))		&& Back color for day tiles linked to any event(s).
 	Height = 370
 	isdatetime = .NULL.		&& Pick also the time portion of a date.
+	KeyPreview = .T.
 	MaxButton = .F.
 	maxyear = 9999		&& The maximum year of the calendrical system.
 	menuname = 		&& The name of the date picker menu.
 	MinButton = .F.
-	minyear = 1701		&& The minimum year of the calendrical system.
+	minyear = 1753		&& The minimum year of the calendrical system.
 	Name = "formdatepicker"
 	nosystemcalendar = .F.		&& If set, do not use the system calendar.
 	previouspage = 0		&& Previous active page.
@@ -120,6 +123,7 @@ DEFINE CLASS formdatepicker AS form
 	ShowTips = .T.
 	targetcontrol = .NULL.
 	todaybackcolor = (RGB(160, 255, 255))		&& Back color for today's tile.
+	uselastselecteddate = .F.		&& Use last selected date instead of DATE() for initially empty dates.
 	Width = 340
 	_memberdata = <VFPData>
 		<memberdata name="getstring" type="method" display="GetString"/>
@@ -157,6 +161,7 @@ DEFINE CLASS formdatepicker AS form
 		<memberdata name="nosystemcalendar" type="property" display="NoSystemCalendar"/>
 		<memberdata name="string" type="method" display="String"/>
 		<memberdata name="indexedstring" type="method" display="IndexedString"/>
+		<memberdata name="uselastselecteddate" type="property" display="UseLastSelectedDate"/>
 		</VFPData>		&& XML Metadata for customizable properties
 
 	ADD OBJECT 'btnMenu' AS image WITH ;
@@ -469,16 +474,18 @@ DEFINE CLASS formdatepicker AS form
 	PROCEDURE indexedstring		&& Returns an indexed string.
 		LPARAMETERS StringCode AS String, StringIndex AS Integer
 		LOCAL Source AS String
+		LOCAL Cal AS CalendarCalc
 		
 		m.Source = ""
 		IF This.CalendarIndex != 0
+			m.Cal = This.Calendars(This.CalendarIndex)
 			DO CASE
 			CASE m.StringCode == "MONTHS"
-				m.Source = This.Calendars(This.CalendarIndex).GetLocale(TEXTMERGE("month.<<m.StringIndex>>"))
+				m.Source = m.Cal.MonthName(m.StringIndex, m.Cal.Year)
 			CASE m.StringCode == "SHORT_MONTHS"
-				m.Source = This.Calendars(This.CalendarIndex).GetLocale(TEXTMERGE("month.short.<<m.StringIndex>>"))
+				m.Source = m.Cal.MonthName(m.StringIndex, m.Cal.Year, .T.)
 			CASE m.StringCode == "INIT_WDAYS"
-				m.Source = This.Calendars(This.CalendarIndex).GetLocale(TEXTMERGE("weekday.short.<<m.StringIndex>>"))
+				m.Source = m.Cal.WeekdayName(m.Cal.Year, m.Cal.Month, m.Cal.Day, .T.)
 			ENDCASE
 		ENDIF
 		
@@ -499,7 +506,16 @@ DEFINE CLASS formdatepicker AS form
 		
 		* if no date is set, or the form was launched on its own (no target control), start with today
 		IF PCOUNT() = 0 OR ISNULL(m.TargetControl) OR ISNULL(m.TargetControl.Value) OR EMPTY(m.TargetControl.Value)
-			This.ReferenceDate = DATE()
+			* unless we want to use the last selected date
+			IF This.UseLastSelectedDate
+				IF TYPE("_Screen._dp_LastSelectedDate") != "D"
+					REMOVEPROPERTY(_Screen, "_dp_LastSelectedDate")
+					ADDPROPERTY(_Screen, "_dp_LastSelectedDate", DATE())
+				ENDIF
+				This.ReferenceDate = EVL(NVL(_Screen._dp_LastSelectedDate, {}), DATE())
+			ELSE
+				This.ReferenceDate = DATE()
+			ENDIF
 			IF PCOUNT() = 1
 				This.TargetControl = m.TargetControl
 			ENDIF
@@ -615,6 +631,69 @@ DEFINE CLASS formdatepicker AS form
 		
 	ENDPROC
 
+	PROCEDURE KeyPress
+		LPARAMETERS nKeyCode, nShiftAltCtrl
+		
+		* Contributed by John Ryan @ LevelExtreme (https://www.levelextreme.com/ViewPageGenericLogin.aspx)
+		* Message ID: 1662179
+		
+		DO CASE
+		
+		CASE m.nKeyCode = 27 OR m.nKeyCode = 107 AND m.nShiftAltCtrl = 4	&& Escape, Alt F4
+			NODEFAULT
+			This.Release()
+		
+		CASE m.nKeyCode = 13 AND m.nShiftAltCtrl=0 OR m.nKeyCode = 10 AND m.nShiftAltCtrl = 2	&& Enter or Ctrl+enter
+			This.SetDate(This.SelectedDate)
+		
+		CASE This.pgfViews.ActivePage = This.pgfViews.pagHours.PageOrder	&& doing time, so need arrows to work
+			DODEFAULT(m.nKeyCode, m.nShiftAltCtrl)
+				
+		CASE m.nKeyCode = 5 AND m.nShiftAltCtrl=0	&& Up Arrow
+			NODEFAULT
+			This.MoveReference(-7, -4, -48)
+		
+		CASE m.nKeyCode=24 AND m.nShiftAltCtrl = 0	&& Down Arrow
+			NODEFAULT 
+			This.MoveReference(7, 4, 48)
+		
+		CASE m.nKeyCode = 19 AND m.nShiftAltCtrl = 0	&& Left arrow
+			NODEFAULT
+			This.MoveReference(-1, -1, -12)
+		
+		CASE m.nKeyCode = 4 AND m.nShiftAltCtrl = 0	&& Right arrow
+			NODEFAULT
+			This.MoveReference(1, 1, 12)
+		
+		CASE m.nKeyCode = 18 AND m.nShiftAltCtrl = 0	&& PageUp
+			NODEFAULT
+			This.MoveReference(-99, -12, -144)
+		
+		CASE m.nKeyCode=3 AND m.nShiftAltCtrl=0	&& PageDown
+			NODEFAULT
+			This.MoveReference(99, 12, 144)
+		
+		CASE m.nKeyCode = 1 AND m.nShiftAltCtrl = 0	&& Home: go to first day of month
+			This.SelectedDate = This.SelectedDate - Day(This.SelectedDate) + 1
+			This.MoveReference(0, 0, 0)
+		
+		CASE m.nKeyCode = 29 AND m.nShiftAltCtrl = 2 && Ctrl+Home = today
+			NODEFAULT
+			This.SelectedDate = Date()
+			This.MoveReference(0, 0, 0)
+		
+		CASE m.nKeyCode = 116 AND m.nShiftAltCtrl=0 OR m.nKeyCode = 84 AND m.nShiftAltCtrl = 1	&& t or T = time
+			IF This.IsDatetime
+				*---only if time enabled!
+				NODEFAULT
+				This.lblSelectedTime.Click()
+			ENDIF
+			
+		OTHERWISE
+			DODEFAULT(m.nKeyCode, m.nShiftAltCtrl)
+		ENDCASE
+	ENDPROC
+
 	PROCEDURE leaveshape
 		LPARAMETERS nButton, nShift, nXCoord, nYCoord
 		LOCAL ARRAY EventInfo(1)
@@ -720,6 +799,35 @@ DEFINE CLASS formdatepicker AS form
 		
 		RETURN m.MoveToDate
 		
+	ENDPROC
+
+	PROCEDURE movereference
+		LPARAMETERS Days, Months, Years
+		
+		DO CASE
+		
+		CASE This.pgfViews.ActivePage = This.pgfViews.pagDays.PageOrder
+			
+			IF ABS(m.Days) != 99
+				This.SelectedDate = This.SelectedDate + m.Days
+			ELSE
+				*--- +-99 means move a month
+				This.SelectedDate = This.MoveDate(This.SelectedDate, IIF(m.Days < 0, -1, 1))
+			ENDIF
+			This.ReferenceDate = This.SelectedDate
+			This.PopulateDays()	
+		
+		CASE This.pgfViews.ActivePage = This.pgfViews.pagMonths.PageOrder
+			This.SelectedDate = Thisform.MoveDate(This.SelectedDate, m.Months)
+			This.ReferenceDate = This.SelectedDate
+			This.PopulateMonths()
+		
+		CASE Thisform.pgfViews.ActivePage = Thisform.pgfViews.pagYears.PageOrder
+			This.SelectedDate = This.MoveDate(This.SelectedDate, m.Years)
+			This.Referencedate = This.SelectedDate
+			This.PopulateYears()
+		
+		ENDCASE
 	ENDPROC
 
 	PROCEDURE pickday
@@ -1252,6 +1360,10 @@ DEFINE CLASS formdatepicker AS form
 	PROCEDURE setdate		&& Sets the date and closes the date picker.
 		LPARAMETERS PickedDate AS Date
 		LOCAL Result AS DateOrDatetime
+		
+		IF This.UseLastSelectedDate AND TYPE("_Screen._dp_LastSelectedDate") == "D"
+			_Screen._dp_LastSelectedDate = m.PickedDate
+		ENDIF
 		
 		IF This.IsDatetime
 			m.Result = DTOT(m.PickedDate) + (This.SelectedTime - DTOT(TTOD(This.SelectedTime)))

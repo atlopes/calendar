@@ -117,6 +117,9 @@ DEFINE CLASS BusinessCalendar AS GregorianCalendar
 
 		DO WHILE m.TestHolidays
 
+			DIMENSION m.Holidays(1)
+			m.Holidays(1) = .F.
+
 			* get the holidays in the current test period
 			SELECT DISTINCT(SystemDate) ;
 				FROM (m.HolidaysCursor) ;
@@ -125,7 +128,7 @@ DEFINE CLASS BusinessCalendar AS GregorianCalendar
 					AND Observed AND Scope == "National" ;
 				INTO ARRAY Holidays
 
-			m.HolidaysInPeriod = _Tally
+			m.HolidaysInPeriod = IIF(TYPE("m.Holidays(1)") == "L", 0, ALEN(m.Holidays))
 
 			* if there are holidays in the period
 			IF m.HolidaysInPeriod != 0

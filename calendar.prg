@@ -18,6 +18,9 @@ IF !SYS(16) $ SET("Procedure")
 	SET PROCEDURE TO (SYS(16)) ADDITIVE
 ENDIF
 
+* ease the reference and location of other companion files
+SET PATH TO (JUSTPATH(SYS(16))) ADDITIVE
+
 IF _VFP.StartMode = 0
 	SET ASSERTS ON
 ENDIF
@@ -38,7 +41,7 @@ DEFINE CLASS CalendarCalc AS Custom
 	MaxYear = .NULL.
 	MaxMonth = .NULL.
 	MaxDay = .NULL.
-	* the current date, in the calendar
+	* the current date in the calendar
 	Year = This.MinYear
 	Month = This.MinMonth
 	Day = This.MinDay
@@ -621,18 +624,20 @@ DEFINE CLASS CalendarCalc AS Custom
 		
 		ASSERT VARTYPE(m.Term) == "C" ;
 			MESSAGE "String parameter expected."
-		ASSERT !ISNULL(This.Vocabulary) ;
-			MESSAGE "Vocabulary is not set."
 
-		LOCAL LocaleNode AS MSXML2.IXMLDOMNodeList
-		LOCAL Locale AS String
-		LOCAL XPath AS String
+		IF !ISNULL(This.Vocabulary)
 
-		* locate the term in the vocabulary
-		m.XPath = TEXTMERGE("(/calendar/locales[@code = '<<This.LocaleID>>'] | /calendar/locales[position()=1 and not(/calendar/locales[@code='<<This.LocaleID>>'])])/term[@name = '<<m.Term>>']")
-		m.LocaleNode = This.Vocabulary.selectNodes(m.XPath)
-		IF m.LocaleNode.length = 1
-			RETURN m.LocaleNode.item(0).text
+			LOCAL LocaleNode AS MSXML2.IXMLDOMNodeList
+			LOCAL Locale AS String
+			LOCAL XPath AS String
+
+			* locate the term in the vocabulary
+			m.XPath = TEXTMERGE("(/calendar/locales[@code = '<<This.LocaleID>>'] | /calendar/locales[position()=1 and not(/calendar/locales[@code='<<This.LocaleID>>'])])/term[@name = '<<m.Term>>']")
+			m.LocaleNode = This.Vocabulary.selectNodes(m.XPath)
+			IF m.LocaleNode.length = 1
+				RETURN m.LocaleNode.item(0).text
+			ENDIF
+
 		ENDIF
 		
 		RETURN ""
@@ -663,8 +668,8 @@ DEFINE CLASS CalendarCalc AS Custom
 			m.Source = m.XMLorURL
 		ENDTRY
 
-		* try to load from a URL or from a string
-		IF This.Vocabulary.Load(m.Source) OR This.Vocabulary.LoadXML(m.Source)
+		* try to load from a string OR from a URL 
+		IF This.Vocabulary.LoadXML(m.Source) OR This.Vocabulary.Load(m.Source)
 			RETURN .T.
 		ENDIF
 
