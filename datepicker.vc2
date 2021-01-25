@@ -41,10 +41,22 @@ DEFINE CLASS formdatepicker AS form
 	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblFri" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblSat" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblSun" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lstHour" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lstMinute" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lstSecond" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfViews.pagHours.opgMeridian" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.spnHour" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.spnMinute" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.spnSecond" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lblMinP1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lblMinP2" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lblMinP3" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lblMinN3" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lblMinN2" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lblMinN1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lblHouP1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lblHouP2" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lblHouP3" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lblHouN3" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lblHouN2" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagHours.lblHouN1" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfViews.pagCenturies.lstCentury" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfViews.pagCenturies.lstYear" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="lblContext" UniqueID="" Timestamp="" />
@@ -64,6 +76,8 @@ DEFINE CLASS formdatepicker AS form
 		*m: movedate		&& Moves a date by a number of months.
 		*m: movereference
 		*m: pickday
+		*m: pickhour
+		*m: pickminute
 		*m: pickmonth
 		*m: pickyear
 		*m: populatecenturies		&& Populate the century centered editor.
@@ -162,6 +176,9 @@ DEFINE CLASS formdatepicker AS form
 		<memberdata name="string" type="method" display="String"/>
 		<memberdata name="indexedstring" type="method" display="IndexedString"/>
 		<memberdata name="uselastselecteddate" type="property" display="UseLastSelectedDate"/>
+		<memberdata name="movereference" type="method" display="MoveReference"/>
+		<memberdata name="pickminute" type="method" display="PickMinute"/>
+		<memberdata name="pickhour" type="method" display="PickHour"/>
 		</VFPData>		&& XML Metadata for customizable properties
 
 	ADD OBJECT 'btnMenu' AS image WITH ;
@@ -374,49 +391,182 @@ DEFINE CLASS formdatepicker AS form
 		Top = 8
 		*< END OBJECT: BaseClass="label" />
 
-	ADD OBJECT 'pgfViews.pagHours.lstHour' AS combobox WITH ;
-		Alignment = 2, ;
+	ADD OBJECT 'pgfViews.pagHours.lblHouN1' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "00", ;
 		FontName = "Segoe UI", ;
-		Height = 36, ;
-		Left = 44, ;
-		Name = "lstHour", ;
-		SelectOnEntry = .T., ;
-		Style = 2, ;
-		Top = 122, ;
-		Width = 76
-		*< END OBJECT: BaseClass="combobox" />
+		FontSize = 11, ;
+		ForeColor = 128,128,128, ;
+		Height = 22, ;
+		Left = 92, ;
+		Name = "lblHouN1", ;
+		Top = 84, ;
+		Width = 18
+		*< END OBJECT: BaseClass="label" />
 
-	ADD OBJECT 'pgfViews.pagHours.lstMinute' AS combobox WITH ;
-		Alignment = 2, ;
+	ADD OBJECT 'pgfViews.pagHours.lblHouN2' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "00", ;
 		FontName = "Segoe UI", ;
-		Height = 36, ;
-		Left = 132, ;
-		Name = "lstMinute", ;
-		SelectOnEntry = .T., ;
-		Style = 2, ;
-		Top = 122, ;
-		Width = 76
-		*< END OBJECT: BaseClass="combobox" />
+		FontSize = 11, ;
+		ForeColor = 128,128,128, ;
+		Height = 22, ;
+		Left = 92, ;
+		Name = "lblHouN2", ;
+		Top = 56, ;
+		Width = 18
+		*< END OBJECT: BaseClass="label" />
 
-	ADD OBJECT 'pgfViews.pagHours.lstSecond' AS combobox WITH ;
-		Alignment = 2, ;
+	ADD OBJECT 'pgfViews.pagHours.lblHouN3' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "00", ;
 		FontName = "Segoe UI", ;
-		Height = 36, ;
-		Left = 220, ;
-		Name = "lstSecond", ;
-		SelectOnEntry = .T., ;
-		Style = 2, ;
-		Top = 122, ;
-		Width = 76
-		*< END OBJECT: BaseClass="combobox" />
+		FontSize = 11, ;
+		ForeColor = 128,128,128, ;
+		Height = 22, ;
+		Left = 92, ;
+		Name = "lblHouN3", ;
+		Top = 28, ;
+		Width = 18
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfViews.pagHours.lblHouP1' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "00", ;
+		FontName = "Segoe UI", ;
+		FontSize = 11, ;
+		ForeColor = 128,128,128, ;
+		Height = 22, ;
+		Left = 92, ;
+		Name = "lblHouP1", ;
+		Top = 168, ;
+		Width = 18
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfViews.pagHours.lblHouP2' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "00", ;
+		FontName = "Segoe UI", ;
+		FontSize = 11, ;
+		ForeColor = 128,128,128, ;
+		Height = 22, ;
+		Left = 92, ;
+		Name = "lblHouP2", ;
+		Top = 196, ;
+		Width = 18
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfViews.pagHours.lblHouP3' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "00", ;
+		FontName = "Segoe UI", ;
+		FontSize = 11, ;
+		ForeColor = 128,128,128, ;
+		Height = 22, ;
+		Left = 92, ;
+		Name = "lblHouP3", ;
+		Top = 224, ;
+		Width = 18
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfViews.pagHours.lblMinN1' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "00", ;
+		FontName = "Segoe UI", ;
+		FontSize = 11, ;
+		ForeColor = 128,128,128, ;
+		Height = 22, ;
+		Left = 180, ;
+		Name = "lblMinN1", ;
+		Top = 84, ;
+		Width = 18
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfViews.pagHours.lblMinN2' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "00", ;
+		FontName = "Segoe UI", ;
+		FontSize = 11, ;
+		ForeColor = 128,128,128, ;
+		Height = 22, ;
+		Left = 180, ;
+		Name = "lblMinN2", ;
+		Top = 56, ;
+		Width = 18
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfViews.pagHours.lblMinN3' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "00", ;
+		FontName = "Segoe UI", ;
+		FontSize = 11, ;
+		ForeColor = 128,128,128, ;
+		Height = 22, ;
+		Left = 180, ;
+		Name = "lblMinN3", ;
+		Top = 28, ;
+		Width = 18
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfViews.pagHours.lblMinP1' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "00", ;
+		FontName = "Segoe UI", ;
+		FontSize = 11, ;
+		ForeColor = 128,128,128, ;
+		Height = 22, ;
+		Left = 180, ;
+		Name = "lblMinP1", ;
+		Top = 168, ;
+		Width = 18
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfViews.pagHours.lblMinP2' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "00", ;
+		FontName = "Segoe UI", ;
+		FontSize = 11, ;
+		ForeColor = 128,128,128, ;
+		Height = 22, ;
+		Left = 180, ;
+		Name = "lblMinP2", ;
+		Top = 196, ;
+		Width = 18
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfViews.pagHours.lblMinP3' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "00", ;
+		FontName = "Segoe UI", ;
+		FontSize = 11, ;
+		ForeColor = 128,128,128, ;
+		Height = 22, ;
+		Left = 180, ;
+		Name = "lblMinP3", ;
+		Top = 224, ;
+		Width = 18
+		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgfViews.pagHours.opgMeridian' AS optiongroup WITH ;
 		AutoSize = .T., ;
 		BackStyle = 0, ;
 		ButtonCount = 2, ;
-		Left = 56, ;
+		Left = 12, ;
 		Name = "opgMeridian", ;
-		Top = 164, ;
+		TabIndex = 1, ;
+		Top = 116, ;
 		Option1.AutoSize = .T., ;
 		Option1.BackStyle = 0, ;
 		Option1.Caption = "AM", ;
@@ -436,6 +586,63 @@ DEFINE CLASS formdatepicker AS form
 		Option2.Top = 24, ;
 		Option2.Width = 36
 		*< END OBJECT: BaseClass="optiongroup" />
+
+	ADD OBJECT 'pgfViews.pagHours.spnHour' AS spinner WITH ;
+		Alignment = 2, ;
+		FontName = "Segoe UI", ;
+		FontSize = 11, ;
+		Format = "LK", ;
+		Height = 44, ;
+		InputMask = "99", ;
+		KeyboardHighValue = 23, ;
+		KeyboardLowValue = 0, ;
+		Left = 68, ;
+		Margin = 8, ;
+		Name = "spnHour", ;
+		SpinnerHighValue = 23.00, ;
+		SpinnerLowValue = 0.00, ;
+		TabIndex = 2, ;
+		Top = 116, ;
+		Width = 76
+		*< END OBJECT: BaseClass="spinner" />
+
+	ADD OBJECT 'pgfViews.pagHours.spnMinute' AS spinner WITH ;
+		Alignment = 2, ;
+		FontName = "Segoe UI", ;
+		FontSize = 11, ;
+		Format = "LK", ;
+		Height = 44, ;
+		InputMask = "99", ;
+		KeyboardHighValue = 59, ;
+		KeyboardLowValue = 0, ;
+		Left = 156, ;
+		Margin = 8, ;
+		Name = "spnMinute", ;
+		SpinnerHighValue = 59.00, ;
+		SpinnerLowValue = 0.00, ;
+		TabIndex = 3, ;
+		Top = 116, ;
+		Width = 76
+		*< END OBJECT: BaseClass="spinner" />
+
+	ADD OBJECT 'pgfViews.pagHours.spnSecond' AS spinner WITH ;
+		Alignment = 2, ;
+		FontName = "Segoe UI", ;
+		FontSize = 11, ;
+		Format = "LK", ;
+		Height = 44, ;
+		InputMask = "99", ;
+		KeyboardHighValue = 59, ;
+		KeyboardLowValue = 0, ;
+		Left = 244, ;
+		Margin = 8, ;
+		Name = "spnSecond", ;
+		SpinnerHighValue = 59.00, ;
+		SpinnerLowValue = 0.00, ;
+		TabIndex = 4, ;
+		Top = 116, ;
+		Width = 76
+		*< END OBJECT: BaseClass="spinner" />
 	
 	PROCEDURE Deactivate
 		* in case the form deactivates, release immediately (no result returned)
@@ -560,18 +767,22 @@ DEFINE CLASS formdatepicker AS form
 				* in this case, we have a target control and time to be picked
 				* do we need the seconds?
 				IF m.TargetControl.Seconds = 0 OR (m.TargetControl.Seconds = 2 AND SET("Seconds") == "OFF")
-					This.pgfViews.pagHours.lstSecond.Enabled = .F.
+					This.pgfViews.pagHours.spnSecond.Enabled = .F.
 				ENDIF
 				* are we using 24 or 12 hours display?
 				IF m.TargetControl.Hours = 24 OR (m.TargetControl.Hours = 0 AND SET("Hours") == 24)
 					This.pgfViews.pagHours.opgMeridian.Visible = .F.
 				ELSE
-					* if 12 hours-display, 00 will become 12, and values above 12 will be stripped from the dropdown list
-					WITH This.pgfViews.pagHours.lstHour
-						.List(1) = "12"
-						FOR m.LoopIndex = .ListCount TO 13 STEP -1
-							.RemoveItem(m.LoopIndex)
-						ENDFOR
+					* if 12 hours-display, values above 12 will be stripped from the spinner
+					WITH This.pgfViews.pagHours
+						WITH .spnHour
+							.KeyboardHighValue = 12
+							.KeyboardLowValue = 1
+							.SpinnerHighValue = 12
+							.SpinnerLowValue = 1
+						ENDWITH
+						STORE .F. TO .lblHouN1.Visible, .lblHouN2.Visible, .lblHouN3.Visible, ;
+							.lblHouP1.Visible, .lblHouP2.Visible, .lblHouP3.Visible
 					ENDWITH
 				ENDIF
 				* set the time, and signal we'll pick the time portion
@@ -839,6 +1050,36 @@ DEFINE CLASS formdatepicker AS form
 		
 		* set the date from the picked day, and leave
 		This.SetDate(m.SourceObject.ReferenceDate)
+		
+	ENDPROC
+
+	PROCEDURE pickhour
+		LOCAL ARRAY EventInfo(1)
+		LOCAL SourceObject AS Shape
+		
+		AEVENTS(m.EventInfo, 0)
+		m.SourceObject = m.EventInfo(1)
+		
+		* set the hour
+		WITH Thisform.pgfViews.pagHours.spnHour
+			.Value = VAL(m.SourceObject.Caption)
+			.InteractiveChange()
+		ENDWITH
+		
+	ENDPROC
+
+	PROCEDURE pickminute
+		LOCAL ARRAY EventInfo(1)
+		LOCAL SourceObject AS Shape
+		
+		AEVENTS(m.EventInfo, 0)
+		m.SourceObject = m.EventInfo(1)
+		
+		* set the minutes
+		WITH Thisform.pgfViews.pagHours.spnMinute
+			.Value = VAL(m.SourceObject.Caption)
+			.InteractiveChange()
+		ENDWITH
 		
 	ENDPROC
 
@@ -1332,6 +1573,12 @@ DEFINE CLASS formdatepicker AS form
 
 	PROCEDURE selectedtime_assign
 		LPARAMETERS NewVal
+		LOCAL Roll AS String
+		LOCAL RollPosition AS Integer
+		LOCAL RollPrevious AS Integer
+		LOCAL RollItems AS String
+		LOCAL RollInterval AS Integer
+		LOCAL RollCurrent AS Number
 		
 		THIS.SelectedTime = m.NewVal
 		
@@ -1340,19 +1587,62 @@ DEFINE CLASS formdatepicker AS form
 		
 		* set the corresponding hours, minutes, seconds, and meridian (if required) of the time selector
 		WITH This.pgfViews.pagHours
+		
 			IF .opgMeridian.Visible
 				IF HOUR(m.NewVal) >= 12
 					.opgMeridian.Value = 2
-					.lstHour.ListIndex = (HOUR(m.NewVal) - 12) + 1
+					.spnHour.Value = EVL(HOUR(m.NewVal) - 12, 12)
 				ELSE
 					.opgMeridian.Value = 1
-					.lstHour.ListIndex = HOUR(m.NewVal) + 1
+					.spnHour.Value = EVL(HOUR(m.NewVal), 12)
 				ENDIF
+		
 			ELSE
-				.lstHour.ListIndex = HOUR(m.NewVal) + 1
+		
+				.spnHour.Value = HOUR(m.NewVal)
+		
+				m.RollItems = "0003060912151821"
+				m.RollInterval = 3 
+				m.Roll = REPLICATE(m.RollItems, 3)
+		
+				m.RollCurrent = .spnHour.Value / m.RollInterval
+				m.RollPosition = (INT(m.RollCurrent) * 2) + LEN(m.RollItems) + 1
+				IF m.RollCurrent = INT(m.RollCurrent)
+					m.RollPrevious = m.RollPosition - 2
+				ELSE
+					m.RollPrevious = m.RollPosition
+				ENDIF
+				.lblHouP1.Caption = SUBSTR(m.Roll, m.RollPrevious, 2)
+				.lblHouP2.Caption = SUBSTR(m.Roll, m.RollPrevious - 2, 2)
+				.lblHouP3.Caption = SUBSTR(m.Roll, m.RollPrevious - 4, 2)
+				.lblHouN1.Caption = SUBSTR(m.Roll, m.RollPosition + 2, 2)
+				.lblHouN2.Caption = SUBSTR(m.Roll, m.RollPosition + 4, 2)
+				.lblHouN3.Caption = SUBSTR(m.Roll, m.RollPosition + 6, 2)
+		
 			ENDIF
-			.lstMinute.ListIndex = MINUTE(m.NewVal) + 1
-			.lstSecond.ListIndex = SEC(m.NewVal) + 1
+		
+			.spnMinute.Value = MINUTE(m.NewVal)
+		
+			m.RollItems = "00153045"
+			m.RollInterval = 15
+			m.Roll = REPLICATE(m.RollItems, 3)
+		
+			m.RollCurrent = .spnMinute.Value / m.RollInterval
+			m.RollPosition = (INT(m.RollCurrent) * 2) + 9
+			IF m.RollCurrent = INT(m.RollCurrent)
+				m.RollPrevious = m.RollPosition - 2
+			ELSE
+				m.RollPrevious = m.RollPosition
+			ENDIF
+			.lblMinP1.Caption = SUBSTR(m.Roll, m.RollPrevious, 2)
+			.lblMinP2.Caption = SUBSTR(m.Roll, m.RollPrevious - 2, 2)
+			.lblMinP3.Caption = SUBSTR(m.Roll, m.RollPrevious - 4, 2)
+			.lblMinN1.Caption = SUBSTR(m.Roll, m.RollPosition + 2, 2)
+			.lblMinN2.Caption = SUBSTR(m.Roll, m.RollPosition + 4, 2)
+			.lblMinN3.Caption = SUBSTR(m.Roll, m.RollPosition + 6, 2)
+		
+			.spnSecond.Value = SEC(m.NewVal)
+		
 		ENDWITH
 		
 	ENDPROC
@@ -1448,7 +1738,7 @@ DEFINE CLASS formdatepicker AS form
 			m.OverControl = .F.
 		
 			* get the form positional coordinates, and add to get an absolute screen position
-			IF m.TargetForm.ShowWindow = 0 AND !m.TargetForm.Desktop
+			IF m.TargetForm.ShowWindow = 0 AND !m.TargetForm.Desktop AND !(m.TargetForm = _Screen)
 				m.TopX = m.TopX + m.TargetForm.Top + _Screen.Top
 				m.LeftX = m.LeftX + m.TargetForm.Left + _Screen.Left
 			ELSE
@@ -1456,7 +1746,7 @@ DEFINE CLASS formdatepicker AS form
 				m.LeftX = m.LeftX + m.TargetForm.Left
 			ENDIF
 			* including frame elements
-			IF !m.InGrid
+			IF !m.InGrid AND !(m.TargetForm = _Screen)
 				IF m.TargetForm.BorderStyle = 3
 					m.TopX = m.TopX + SYSMETRIC(4)
 					m.LeftX = m.LeftX + SYSMETRIC(3)
@@ -2002,68 +2292,28 @@ DEFINE CLASS formdatepicker AS form
 		
 	ENDPROC
 
-	PROCEDURE pgfViews.pagHours.lstHour.Init
-		LOCAL HourOfDay AS Integer
+	PROCEDURE pgfViews.pagHours.Init
+		DODEFAULT()
 		
-		FOR m.HourOfDay = 0 TO 23
-			This.AddItem(TRANSFORM(m.HourOfDay, "@L 99"))
-		ENDFOR
+		WITH This
 		
-	ENDPROC
-
-	PROCEDURE pgfViews.pagHours.lstHour.InteractiveChange
-		LOCAL Base AS Date
-		LOCAL Hour24 AS Integer
+			BINDEVENT(.lblMinN1, "Click", Thisform, "PickMinute")
+			BINDEVENT(.lblMinN2, "Click", Thisform, "PickMinute")
+			BINDEVENT(.lblMinN3, "Click", Thisform, "PickMinute")
+			BINDEVENT(.lblMinP1, "Click", Thisform, "PickMinute")
+			BINDEVENT(.lblMinP2, "Click", Thisform, "PickMinute")
+			BINDEVENT(.lblMinP3, "Click", Thisform, "PickMinute")
 		
-		m.Base = EVL(Thisform.SelectedTime, DTOT(Thisform.SelectedDate))
+			BINDEVENT(.lblHouN1, "Click", Thisform, "PickHour")
+			BINDEVENT(.lblHouN2, "Click", Thisform, "PickHour")
+			BINDEVENT(.lblHouN3, "Click", Thisform, "PickHour")
+			BINDEVENT(.lblHouP1, "Click", Thisform, "PickHour")
+			BINDEVENT(.lblHouP2, "Click", Thisform, "PickHour")
+			BINDEVENT(.lblHouP3, "Click", Thisform, "PickHour")
 		
-		* adjust the real hour vale to 24 or 12 hour display
-		IF This.Parent.opgMeridian.Visible
-			m.Hour24 = MIN(This.ListIndex - 1, 11) + IIF(This.Parent.opgMeridian.Value = 1, 0, 12)
-		ELSE
-			m.Hour24 = This.ListIndex - 1
-		ENDIF
-		 
-		Thisform.SelectedTime = DATETIME(YEAR(m.Base), MONTH(m.Base), DAY(m.Base), ;
-													m.Hour24, MINUTE(m.Base), SEC(m.Base))
+			.SetAll("MousePointer", 15, .lblHouN1.Class)
 		
-	ENDPROC
-
-	PROCEDURE pgfViews.pagHours.lstMinute.Init
-		LOCAL MinuteOfHour AS Integer
-		
-		FOR m.MinuteOfHour = 0 TO 59
-			This.AddItem(TRANSFORM(m.MinuteOfHour, "@L 99"))
-		ENDFOR
-		
-	ENDPROC
-
-	PROCEDURE pgfViews.pagHours.lstMinute.InteractiveChange
-		LOCAL Base AS Datetime
-		
-		m.Base = EVL(Thisform.SelectedTime, DTOT(Thisform.SelectedDate))
-		
-		Thisform.SelectedTime = DATETIME(YEAR(m.Base), MONTH(m.Base), DAY(m.Base), ;
-													HOUR(m.Base), This.ListIndex - 1, SEC(m.Base))
-		
-	ENDPROC
-
-	PROCEDURE pgfViews.pagHours.lstSecond.Init
-		LOCAL SecondOfMinute AS Integer
-		
-		FOR m.SecondOfMinute = 0 TO 59
-			This.AddItem(TRANSFORM(m.SecondOfMinute, "@L 99"))
-		ENDFOR
-		
-	ENDPROC
-
-	PROCEDURE pgfViews.pagHours.lstSecond.InteractiveChange
-		LOCAL Base AS Datetime
-		
-		m.Base = EVL(Thisform.SelectedTime, DTOT(Thisform.SelectedDate))
-		
-		Thisform.SelectedTime = DATETIME(YEAR(m.Base), MONTH(m.Base), DAY(m.Base), ;
-													HOUR(m.Base), MINUTE(m.Base), This.ListIndex - 1)
+		ENDWITH
 		
 	ENDPROC
 
@@ -2074,10 +2324,63 @@ DEFINE CLASS formdatepicker AS form
 		m.Base = EVL(Thisform.SelectedTime, DTOT(Thisform.SelectedDate))
 		
 		* transform a 12-hour format into a 24-hour
-		m.Hour24 = MIN(This.Parent.lstHour.ListIndex - 1, 11) + IIF(This.Value = 1, 0, 12)
+		m.Hour24 = This.Parent.spnHour.Value
+		IF m.Hour24 != 12
+			m.Hour24 = m.Hour24 + IIF(This.Value = 1, 0, 12)
+		ELSE
+			m.Hour24 = IIF(This.Value = 1, 0, 12)
+		ENDIF
 		 
 		Thisform.SelectedTime = DATETIME(YEAR(m.Base), MONTH(m.Base), DAY(m.Base), ;
 													m.Hour24, MINUTE(m.Base), SEC(m.Base))
+		
+	ENDPROC
+
+	PROCEDURE pgfViews.pagHours.spnHour.InteractiveChange
+		LOCAL Base AS Date
+		LOCAL Hour24 AS Integer
+		
+		m.Base = EVL(Thisform.SelectedTime, DTOT(Thisform.SelectedDate))
+		
+		* adjust the real hour vale to 24 or 12 hour display
+		IF This.Parent.opgMeridian.Visible
+			IF This.Value != 12
+				m.Hour24 = This.Value + IIF(This.Parent.opgMeridian.Value = 1, 0, 12)
+			ELSE
+				m.Hour24 = IIF(This.Parent.opgMeridian.Value = 1, 0, 12)
+			ENDIF
+		ELSE
+			m.Hour24 = This.Value
+		ENDIF
+		
+		IF BETWEEN(m.Hour24, 0, 23)
+			Thisform.SelectedTime = DATETIME(YEAR(m.Base), MONTH(m.Base), DAY(m.Base), ;
+														m.Hour24, MINUTE(m.Base), SEC(m.Base))
+		ENDIF
+		
+	ENDPROC
+
+	PROCEDURE pgfViews.pagHours.spnMinute.InteractiveChange
+		LOCAL Base AS Datetime
+		
+		m.Base = EVL(Thisform.SelectedTime, DTOT(Thisform.SelectedDate))
+		
+		IF BETWEEN(This.Value, 0, 59)
+			Thisform.SelectedTime = DATETIME(YEAR(m.Base), MONTH(m.Base), DAY(m.Base), ;
+														HOUR(m.Base), This.Value, SEC(m.Base))
+		ENDIF
+		
+	ENDPROC
+
+	PROCEDURE pgfViews.pagHours.spnSecond.InteractiveChange
+		LOCAL Base AS Datetime
+		
+		m.Base = EVL(Thisform.SelectedTime, DTOT(Thisform.SelectedDate))
+		
+		IF BETWEEN(This.Value, 0, 59)
+			Thisform.SelectedTime = DATETIME(YEAR(m.Base), MONTH(m.Base), DAY(m.Base), ;
+														HOUR(m.Base), MINUTE(m.Base), This.Value)
+		ENDIF
 		
 	ENDPROC
 
@@ -2220,7 +2523,11 @@ DEFINE CLASS textdatepicker AS textbox
 
 	*<DefinedPropArrayMethod>
 		*m: dpopen		&& Opens a date picker window.
+		*m: left_assign
 		*m: setcalendars		&& Set calendars collection.
+		*m: top_assign
+		*m: visible_assign
+		*m: width_assign
 		*p: calendarindex		&& The calendar from the calendars collection that will be used to pick a date.
 		*p: calendars		&& Collection of alternative calendars.
 		*p: dpform
@@ -2259,6 +2566,10 @@ DEFINE CLASS textdatepicker AS textbox
 		DODEFAULT()
 		UNBINDEVENTS(This)
 		This.DPForm = .NULL.
+		TRY
+			This.Parent.RemoveObject(This.DPSwitch.Name)
+		CATCH
+		ENDTRY
 		This.DPSwitch = .NULL.
 		
 	ENDPROC
@@ -2280,6 +2591,7 @@ DEFINE CLASS textdatepicker AS textbox
 	ENDPROC
 
 	PROCEDURE Init
+		LOCAL DPName AS String
 		LOCAL ResetAnchor AS Integer
 		
 		IF !DODEFAULT()
@@ -2296,8 +2608,14 @@ DEFINE CLASS textdatepicker AS textbox
 			ENDIF
 		ENDIF
 		
-		This.Parent.AddObject(This.Name + "_DP", "Label")
-		This.DPSwitch = EVALUATE("This.Parent." + This.Name + "_DP")
+		m.DPName = This.Name + "_DP"
+		TRY
+			This.Parent.RemoveObject(m.DPName)
+		CATCH
+		ENDTRY
+		
+		This.Parent.AddObject(m.DPName, "Label")
+		This.DPSwitch = EVALUATE("This.Parent." + m.DPName)
 		
 		WITH This.DPSwitch AS Label
 		
@@ -2330,7 +2648,42 @@ DEFINE CLASS textdatepicker AS textbox
 		
 	ENDPROC
 
+	PROCEDURE left_assign
+		LPARAMETERS NewVal
+		
+		This.Left = m.NewVal
+		
+		This.DPSwitch.Left = This.Left + This.Width - This.DPSwitch.Width
+		
+	ENDPROC
+
 	PROCEDURE setcalendars		&& Set calendars collection.
+	ENDPROC
+
+	PROCEDURE top_assign
+		LPARAMETERS NewVal
+		
+		This.Top = m.NewVal
+		
+		This.DPSwitch.Top = This.Top
+		
+	ENDPROC
+
+	PROCEDURE visible_assign
+		LPARAMETERS NewVal
+		
+		This.Visible = m.NewVal
+		
+		This.DPSwitch.Visible = m.NewVal
+	ENDPROC
+
+	PROCEDURE width_assign
+		LPARAMETERS NewVal
+		
+		This.Width = m.NewVal
+		
+		This.DPSwitch.Left = This.Left + This.Width - This.DPSwitch.Width
+		
 	ENDPROC
 
 ENDDEFINE
