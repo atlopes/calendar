@@ -149,12 +149,12 @@ DEFINE CLASS form1 AS form
 
 	ADD OBJECT 'Label4' AS label WITH ;
 		AutoSize = .T., ;
-		Caption = "4.A datepicker with time, using only USA calendar with events", ;
+		Caption = "4.A datepicker with time, using only USA calendar with events (anchored to the right)", ;
 		Height = 17, ;
 		Left = 12, ;
 		Name = "Label4", ;
 		Top = 156, ;
-		Width = 335
+		Width = 458
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'Label5' AS label WITH ;
@@ -193,6 +193,7 @@ DEFINE CLASS form1 AS form
 		*< END OBJECT: ClassLib="..\datepicker.vcx" BaseClass="textbox" />
 
 	ADD OBJECT 'Textdatepicker4' AS textdatepicker WITH ;
+		Anchor = 8, ;
 		Height = 21, ;
 		isdatetime = .T., ;
 		Left = 20, ;
