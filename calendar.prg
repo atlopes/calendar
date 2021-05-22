@@ -55,6 +55,8 @@ DEFINE CLASS CalendarCalc AS Custom
 	Vocabulary = .NULL.
 	* the vocabulary source (an XML document)
 	VocabularySource = .NULL.
+	* when the week starts, mainly for displaying purposes (1 = Monday, 7 = Sunday)
+	WeekStart = 1
 
 	_MemberData = '<VFPData>' + ;
 						'<memberdata name="calendarevents" type="property" display="CalendarEvents" />' + ;
@@ -73,6 +75,7 @@ DEFINE CLASS CalendarCalc AS Custom
 						'<memberdata name="localeid" type="property" display="LocaleID" />' + ;
 						'<memberdata name="vocabulary" type="property" display="Vocabulary" />' + ;
 						'<memberdata name="vocabularysource" type="property" display="VocabularySource" />' + ;
+						'<memberdata name="weekstart" type="property" display="WeekStart" />' + ;
 						'<memberdata name="clone" type="method" display="Clone" />' + ;
 						'<memberdata name="setdate" type="method" display="SetDate" />' + ;
 						'<memberdata name="validate" type="method" display="Validate" />' + ;

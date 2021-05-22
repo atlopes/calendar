@@ -30,6 +30,7 @@ ENDIF
 DEFINE CLASS IslamicCalendar AS CalendarCalc
 
 	VocabularySource = "islamic.xml"
+	WeekStart = 7
 
 	* IsLeapYear()
 	* returns .T. if an Islamic leap year

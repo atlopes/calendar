@@ -24,6 +24,7 @@ ENDIF
 DEFINE CLASS HebrewCalendar AS CalendarCalc
 
 	VocabularySource = "hebrew.xml"
+	WeekStart = 7
 
 	* IsLeapYear()
 	* returns .T. if given year ia a leap year

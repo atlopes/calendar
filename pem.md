@@ -21,6 +21,7 @@ See also [Classes](classes.md "Classes").
 | MinYear, MinMonth and MinDay | N | The minimum date in the calendar system (defaults to 1)|
 | Vocabulary | O | Stores the localized calendrical names. A MSXML2.DOMDocument.60 object. |
 | VocabularySource | C | The XML source for localized information | 
+| WeekStart | N | The day that starts a week (1 = Monday, 7 = Sunday); informational. | 
 | Year, Month and Day | N | The current calendar date |
 
 ### CalendarEvent ###

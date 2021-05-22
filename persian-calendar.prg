@@ -26,6 +26,7 @@ ENDIF
 DEFINE CLASS PersianCalendar AS CalendarCalc
 
 	VocabularySource = "persian.xml"
+	WeekStart = 6
 
 	* IsLeapYear()
 	* returns .T. if an Persian leap year

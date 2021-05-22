@@ -34,13 +34,13 @@ DEFINE CLASS formdatepicker AS form
 	*-- OBJECTDATA items order determines ZOrder / El orden de los items OBJECTDATA determina el ZOrder 
 	*< OBJECTDATA: ObjPath="btnMenu" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfViews" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblMon" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblTue" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblWed" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblThu" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblFri" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblSat" UniqueID="" Timestamp="" />
-	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblSun" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblW1" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblW2" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblW3" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblW4" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblW5" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblW6" UniqueID="" Timestamp="" />
+	*< OBJECTDATA: ObjPath="pgfViews.pagDays.lblW7" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfViews.pagHours.opgMeridian" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfViews.pagHours.spnHour" UniqueID="" Timestamp="" />
 	*< OBJECTDATA: ObjPath="pgfViews.pagHours.spnMinute" UniqueID="" Timestamp="" />
@@ -319,76 +319,76 @@ DEFINE CLASS formdatepicker AS form
 		Width = 76
 		*< END OBJECT: BaseClass="combobox" />
 
-	ADD OBJECT 'pgfViews.pagDays.lblFri' AS label WITH ;
-		AutoSize = .T., ;
-		BackStyle = 0, ;
-		Caption = "F", ;
-		FontName = "Segoe UI", ;
-		Left = 211, ;
-		Name = "lblFri", ;
-		Top = 8
-		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgfViews.pagDays.lblMon' AS label WITH ;
+	ADD OBJECT 'pgfViews.pagDays.lblW1' AS label WITH ;
 		AutoSize = .T., ;
 		BackStyle = 0, ;
 		Caption = "M", ;
 		FontName = "Segoe UI", ;
 		Left = 21, ;
-		Name = "lblMon", ;
+		Name = "lblW1", ;
 		Top = 8
 		*< END OBJECT: BaseClass="label" />
 
-	ADD OBJECT 'pgfViews.pagDays.lblSat' AS label WITH ;
+	ADD OBJECT 'pgfViews.pagDays.lblW2' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "T", ;
+		FontName = "Segoe UI", ;
+		Left = 67, ;
+		Name = "lblW2", ;
+		Top = 8
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfViews.pagDays.lblW3' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "W", ;
+		FontName = "Segoe UI", ;
+		Left = 114, ;
+		Name = "lblW3", ;
+		Top = 8
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfViews.pagDays.lblW4' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "T", ;
+		FontName = "Segoe UI", ;
+		Left = 162, ;
+		Name = "lblW4", ;
+		Top = 8
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfViews.pagDays.lblW5' AS label WITH ;
+		AutoSize = .T., ;
+		BackStyle = 0, ;
+		Caption = "F", ;
+		FontName = "Segoe UI", ;
+		Left = 211, ;
+		Name = "lblW5", ;
+		Top = 8
+		*< END OBJECT: BaseClass="label" />
+
+	ADD OBJECT 'pgfViews.pagDays.lblW6' AS label WITH ;
 		AutoSize = .T., ;
 		BackStyle = 0, ;
 		Caption = "S", ;
 		FontName = "Segoe UI", ;
 		Left = 260, ;
-		Name = "lblSat", ;
+		Name = "lblW6", ;
 		Top = 8
 		*< END OBJECT: BaseClass="label" />
 
-	ADD OBJECT 'pgfViews.pagDays.lblSun' AS label WITH ;
+	ADD OBJECT 'pgfViews.pagDays.lblW7' AS label WITH ;
 		AutoSize = .T., ;
 		BackStyle = 0, ;
 		Caption = "S", ;
 		FontName = "Segoe UI", ;
 		Height = 17, ;
 		Left = 307, ;
-		Name = "lblSun", ;
+		Name = "lblW7", ;
 		Top = 8, ;
 		Width = 8
-		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgfViews.pagDays.lblThu' AS label WITH ;
-		AutoSize = .T., ;
-		BackStyle = 0, ;
-		Caption = "T", ;
-		FontName = "Segoe UI", ;
-		Left = 162, ;
-		Name = "lblThu", ;
-		Top = 8
-		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgfViews.pagDays.lblTue' AS label WITH ;
-		AutoSize = .T., ;
-		BackStyle = 0, ;
-		Caption = "T", ;
-		FontName = "Segoe UI", ;
-		Left = 67, ;
-		Name = "lblTue", ;
-		Top = 8
-		*< END OBJECT: BaseClass="label" />
-
-	ADD OBJECT 'pgfViews.pagDays.lblWed' AS label WITH ;
-		AutoSize = .T., ;
-		BackStyle = 0, ;
-		Caption = "W", ;
-		FontName = "Segoe UI", ;
-		Left = 114, ;
-		Name = "lblWed", ;
-		Top = 8
 		*< END OBJECT: BaseClass="label" />
 
 	ADD OBJECT 'pgfViews.pagHours.lblHouN1' AS label WITH ;
@@ -1151,6 +1151,7 @@ DEFINE CLASS formdatepicker AS form
 		LOCAL DayEventID AS String
 		LOCAL EventsDescription AS String
 		LOCAL WDayReference AS Label
+		LOCAL WDayStart AS Integer
 		
 		* orientation will be > 1 moving forward, or < 0 moving backward
 		IF PCOUNT() = 0
@@ -1162,6 +1163,13 @@ DEFINE CLASS formdatepicker AS form
 			m.ReferenceMonth = MONTH(This.ReferenceDate)
 			m.FirstDay = DATE(YEAR(This.ReferenceDate), m.ReferenceMonth, 1)
 			m.DayEvents = .NULL.
+			m.FirstDow = DOW(m.FirstDay)
+			m.WDayStart = SET("Fdow")
+			IF m.WDayStart = 1
+				m.WDayStart = 7
+			ELSE
+				m.WDayStart = m.WDayStart - 1
+			ENDIF
 		ELSE
 			* for other calendrical systems, get the corresponding year, and month, and then get the system date
 			WITH This.Calendars(This.CalendarIndex) AS CalendarCalc
@@ -1171,11 +1179,13 @@ DEFINE CLASS formdatepicker AS form
 				.SetDate(m.ReferenceYear, m.ReferenceMonth, 1)
 				m.EventsYear = -1
 				m.FirstDay = .ToSystem()
+				m.FirstDow = DOW(m.FirstDay, IIF(.WeekStart = 7, 1, .WeekStart + 1))
+				m.WDayStart = .WeekStart
 			ENDWITH
 		ENDIF
 		
-		* the first day will be on a Monday: adjust, if needed
-		m.FirstDow = DOW(m.FirstDay, 2)
+		* the first day will be when a week starts: adjust, if needed
+		*!*	m.FirstDow = DOW(m.FirstDay, 2)
 		m.DayIndex = m.FirstDay - (m.FirstDow - 1)
 		
 		IF This.CalendarIndex != 0
@@ -1211,23 +1221,23 @@ DEFINE CLASS formdatepicker AS form
 					IF m.RowIndex = 1
 						DO CASE
 						CASE m.ColIndex = 1
-							m.WDayReference = .lblMon
+							m.WDayReference = .lblW1
 						CASE m.ColIndex = 2
-							m.WDayReference = .lblTue
+							m.WDayReference = .lblW2
 						CASE m.ColIndex = 3
-							m.WDayReference = .lblWed
+							m.WDayReference = .lblW3
 						CASE m.ColIndex = 4
-							m.WDayReference = .lblThu
+							m.WDayReference = .lblW4
 						CASE m.ColIndex = 5
-							m.WDayReference = .lblFri
+							m.WDayReference = .lblW5
 						CASE m.ColIndex = 6
-							m.WDayReference = .lblSat
+							m.WDayReference = .lblW6
 						OTHERWISE
-							m.WDayReference = .lblSun
+							m.WDayReference = .lblW7
 						ENDCASE
 						m.WDayReference.Caption = ""
 						m.WDayReference.Visible = .T.
-						m.WDayReference.Caption = Thisform.IndexedString("INIT_WDAYS", m.ColIndex)
+						m.WDayReference.Caption = Thisform.IndexedString("INIT_WDAYS", EVL((m.WDayStart + (m.ColIndex - 1)) % 7, 7))
 						m.WDayReference.Top = (m.ShpReference.Height - m.WDayReference.Height) / 2
 						m.WDayReference.Left = m.ShpReference.Left + (m.ShpReference.Width - m.WDayReference.Width) / 2
 					ENDIF
