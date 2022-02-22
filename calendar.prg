@@ -60,50 +60,52 @@ DEFINE CLASS CalendarCalc AS Custom
 
 	_MemberData = '<VFPData>' + ;
 						'<memberdata name="calendarevents" type="property" display="CalendarEvents" />' + ;
-						'<memberdata name="eventsprocessors" type="property" display="EventsProcessors" />' + ;
-						'<memberdata name="year" type="property" display="Year" />' + ;
-						'<memberdata name="month" type="property" display="Month" />' + ;
 						'<memberdata name="day" type="property" display="Day" />' + ;
-						'<memberdata name="minyear" type="property" display="MinYear" />' + ;
-						'<memberdata name="minmonth" type="property" display="MinMonth" />' + ;
-						'<memberdata name="minday" type="property" display="MinDay" />' + ;
-						'<memberdata name="maxyear" type="property" display="MaxYear" />' + ;
-						'<memberdata name="maxmonth" type="property" display="MaxMonth" />' + ;
-						'<memberdata name="maxday" type="property" display="MaxDay" />' + ;
+						'<memberdata name="eventsprocessors" type="property" display="EventsProcessors" />' + ;
 						'<memberdata name="historical" type="property" display="Historical" />' + ;
 						'<memberdata name="invalid" type="property" display="Invalid" />' + ;
 						'<memberdata name="localeid" type="property" display="LocaleID" />' + ;
+						'<memberdata name="maxday" type="property" display="MaxDay" />' + ;
+						'<memberdata name="maxmonth" type="property" display="MaxMonth" />' + ;
+						'<memberdata name="maxyear" type="property" display="MaxYear" />' + ;
+						'<memberdata name="minday" type="property" display="MinDay" />' + ;
+						'<memberdata name="minmonth" type="property" display="MinMonth" />' + ;
+						'<memberdata name="minyear" type="property" display="MinYear" />' + ;
+						'<memberdata name="month" type="property" display="Month" />' + ;
 						'<memberdata name="vocabulary" type="property" display="Vocabulary" />' + ;
 						'<memberdata name="vocabularysource" type="property" display="VocabularySource" />' + ;
 						'<memberdata name="weekstart" type="property" display="WeekStart" />' + ;
+						'<memberdata name="year" type="property" display="Year" />' + ;
+						'<memberdata name="attacheventprocessor" type="method" display="AttachEventProcessor" />' + ;
+						'<memberdata name="cleanup" type="method" display="Cleanup" />' + ;
 						'<memberdata name="clone" type="method" display="Clone" />' + ;
-						'<memberdata name="setdate" type="method" display="SetDate" />' + ;
-						'<memberdata name="validate" type="method" display="Validate" />' + ;
-						'<memberdata name="fromsystem" type="method" display="FromSystem" />' + ;
-						'<memberdata name="tosystem" type="method" display="ToSystem" />' + ;
-						'<memberdata name="fromjulian" type="method" display="FromJulian" />' + ;
-						'<memberdata name="tojulian" type="method" display="ToJulian" />' + ;
-						'<memberdata name="daysdifference" type="method" display="DaysDifference" />' + ;
-						'<memberdata name="isbefore" type="method" display="IsBefore" />' + ;
-						'<memberdata name="issameday" type="method" display="IsSameDay" />' + ;
-						'<memberdata name="isafter" type="method" display="IsAfter" />' + ;
+						'<memberdata name="dayevents" type="method" display="DayEvents" />' + ;
 						'<memberdata name="daysadd" type="method" display="DaysAdd" />' + ;
-						'<memberdata name="monthsadd" type="method" display="MonthsAdd" />' + ;
-						'<memberdata name="yearsadd" type="method" display="YearsAdd" />' + ;
+						'<memberdata name="daysdifference" type="method" display="DaysDifference" />' + ;
+						'<memberdata name="detacheventprocessor" type="method" display="DetachEventProcessor" />' + ;
+						'<memberdata name="dtos" type="method" display="DTOS" />' + ;
+						'<memberdata name="eventstocursor" type="method" display="EventsToCursor" />' + ;
+						'<memberdata name="fromjulian" type="method" display="FromJulian" />' + ;
+						'<memberdata name="fromsystem" type="method" display="FromSystem" />' + ;
+						'<memberdata name="getlocale" type="method" display="GetLocale" />' + ;
+						'<memberdata name="isafter" type="method" display="IsAfter" />' + ;
+						'<memberdata name="isbefore" type="method" display="IsBefore" />' + ;
 						'<memberdata name="isleapyear" type="method" display="IsLeapYear" />' + ;
+						'<memberdata name="issameday" type="method" display="IsSameDay" />' + ;
 						'<memberdata name="lastdayofmonth" type="method" display="LastDayOfMonth" />' + ;
+						'<memberdata name="locateevents" type="method" display="LocateEvents" />' + ;
 						'<memberdata name="monthname" type="method" display="MonthName" />' + ;
+						'<memberdata name="monthsadd" type="method" display="MonthsAdd" />' + ;
+						'<memberdata name="setdate" type="method" display="SetDate" />' + ;
+						'<memberdata name="setevents" type="method" display="SetEvents" />' + ;
+						'<memberdata name="setvocabulary" type="method" display="SetVocabulary" />' + ;
+						'<memberdata name="setweekday" type="method" display="SetWeekday" />' + ;
+						'<memberdata name="tojulian" type="method" display="ToJulian" />' + ;
+						'<memberdata name="tosystem" type="method" display="ToSystem" />' + ;
+						'<memberdata name="validate" type="method" display="Validate" />' + ;
 						'<memberdata name="weekday" type="method" display="Weekday" />' + ;
 						'<memberdata name="weekdayname" type="method" display="WeekdayName" />' + ;
-						'<memberdata name="setweekday" type="method" display="SetWeekday" />' + ;
-						'<memberdata name="dtos" type="method" display="DTOS" />' + ;
-						'<memberdata name="getlocale" type="method" display="GetLocale" />' + ;
-						'<memberdata name="setvocabulary" type="method" display="SetVocabulary" />' + ;
-						'<memberdata name="attacheventprocessor" type="method" display="AttachEventProcessor" />' + ;
-						'<memberdata name="setevents" type="method" display="SetEvents" />' + ;
-						'<memberdata name="locateevents" type="method" display="LocateEvents" />' + ;
-						'<memberdata name="dayevents" type="method" display="DayEvents" />' + ;
-						'<memberdata name="eventstocursor" type="method" display="EventsToCursor" />' + ;
+						'<memberdata name="yearsadd" type="method" display="YearsAdd" />' + ;
 						'</VFPData>'
 
 	* a Date or Datetime object can be passed to the object initialization,
@@ -117,6 +119,25 @@ DEFINE CLASS CalendarCalc AS Custom
 		ENDIF
 			
 		RETURN .T.
+
+	ENDFUNC
+
+	* Destroy
+	FUNCTION Destroy
+
+		This.Cleanup()
+
+	ENDFUNC
+
+	* Cleanup
+	* Clean up the object by detaching all events processors
+	FUNCTION Cleanup
+
+		LOCAL ColIndex AS Integer
+
+		FOR m.ColIndex = This.EventsProcessors.Count TO 1 STEP -1
+			This.DetachEventProcessor(This.EventsProcessors.GetKey(m.ColIndex))
+		ENDFOR
 
 	ENDFUNC
 
@@ -713,6 +734,17 @@ DEFINE CLASS CalendarCalc AS Custom
 
 	ENDFUNC
 
+	* DetachEventProcessor
+	* detaches an event processor
+	FUNCTION DetachEventProcessor (Identifier AS String)
+
+		IF This.EventsProcessors.GetKey(m.Identifier) > 0
+			This.EventsProcessors.Item(m.Identifier).Cleanup()
+			This.EventsProcessors.Remove(m.Identifier)
+		ENDIF
+
+	ENDFUNC
+
 	* SetEvents
 	* set events from the event processors 
 	FUNCTION SetEvents (Year AS Integer)
@@ -907,20 +939,21 @@ DEFINE CLASS CalendarEventProcessor AS Custom
 	Scope = ""
 
 	_MemberData = '<VFPData>' + ;
-						'<memberdata name="options" type="property" display="Options" />' + ;
+						'<memberdata name="broker" type="property" display="Broker" />' + ;
+						'<memberdata name="eventsdefinition" type="property" display="EventsDefinition" />' + ;
 						'<memberdata name="eventsfilter" type="property" display="EventsFilter" />' + ;
 						'<memberdata name="host" type="property" display="Host" />' + ;
-						'<memberdata name="broker" type="property" display="Broker" />' + ;
-						'<memberdata name="referencecalendarclass" type="property" display="ReferenceCalendarClass" />' + ;
-						'<memberdata name="referencecalendar" type="property" display="ReferenceCalendar" />' + ;
-						'<memberdata name="eventsdefinition" type="property" display="EventsDefinition" />' + ;
 						'<memberdata name="observed" type="property" display="Observed" />' + ;
+						'<memberdata name="options" type="property" display="Options" />' + ;
+						'<memberdata name="referencecalendar" type="property" display="ReferenceCalendar" />' + ;
+						'<memberdata name="referencecalendarclass" type="property" display="ReferenceCalendarClass" />' + ;
 						'<memberdata name="scope" type="property" display="Scope" />' + ;
-						'<memberdata name="setevents" type="method" display="SetEvents" />' + ;
-						'<memberdata name="setbroker" type="method" display="SetBroker" />' + ;
-						'<memberdata name="setoption" type="method" display="SetOption" />' + ;
-						'<memberdata name="setdefaultoptions" type="method" display="SetDefaultOptions" />' + ;
+						'<memberdata name="cleanup" type="method" display="Cleanup" />' + ;
 						'<memberdata name="getoption" type="method" display="GetOption" />' + ;
+						'<memberdata name="setbroker" type="method" display="SetBroker" />' + ;
+						'<memberdata name="setdefaultoptions" type="method" display="SetDefaultOptions" />' + ;
+						'<memberdata name="setevents" type="method" display="SetEvents" />' + ;
+						'<memberdata name="setoption" type="method" display="SetOption" />' + ;
 						'</VFPData>'
 
 	* Init
@@ -936,6 +969,23 @@ DEFINE CLASS CalendarEventProcessor AS Custom
 		m.Success = !ISNULL(This.ReferenceCalendar) AND TYPE("This.ReferenceCalendar") == "O"
 
 		RETURN m.Success
+
+	ENDFUNC
+
+	* Destroy
+	FUNCTION Destroy
+
+		This.Cleanup()
+
+	ENDFUNC
+
+	* Cleanup
+	* Clears objects references
+	FUNCTION Cleanup
+
+		This.Host = .NULL.
+		This.ReferenceCalendar = .NULL.
+		This.Broker = .NULL.
 
 	ENDFUNC
 

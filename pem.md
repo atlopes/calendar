@@ -58,6 +58,9 @@ See also [Classes](classes.md "Classes").
 - **`AttachEventProcessor (Identifier AS String, ProcessorClass AS String, ProcessorLibrary AS String) AS Boolean`**
  - Attaches an event processor to calculate events for the calendar object. If the class is not in scope, pass the `m.ProcessorLibrary`, also.
 ---
+- **`Cleanup ()`**
+ - Clean up tasks.
+---
 - **`Clone () AS Object`**
  - Returns a copy of the object (with the current date).
 ---
@@ -77,6 +80,9 @@ See also [Classes](classes.md "Classes").
  - Returns the difference, in days, between current calendar date and the current calendar date of other Calendar object (it may be from a different calendar system)
 - **`DaysDifference (CalYearOrDate AS Integer, CalMonth AS Integer, CalDay AS Integer) AS Number`**
  - Returns the difference, in days, between current calendar date and some other calendar date
+---
+- **`DetachEventProcessor (Identifier AS String)`**
+ - Detaches an event processor.
 ---
 - **`DTOS () AS String`**
  - Returns a string representation of the current date that can be used in index expressions.
@@ -185,11 +191,14 @@ See also [Classes](classes.md "Classes").
 
 ### CalendarEventProcessor ###
 
+- **`Cleanup ()`**
+ - Clean up tasks.
+---
 - **`GetOption (Option AS String) AS AnyType`**
  - Gets the current setting of an option.
 ---
 - **`Init (Host AS CalendarCalc)`**
- - Sets thehost, default properties, and instantiate the calendar that will serve as reference for calculations/settings.
+ - Sets the host, default properties, and instantiate the calendar that will serve as reference for calculations/settings.
 ---
 - **`LoadDefinition (XMLorURL AS String, EventsList AS Collection)`**
  - Loads events definition from an XML file or string. The loaded events go into the `m.EventsList` collection. Respects `This.EventsFilter`.

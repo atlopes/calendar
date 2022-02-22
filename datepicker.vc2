@@ -2582,6 +2582,24 @@ DEFINE CLASS textdatepicker AS textbox
 		ENDTRY
 		This.DPSwitch = .NULL.
 		
+		* clean up the calendars collection
+		IF !ISNULL(This.Calendars) AND VARTYPE(This.Calendars) == "O"
+		
+			IF This.Calendars.BaseClass == "Collection" AND This.Calendars.Count > 0
+		
+				LOCAL ColIndex AS Integer
+				
+				FOR m.ColIndex = This.Calendars.Count TO 1 STEP -1
+					This.Calendars.Item(m.ColIndex).Cleanup()
+					This.Calendars.Remove(m.ColIndex)
+				ENDFOR
+		
+			ENDIF
+		
+			This.Calendars = .NULL.
+		
+		ENDIF
+		
 	ENDPROC
 
 	PROCEDURE dpopen		&& Opens a date picker window.
